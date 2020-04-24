@@ -1,0 +1,70 @@
+body {
+    padding-top: 5rem;
+    /* margin-left: 0; */
+    /* background-color: blueviolet; */
+    
+    
+}
+
+.header-img{
+    width: 25px;
+    height:25px;
+    
+
+}
+
+.text-black{
+    color: black !important;
+}
+
+.box-height{ 
+    height: 100px;
+
+}
+
+#login_logo{
+    width:20px; 
+    height:20px;
+}
+
+.shadow{
+    box-shadow: 4px;
+}
+
+.bg-theme{
+    background-color: #00A99D !important;
+}
+
+.btn-theme{
+    background-color: #00A99D !important;
+}
+
+.home-image{
+    width: 75%; 
+    height:75%;
+}
+
+
+.h7 {
+    font-size: 0.8rem;
+}
+
+.gedf-wrapper {
+    margin-top: 0.97rem;
+}
+
+@media (min-width: 992px) {
+    /* .gedf-main {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    } */
+    .gedf-card {
+        margin-bottom: 2.77rem;
+    }
+}
+
+/**Reset Bootstrap*/
+.dropdown-toggle::after {
+    content: none;
+    display: none;
+}
