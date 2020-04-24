@@ -5,7 +5,7 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 import os
-from app import app
+from app import app, db
 from flask import render_template, request, jsonify
 from app.forms import UploadForm
 from werkzeug.utils import secure_filename
@@ -17,7 +17,7 @@ from werkzeug.utils import secure_filename
 def upload():
     form = UploadForm()
     if request.method == "POST" and form.validate_on_submit():
-
+     
         description = form.description.data
         photo = form.photo.data
         photo_filename = secure_filename(photo.filename)

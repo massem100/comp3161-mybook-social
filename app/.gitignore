@@ -1,0 +1,29 @@
+# Files to ignore when adding and committing files to a repository
+.DS_Store
+Thumbs.db
+node_modules/
+dist/
+npm-debug.log
+yarn-error.log
+
+*.py[cod]
+*$py.class
+
+# virtualenv
+.venv/
+venv/
+
+# PyCharm Settings
+.idea
+
+# VS Code Settings
+.vscode
+
+
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
