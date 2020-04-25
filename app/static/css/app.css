@@ -54,10 +54,10 @@ body {
 }
 
 @media (min-width: 992px) {
-    /* .gedf-main {
+    .gedf-main {
         padding-left: 4rem;
         padding-right: 4rem;
-    } */
+    }
     .gedf-card {
         margin-bottom: 2.77rem;
     }

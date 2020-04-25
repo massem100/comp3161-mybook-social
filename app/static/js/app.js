@@ -62,15 +62,20 @@ Vue.component('dash-header', {
              </ul>
         
         <ul class="navbar-nav" >
+            <li class="nav-item ">
+                
+                
+            <router-link class="nav-link d-flex justify-content-end text-white" to="/logout"> My Account <span class="sr-only">(current)</span>
+          
+            </router-link>
 
+                       
             <li class="nav-item ">
                 <router-link class="nav-link d-flex justify-content-end text-white" to="/logout"> Logout <span class="sr-only">(current)</span></router-link>
             </li>
-
-            <li class="nav-item ">
-                <router-link class="nav-link d-flex justify-content-end text-white" to="/logout"> My Account <span class="sr-only">(current)</span></router-link>
-            </li>
-           
+            <div>
+  
+            
        </ul>
       </div>
     </nav>
@@ -102,7 +107,7 @@ const Login = Vue.component('login-page', {
     <div class = "d-flex flex-row">
     
 
-    <div class = "d-flex flex-column justify-content-center col-md-5 ml-4 bg-light rounded border p-4 shadow">
+    <div class = "enable-shadows d-flex flex-column justify-content-center col-md-5 ml-4 bg-light rounded border p-4 shadow-lg">
         <div class = "wrap-login100  d-flex flex-column align-self-center">
             <div class = "mb-5">
                 <h2 class = "text-center font-weight-bold"> Welcome to MyBook </h2>
@@ -173,213 +178,113 @@ const SignUp = Vue.component('sign-up', {
 
         `
     
-    <div> 
-    <!-- Handles the Sign Up Form -->
-    
+     <div> 
     <app-header> </app-header>
-    <div>
-     
-        <div class = "d-flex flex-column justify-content-center col-lg-6 bg-light rounded border p-3 shadow h-50">
+    <div class = "d-flex flex-row">
+    
+
+    <div class = "enable-shadows d-flex flex-column justify-content-center col-md-5 ml-4 bg-light rounded border p-4 shadow-lg">
+        <div class = "wrap-login100  d-flex flex-column align-self-center">
+            <div class = "mb-5">
+                <h2 class = "text-center font-weight-bold"> Welcome to MyBook </h2>
+                
+            </div>
+
+            <div>
+                <form class = "form-group ml-4">
+                <div>
+                    <h6 class = "text-center ">
+                    It's quick and easy! Enter your info to get an account!
+                    </h6>
+                </div>
+                    <div class="form-group ">
+                        <label for="f_name">First Name</label>
+                        <input id = "f_name"type="text" class="form-control " placeholder = "Jane">
                         
-    <div class="">
-
-        <div class=" o-hidden border-0 shadow-lg my-5">
-        <div class="card-body p-0">
-            
-            <div class="row">
-            <div class="">
-
-                <div class="p-5">
-                    <div class="text-center mb-4">
-                        <h4 class=" text-gray font-weight-bold mb-5">Create an Account!</h4>
                     </div>
-
-                <form class="user">
-                    <div class="form-group row">
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                            <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
-                        </div>
-
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name">
-                    </div>
-
+                    <div>
+                    
+                       <label for="l_name">Last Name</label>
+                        <input type="text" class="form-control " id="l_name">
                     </div>
                     <div class="form-group">
-                    <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address">
+                        <label for="account_email">Email </label>
+                        <input type="email" class="form-control " id="account_email">
                     </div>
-                    <div class="form-group row">
-                    <div class="col-sm-6 mb-3 mb-sm-0">
-                        <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+
+                     <div class="form-group">
+                        <label for="l_name">Gender</label>
+                        <select id="gender" name="gender">
+                            <option value="" disabled>Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                           
+                        </select>
                     </div>
-                    <div class="col-sm-6">
-                        <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
+                     <div class="form-group">
+                        <label for="l_name">Last Name</label>
+                        <input type="text" class="form-control " id="l_name">
                     </div>
+                     <div class="form-group">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date"class="form-control " id="dob">
                     </div>
-                    <a href="login.html" class="btn btn-theme text-white btn-block">
-                    Register Account
-                    </a>
+                   
+                    <div class = "d-flex justify-content-center">
+                        <button type="submit" class="btn btn-theme w-75 text-white font-weight-bold" > Sign Up</button>
+                    </div>
+
+
+                    <div class="text-center p-t-115 mt-4">
+						<span class="txt1">
+							Don’t have an account?
+						</span>
+
+                        <router-link to='/signup'>Sign Up</router-link>
+
+                        <div> 
+
+                       
+                        </div> 
+                        
+					</div>
                 </form>
-                <hr>
-                <div class="text-center">
-                    <a class="small" href="login.html">Already have an account? Login!</a>
-                </div>
-                </div>
             </div>
-            </div>
-        </div>
-        </div>
-
+        </div> 
+       
     </div>
-                </div>
-            </div> 
-        </div>
-
-        <img src = "/static/uploads/convo.png" class = "home-image">
-
-        </div>
+    
+    <img src = "/static/uploads/convo.png" class = "home-image">
+    
     </div>
+        
+        </div>
+    
     `
 
 });
 
-const Dashboard = Vue.component('dashboard', {
-    template: `
-    <div class = ""> 
+Vue.component('card', {
+    template: 
+    `
+    <div class="card gedf-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                            card's content.</p>
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div>
+    </div>
     
-
-    <dash-header> </dash-header>
-
-    <div class="container-fluid gedf-wrapper ">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                    <-- This will be updated to attach to database-->
-                        <div class="h5">@LeeCross</div>
-                        <div class="h7 text-muted">Fullname : Miracles Lee Cross</div>
-                        <div class="h7">Developer of web applications, JavaScript, PHP, Java, Python, Ruby, Java, Node.js,
-                            etc.
-                        </div>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <div class="h6 text-muted">Followers</div>
-                            <div class="h5">5.2342</div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="h6 text-muted">Following</div>
-                            <div class="h5">6758</div>
-                        </li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6 gedf-main">
-
-                
-                <div class="card gedf-card">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Make
-                                    a publication</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">Images</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
-                                <div class="form-group">
-                                    <label class="sr-only" for="message">post</label>
-                                    <textarea class="form-control" id="message" rows="3" placeholder="What are you thinking?"></textarea>
-                                </div>
-
-                            </div>
-                            <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
-                                <div class="form-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label" for="customFile">Upload image</label>
-                                    </div>
-                                </div>
-                                <div class="py-4"></div>
-                            </div>
-                        </div>
-                        <div class="btn-toolbar justify-content-between">
-                            <div class="btn-group">
-                                <button type="submit" class="btn btn-theme text-white">share</button>
-                            </div>
-                            <div class="btn-group">
-                                <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    <i class="fa fa-globe"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a>
-                                    <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a>
-                                    <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Post /////-->
-
-                
-                <div class="card gedf-card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="mr-2">
-                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
-                                </div>
-                                <div class="ml-2">
-                                    <div class="h5 m-0">@LeeCross</div>
-                                    <div class="h7 text-muted">Miracles Lee Cross</div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="dropdown">
-                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                                        <div class="h6 dropdown-header">Configuration</div>
-                                        <a class="dropdown-item" href="#">Save</a>
-                                        <a class="dropdown-item" href="#">Hide</a>
-                                        <a class="dropdown-item" href="#">Report</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="card-body">
-                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
-                        <a class="card-link" href="#">
-                            <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
-                        </a>
-
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo recusandae nulla rem eos ipsa praesentium esse magnam nemo dolor
-                            sequi fuga quia quaerat cum, obcaecati hic, molestias minima iste voluptates.
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
-                        <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
-                        <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
-                    </div>
-                </div>
-                <!-- Post /////-->
-
-
-                <!--- \\\\\\\Post-->
-                <div class="card gedf-card">
+    
+    `
+});
+Vue.component('post', {
+    template: `
+    <div>
+    <div class="card gedf-card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
@@ -436,89 +341,113 @@ const Dashboard = Vue.component('dashboard', {
                         <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
                     </div>
                 </div>
-                <!-- Post /////-->
 
+    </div>
+    `
 
-                <!--- \\\\\\\Post-->
+});
+
+Vue.component('create-post', {
+    template: 
+    `
+    <div>
+    <div class="col-lg gedf-main">
+
+                
                 <div class="card gedf-card">
                     <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="mr-2">
-                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Make
+                                    a publication</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">Images</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                                <div class="form-group">
+                                    <label class="sr-only" for="message">post</label>
+                                    <textarea class="form-control" id="message" rows="3" placeholder="What are you thinking?"></textarea>
                                 </div>
-                                <div class="ml-2">
-                                    <div class="h5 m-0">@LeeCross</div>
-                                    <div class="h7 text-muted">Miracles Lee Cross</div>
-                                </div>
+
                             </div>
-                            <div>
-                                <div class="dropdown">
-                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                                        <div class="h6 dropdown-header">Configuration</div>
-                                        <a class="dropdown-item" href="#">Save</a>
-                                        <a class="dropdown-item" href="#">Hide</a>
-                                        <a class="dropdown-item" href="#">Report</a>
+                            <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+                                <div class="form-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile">
+                                        <label class="custom-file-label" for="customFile">Upload image</label>
                                     </div>
                                 </div>
+                                <div class="py-4"></div>
                             </div>
                         </div>
 
-                    </div>
-                    <div class="card-body">
-                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> Hace 40 min</div>
-                        <a class="card-link" href="#">
-                            <h5 class="card-title">Totam non adipisci hic! Possimus ducimus amet, dolores illo ipsum quos
-                                cum.</h5>
-                        </a>
-
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam sunt fugit reprehenderit consectetur exercitationem odio,
-                            quam nobis? Officiis, similique, harum voluptate, facilis voluptas pariatur dolorum tempora sapiente
-                            eius maxime quaerat.
-                            <a href="https://mega.nz/#!1J01nRIb!lMZ4B_DR2UWi9SRQK5TTzU1PmQpDtbZkMZjAIbv97hU" target="_blank">https://mega.nz/#!1J01nRIb!lMZ4B_DR2UWi9SRQK5TTzU1PmQpDtbZkMZjAIbv97hU</a>
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
-                        <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
-                        <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
-                    </div>
-                </div>
-                <!-- Post /////-->
-
-
-
-            </div>
-            <div class="col-md-3">
-                <div class="card gedf-card">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                            card's content.</p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div>
-                </div>
-                <div class="card gedf-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                                card's content.</p>
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
+                        <div class="btn-toolbar justify-content-between">
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-theme text-white">share</button>
+                            </div>
+                           
                         </div>
-                    </div>
-            </div>
-        </div>
-    </div>
-    </div>
 
+                    
+                </div>
+        </div> 
+    </div>
+    `
+});
+
+Vue.component('profile-popup', {
+    template: `
+    <div>
+        <div class="container-fluid gedf-wrapper ">
+            <div> 
+                     <h6> This is a profile pop up </h6>
+            </div>
+            
+        </div>
+     </div>
+    `
+
+});
+
+const Dashboard = Vue.component('dashboard', {
+    template: `
+    <div>
+                <dash-header> </dash-header>
+
+            <div class = "d-flex flex-row"> 
+                <div>
+                    <profile-popup> </profile-popup>
+                </div>
+
+                <div class = "">
+                    <div >
+                        <create-post> </create-post>
+                    </div>
+
+                    <div class= "col-md-8">
+
+                        <post> </post>                  
+                         <post> </post>
+                    </div>
+
+                        
+                    
+                </div>
+
+                            
+                <div class="col-md-3 d-flex flex-column">
+                    <card></card>
+                    <card> </card>
+                </div>
+
+            </div>
+            
+    </div>
     `,
     data: function () {
 

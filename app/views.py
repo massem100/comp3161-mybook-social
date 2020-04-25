@@ -5,10 +5,14 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 import os
-from app import app, db
-from flask import render_template, request, jsonify
+from flask_mysqldb import MySQL
+from app import app
+from flask import Flask,render_template, request, jsonify
 from app.forms import UploadForm
 from werkzeug.utils import secure_filename
+
+
+mysql = MySQL(app)
 
 ###
 # Routing for your application.
@@ -17,7 +21,7 @@ from werkzeug.utils import secure_filename
 def upload():
     form = UploadForm()
     if request.method == "POST" and form.validate_on_submit():
-     
+        
         description = form.description.data
         photo = form.photo.data
         photo_filename = secure_filename(photo.filename)
@@ -45,9 +49,21 @@ def index(path):
 
     Also we will render the initial webpage and then let VueJS take control.
     """
+
+    
+    
+
     return render_template('index.html')
 
+"""
+# cur = mysql.connection.cursor()
+    # cur.execute('''SELECT * FROM customer''')
+    # rv = cur.fetchall()
 
+    # mysql.close()
+   
+
+"""
 
 # Here we define a function to collect form errors from Flask-WTF
 # which we can later use
