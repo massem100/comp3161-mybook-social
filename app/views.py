@@ -7,6 +7,9 @@ This file creates your application.
 import os
 from flask_mysqldb import MySQL
 from app import app
+from datetime import datetime
+from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 from flask import Flask,render_template, request, jsonify
 from app.forms import UploadForm
 from werkzeug.utils import secure_filename
@@ -17,43 +20,28 @@ mysql = MySQL(app)
 ###
 # Routing for your application.
 ###
-@app.route('/api/upload', methods=['POST'])
-def upload():
-    form = UploadForm()
-    if request.method == "POST" and form.validate_on_submit():
-        
-        description = form.description.data
-        photo = form.photo.data
-        photo_filename = secure_filename(photo.filename)
-        file_upload = app.config['UPLOAD_FOLDER']
-        photo.save(os.path.join(file_upload, photo_filename))
-
-        data= [{'message': 'File Upload Successful', 'filename': photo_filename, 'description': description}]
-        return jsonify(success = data)
-    else:
-        error_list = form_errors(form)
-        error = [{'errors': error_list}]
-        return  jsonify(errors = error)
-
 
 # Please create all new routes and view functions above this route.
 # This route is now our catch all route for our VueJS single page
 # application.
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def index(path):
-    """
-    Because we use HTML5 history mode in vue-router we need to configure our
-    web server to redirect all routes to index.html. Hence the additional route
-    "/<path:path".
-
-    Also we will render the initial webpage and then let VueJS take control.
-    """
-
+@app.route('/login')
+def login():
     
-    
+    return render_template('login.html')
 
-    return render_template('index.html')
+@app.route('/signup')
+def register(): 
+
+    return render_template('signup.html')
+@app.route('/dashboard')
+def home():
+
+    return render_template('dashboard.html')
+
+@app.route('/userprofile')
+def userprofile():
+
+    return render_template('user_profile.html')
 
 """
 # cur = mysql.connection.cursor()

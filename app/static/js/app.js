@@ -1,42 +1,5 @@
 
 /* Add your Application JavaScript */
-Vue.component('app-header', {
-    template: `
-    <nav class="navbar navbar-expand navbar-dark bg-transparent text-black fixed-top">
-      <a class="navbar-brand text-black" href="#"> <img class = "header-img " src = '/static/uploads/mybook.jpg'>  MyBook</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-             <ul class = "navbar-nav mr-auto">
-
-             </ul>
-        
-        <ul class="navbar-nav" >
-
-            <li class="nav-item ">
-                <router-link class="nav-link d-flex justify-content-end text-black" to="/login"> Login <span class="sr-only">(current)</span></router-link>
-            </li>
-            <li class="nav-item ">
-                <router-link class="nav-link d-flex justify-content-end text-black" to="/signup">Sign Up <span class="sr-only">(current)</span></router-link>
-            </li>
-       </ul>
-      </div>
-    </nav>
-    `,
-
-    data: function () {
-        return {
-
-
-        }
-    },
-
-    methods: {
-
-    }
-});
 
 Vue.component('app-footer', {
     template: `
@@ -106,12 +69,12 @@ const NotFound = Vue.component('not-found', {
 const Login = Vue.component('login-page', {
     template: `
     
-    <div> 
-    <app-header> </app-header>
-    <div class = "d-flex flex-row">
+    <div > 
+        
+    <div class = "d-flex align-self-center">
     
 
-    <div class = "enable-shadows d-flex flex-column justify-content-center col-md-5 ml-4 bg-light rounded border p-4 shadow-lg">
+    <div class = "enable-shadows  justify-content-center  col-md-5 m-5 bg-light rounded border p-4 shadow-lg">
         <div class = "wrap-login100  d-flex flex-column align-self-center">
             <div class = "mb-5">
                 <h2 class = "text-center font-weight-bold"> Welcome to MyBook </h2>
@@ -153,9 +116,7 @@ const Login = Vue.component('login-page', {
         </div> 
        
     </div>
-    
-    <img src = "/static/uploads/convo.png" class = "home-image">
-    
+        
     </div>
         
         </div>
@@ -182,9 +143,9 @@ const SignUp = Vue.component('sign-up', {
 
         `
     
-     <div> 
-    <app-header> </app-header>
-    <div class = "d-flex flex-row">
+     
+    
+    <div class = "d-flex align-self-center bg-secondary">
     
 
     <div class = "enable-shadows d-flex flex-column justify-content-center col-md-5 ml-4 bg-light rounded border p-4 shadow-lg">
@@ -241,10 +202,10 @@ const SignUp = Vue.component('sign-up', {
 
                     <div class="text-center p-t-115 mt-4">
 						<span class="txt1">
-							Don’t have an account?
+							Already have an account?
 						</span>
 
-                        <router-link to='/signup'>Sign Up</router-link>
+                        <router-link to='/login'>Login</router-link>
 
                         <div> 
 
@@ -258,11 +219,10 @@ const SignUp = Vue.component('sign-up', {
        
     </div>
     
-    <img src = "/static/uploads/convo.png" class = "home-image">
     
     </div>
         
-        </div>
+      
     
     `
 
@@ -296,7 +256,7 @@ Vue.component('post', {
                                     <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
                                 </div>
                                 <div class="ml-2">
-                                    <div class="h5 m-0">@LeeCross</div>
+                                    <div class="h5 m-0">@Sample</div>
                                     <div class="h7 text-muted">Miracles Lee Cross</div>
                                 </div>
                             </div>
@@ -401,27 +361,14 @@ Vue.component('create-post', {
                 </div>
         </div> 
     </div>
+    </div>\
     `
 });
 
-Vue.component('profile-popup', {
-    template: `
-    <div>
-        <div class="container-fluid gedf-wrapper ">
-            <div> 
-                     <h6> This is a profile pop up </h6>
-            </div>
-            
-        </div>
-     </div>
-    `
 
-});
-
-const Dashboard = Vue.component('dashboard', {
+Vue.component('nav_sidebar', {
     template: `
-    <div>
-        <div class="page">
+      <div class="page">
       <!-- Main Navbar-->
       <header class="header ">
         <nav class="navbar bg-theme">
@@ -492,9 +439,9 @@ const Dashboard = Vue.component('dashboard', {
                     <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong>Read all messages   </strong></a></li>
                   </ul>
                 </li>
-               
+                <li class="nav-item"><a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline">Settings <img class = "icon" src = "/static/uploads/settings.png"></span><i class="fa fa-sign-out"></i></a></li>
                 <!-- Logout    -->
-                <li class="nav-item"><a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a></li>
+                <li class="nav-item"><a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"><img class = "icon"src = "/static/uploads/logout.png"></i></a></li>
               </ul>
             </div>
           </div>
@@ -515,10 +462,10 @@ const Dashboard = Vue.component('dashboard', {
           </div>
           <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
           <ul class="list-unstyled">
-            <li class="active"><a href="index.html"> <i class="icon-home"></i>Home </a></li>
-            <li><a href="tables.html"> <i class="icon-grid"></i>My Profile </a></li>
-            <li><a href="charts.html"> <i class="fa fa-bar-chart"></i>My Groups </a></li>
-            <li><a href="forms.html"> <i class="icon-padnote"></i>My Friends</a></li>
+            <li class="active"><router-link to="/dashboard"> <i class="icon-home"></i>Home </router-link></li>
+            <li><router-link to= "/userprofile"> <i><img class = "icon" src = "/static/uploads/user.png"></i>My Profile </router-link></li>
+            <li><router-link to="/groups"> <i><img class = "icon" src = "/static/uploads/group.png"> </i>My Groups </router-link></li>
+            <li><router-link to = "/friends"> <i><img class = "icon" src = "/static/uploads/friends.png"> </i>My Friends</router-link></li>
             <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">Example dropdown </a>
               <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
                 <li><a href="#">Page</a></li>
@@ -528,16 +475,36 @@ const Dashboard = Vue.component('dashboard', {
             </li>
             
           </ul>
-         
-        </nav>
+         </nav>
+        <slot> </slot>
+    </div>
+    
+    `
+});
+
+const Dashboard = Vue.component('dashboard', {
+    template: `
+    <div>
+      <nav_sidebar> 
         <div class="content-inner">
           <!-- Page Header-->
-          <header class="page-header">
-            <div class="container-fluid">
-              <h2 class="no-margin-bottom">Dashboard</h2>
+          <div class = "d-flex flex-column ">
+            <div>
+                <create-post> </create-post>
             </div>
-          </header>
-            
+
+            <div>
+                <post> </post>
+                <post> </post>
+            </div>
+          </div>
+         
+          
+          </div>
+      
+      
+      </nav_sidebar>
+        
     </div>
     `,
     data: function () {
@@ -563,26 +530,72 @@ const Dashboard = Vue.component('dashboard', {
 
 });
 
+const UserProfile = Vue.component('user_profile', {
+    template: `
 
-// Define Routes
-const router = new VueRouter({
-    mode: 'history',
-    routes: [
-        // { path: "/Home", component: Home },
-        // Put other routes here
-        { path: "/login", component: Login },
+    <div> 
+    <nav_sidebar>
+    
+        <div> 
+            <card> </card>
+        </div>
+    
+    </nav_sidebar>
 
-        { path: "/", component: Login },
-
-        { path: "/signup", component: SignUp },
-        
-        { path: "/dashboard", component: Dashboard },
-        // This is a catch all route in case none of the above matches
-        { path: "*", component: NotFound }
-
-
-    ]
+    </div>
+    `
 });
+
+const Friends = Vue.component('friends', {
+    template: 
+
+    `
+    
+    `
+
+});
+
+const Groups = Vue.component('groups', {
+    template: `
+    
+    `
+
+});
+
+const Admin  = Vue.component('admin', {
+    template: 
+    `
+    
+    `
+// });
+// // Define Routes
+// const router = new VueRouter({
+//     mode: 'history',
+//     routes: [
+//         // { path: "/Home", component: Home },
+//         // Put other routes here
+//         { path: "/login", component: Login },
+
+//         { path: "/", component: Login },
+
+//         { path: "/userprofile", component: UserProfile },
+
+        
+//         { path: "/signup", component: SignUp },
+
+//         { path: "/admin", component: Admin },
+
+//         { path: "/groups", component: Groups },
+
+//         { path: "/friends", component: Friends },
+        
+//         { path: "/dashboard", component: Dashboard },
+//         // This is a catch all route in case none of the above matches
+//         { path: "*", component: NotFound }
+
+
+//     ]
+// });
 
 // Instantiate our main Vue Instance
 let app = new Vue({
