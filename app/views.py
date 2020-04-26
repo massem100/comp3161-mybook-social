@@ -6,13 +6,15 @@ This file creates your application.
 """
 import os
 from flask_mysqldb import MySQL
-from app import app
+from app import app, login_manager
 from datetime import datetime
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from flask import Flask,render_template, request, jsonify
-from app.forms import UploadForm
+from flask_login import login_user, logout_user, current_user, login_required
+from flask import Flask, render_template, request, redirect, url_for, flash, session, abort
+from app.forms import LoginForm
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 mysql = MySQL(app)
@@ -24,8 +26,19 @@ mysql = MySQL(app)
 # Please create all new routes and view functions above this route.
 # This route is now our catch all route for our VueJS single page
 # application.
-@app.route('/login')
+@app.route('/')
+@app.route('/login', methods=['POST', 'GET'])
 def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != app.config['USERNAME'] or request.form['password'] != app.config['PASSWORD']:
+            error = 'Invalid username or password'
+        else:
+            session['logged_in'] = True
+
+            flash('You were logged in', 'success')
+            return redirect(url_for('dashboard'))
+    return render_template('login.html', error=error)
     
     return render_template('login.html')
 
@@ -34,15 +47,34 @@ def register():
 
     return render_template('signup.html')
 @app.route('/dashboard')
-def home():
+@login_required
+def dashboard():
 
     return render_template('dashboard.html')
 
 @app.route('/userprofile')
+@login_required
 def userprofile():
 
     return render_template('user_profile.html')
 
+
+
+@app.route('/friends')
+@login_required
+def showfriends():
+
+    return render_template('friends.html')
+
+
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    session.pop('logged_in', None)
+    flash('You were logged out', 'success')
+    return redirect(url_for('home'))
 """
 # cur = mysql.connection.cursor()
     # cur.execute('''SELECT * FROM customer''')
@@ -52,6 +84,9 @@ def userprofile():
    
 
 """
+@login_manager.user_loader
+def load_user(id):
+    return '1'
 
 # Here we define a function to collect form errors from Flask-WTF
 # which we can later use
