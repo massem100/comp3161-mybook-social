@@ -29,16 +29,16 @@ mysql = MySQL(app)
 @app.route('/')
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    error = None
-    if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME'] or request.form['password'] != app.config['PASSWORD']:
-            error = 'Invalid username or password'
-        else:
-            session['logged_in'] = True
+    # error = None
+    # if request.method == 'POST':
+        # if request.form['username'] != app.config['USERNAME'] or request.form['password'] != app.config['PASSWORD']:
+        #     error = 'Invalid username or password'
+        # else:
+        #     session['logged_in'] = True
 
-            flash('You were logged in', 'success')
-            return redirect(url_for('dashboard'))
-    return render_template('login.html', error=error)
+    #         # flash('You were logged in', 'success')
+    #         return redirect(url_for('dashboard'))
+    # return render_template('login.html', error=error)
     
     return render_template('login.html')
 
@@ -46,8 +46,9 @@ def login():
 def register(): 
 
     return render_template('signup.html')
+
 @app.route('/dashboard')
-@login_required
+
 def dashboard():
 
     return render_template('dashboard.html')
