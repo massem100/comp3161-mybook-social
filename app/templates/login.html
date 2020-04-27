@@ -3,12 +3,12 @@
 
 {% block main %}
 
-<div>
+<div class= "m-5">
 
-    <div class="d-flex align-self-center">
+    <div class="d-flex justify-content-center">
 
 
-        <div class="enable-shadows  justify-content-center  col-md-5 m-5 bg-light rounded border p-4 shadow-lg">
+        <div class="col-md-4 m-5 bg-signup rounded border p-4 shadow-lg">
             <div class="wrap-login100  d-flex flex-column align-self-center">
                 <div class="mb-5">
                     <h2 class="text-center font-weight-bold"> Welcome to MyBook </h2>
@@ -20,11 +20,11 @@
                     {{ form.csrf_token }}
                     <div class="form-group">
                         {{ form.email.label }}
-                        {{ form.email(class='form-control', placeholder="Eg. janedoe@example.com") }}
+                        {{ form.email(class='form-control rounded border', placeholder="Eg. janedoe@example.com") }}
                     </div>
                     <div class="form-group">
                         {{ form.password.label }}
-                        {{ form.password(class='form-control') }}
+                        {{ form.password(class='form-control rounded border') }}
 
                     </div>
                     <div>

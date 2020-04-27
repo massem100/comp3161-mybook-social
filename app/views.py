@@ -10,15 +10,15 @@ from app import app
 from datetime import datetime
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from flask import Flask,render_template, request, jsonify, redirect, url_for
-from app.forms import UploadForm, LoginForm
+from flask import Flask,render_template, request, jsonify, redirect, url_for, flash
+from app.forms import UploadForm, LoginForm, SignupForm
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 
 # Initializing the SQL connection to our app.
 mysql = MySQL(app)
 
-
+@app.route('/')
 @app.route('/login', methods = ['POST', 'GET'])
 def login(): 
     form = LoginForm()
@@ -40,7 +40,13 @@ def login():
 @app.route('/signup')
 def signup():
 
-    return render_template('signup.html')
+    form = SignupForm()
+    if form.validate_on_submit():
+
+        # flash('Sign Up Successful', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('signup.html', form = form)
 
 
 @app.route('/dashboard')

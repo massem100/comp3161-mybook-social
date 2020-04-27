@@ -1,6 +1,14 @@
 body {
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
 
+}
+
+.bg-signup{
+  background-color: rgb(179, 221, 218);
+}
+
+.center {
+  float: center;
 }
 
 .card-size{
