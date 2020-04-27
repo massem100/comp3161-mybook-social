@@ -6,15 +6,13 @@ This file creates your application.
 """
 import os
 from flask_mysqldb import MySQL
-from app import app, login_manager
+from app import app
 from datetime import datetime
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from flask_login import login_user, logout_user, current_user, login_required
-from flask import Flask, render_template, request, redirect, url_for, flash, session, abort
-from app.forms import LoginForm
+from flask import Flask,render_template, request, jsonify
+from app.forms import UploadForm
 from werkzeug.utils import secure_filename
-from werkzeug.security import generate_password_hash, check_password_hash
 
 
 mysql = MySQL(app)
@@ -26,9 +24,9 @@ mysql = MySQL(app)
 # Please create all new routes and view functions above this route.
 # This route is now our catch all route for our VueJS single page
 # application.
-@app.route('/')
-@app.route('/login', methods=['POST', 'GET'])
+@app.route('/login')
 def login():
+<<<<<<< HEAD
     # error = None
     # if request.method == 'POST':
         # if request.form['username'] != app.config['USERNAME'] or request.form['password'] != app.config['PASSWORD']:
@@ -39,6 +37,8 @@ def login():
     #         # flash('You were logged in', 'success')
     #         return redirect(url_for('dashboard'))
     # return render_template('login.html', error=error)
+=======
+>>>>>>> parent of 89f900f... Changes made
     
     return render_template('login.html')
 
@@ -48,34 +48,20 @@ def register():
     return render_template('signup.html')
 
 @app.route('/dashboard')
+<<<<<<< HEAD
 
 def dashboard():
+=======
+def home():
+>>>>>>> parent of 89f900f... Changes made
 
     return render_template('dashboard.html')
 
 @app.route('/userprofile')
-@login_required
 def userprofile():
 
     return render_template('user_profile.html')
 
-
-
-@app.route('/friends')
-@login_required
-def showfriends():
-
-    return render_template('friends.html')
-
-
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    session.pop('logged_in', None)
-    flash('You were logged out', 'success')
-    return redirect(url_for('home'))
 """
 # cur = mysql.connection.cursor()
     # cur.execute('''SELECT * FROM customer''')
@@ -85,9 +71,6 @@ def logout():
    
 
 """
-@login_manager.user_loader
-def load_user(id):
-    return '1'
 
 # Here we define a function to collect form errors from Flask-WTF
 # which we can later use
