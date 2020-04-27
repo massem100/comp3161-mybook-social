@@ -14,32 +14,31 @@
                     <h2 class="text-center font-weight-bold"> Welcome to MyBook </h2>
 
                 </div>
+            <div class="login-form center-block">
+                {% include 'flash_messages.html' %}
+                <form action="{{ url_for('login') }}" method="POST">
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        {{ form.email.label }}
+                        {{ form.email(class='form-control', placeholder="Eg. janedoe@example.com") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password.label }}
+                        {{ form.password(class='form-control') }}
 
-                <div>
-                    <form action = "" class="form-group ml-4" method="POST">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                        <div class="form-group ">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control " placeholder="Eg. Jane Doe">
-                            
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control " id="password">
-                        </div>
-
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary w-75 text-white font-weight-bold"
-                                @click="ShowDashboard">Login</button>
-                        </div>
-
-
+                    </div>
+                    <div>
+                        {{form.recaptcha}}
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
+            </div>
                         <div class="text-center p-t-115 mt-4">
                             <span class="txt1">
                                 Don’t have an account?
                             </span>
 
-                            <a>Signup</a>
+                            <a href = "{{url_for('signup')}}">Signup</a>
 
                             <div>
 
