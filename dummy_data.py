@@ -1,15 +1,17 @@
 from faker import Faker
 fake = Faker()
 
-fake.userName()
+fake.bothify()
 fake.first_name()
 fake.last_name()
-#fake.birthdate()
 fake.email()
 fake.password()
-fake.phoneNumberFormat()
+fake.numerify()
+fake.date_of_birth()
+fake.random_choices()
 
-for _ in range(10):
-  print(fake.userName(),fake.first_name(), fake.last_name(),fake.email(),
-        fake.password(),fake.phoneNumberFormat())
+for _ in range(5):
+  print(fake.bothify(text='??-###'),fake.first_name(), fake.last_name(),fake.email(),
+        fake.password(length=8),fake.numerify('###-###-####'),fake.date_of_birth(), 
+        fake.random_choices(elements=[('male'),('female')],length=1))
 
