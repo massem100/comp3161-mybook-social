@@ -3,9 +3,12 @@ fake = Faker()
 
 fake.first_name()
 fake.last_name()
-fake.address()
-
+fake.birthdate()
+fake.email()
+fake.password()
+fake.phone_number()
 
 for _ in range(10):
-  print(fake.first_name(), fake.last_name())
+  print(fake.first_name(), fake.last_name(),fake.birthdate(),fake.email(),
+        fake.password(),fake.phone_number())
 
