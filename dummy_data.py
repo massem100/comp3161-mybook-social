@@ -1,12 +1,11 @@
 from faker import Faker
 fake = Faker()
 
-fake.name()
-# 'Lucy Cechtelar'
-
+fake.first_name()
+fake.last_name()
 fake.address()
-# '426 Jordy Lodge
-#  Cartwrightshire, SC 88120-6700'
+
 
 for _ in range(10):
-  print(fake.name())
+  print(fake.first_name(), fake.last_name())
+
