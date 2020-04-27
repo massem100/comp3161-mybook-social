@@ -16,24 +16,20 @@
                 </div>
 
                 <div>
-<<<<<<< HEAD
                     <form action = "" class="form-group ml-4" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-=======
-                    <form class="form-group ml-4">
->>>>>>> parent of 89f900f... Changes made
                         <div class="form-group ">
                             <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control " placeholder="johndoe@example.com">
+                            <input type="email" class="form-control " placeholder="Eg. Jane Doe">
                             
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control " id="exampleInputPassword1">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control " id="password">
                         </div>
 
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-theme w-75 text-white font-weight-bold"
+                            <button type="submit" class="btn btn-primary w-75 text-white font-weight-bold"
                                 @click="ShowDashboard">Login</button>
                         </div>
 

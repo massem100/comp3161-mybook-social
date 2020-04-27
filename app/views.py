@@ -14,46 +14,18 @@ from flask import Flask,render_template, request, jsonify
 from app.forms import UploadForm
 from werkzeug.utils import secure_filename
 
-
+# Initializing the SQL connection to our app.
 mysql = MySQL(app)
 
-###
-# Routing for your application.
-###
 
-# Please create all new routes and view functions above this route.
-# This route is now our catch all route for our VueJS single page
-# application.
 @app.route('/login')
-def login():
-<<<<<<< HEAD
-    # error = None
-    # if request.method == 'POST':
-        # if request.form['username'] != app.config['USERNAME'] or request.form['password'] != app.config['PASSWORD']:
-        #     error = 'Invalid username or password'
-        # else:
-        #     session['logged_in'] = True
+def login(): 
 
-    #         # flash('You were logged in', 'success')
-    #         return redirect(url_for('dashboard'))
-    # return render_template('login.html', error=error)
-=======
->>>>>>> parent of 89f900f... Changes made
-    
     return render_template('login.html')
 
-@app.route('/signup')
-def register(): 
-
-    return render_template('signup.html')
 
 @app.route('/dashboard')
-<<<<<<< HEAD
-
 def dashboard():
-=======
-def home():
->>>>>>> parent of 89f900f... Changes made
 
     return render_template('dashboard.html')
 
@@ -62,15 +34,40 @@ def userprofile():
 
     return render_template('user_profile.html')
 
-"""
-# cur = mysql.connection.cursor()
-    # cur.execute('''SELECT * FROM customer''')
-    # rv = cur.fetchall()
 
-    # mysql.close()
-   
+@app.route('/groups')
+def groups():
+
+    return render_template('groups.html')
+
+
+@app.route('/friends')
+def friends():
+
+    return render_template('friends.html')
+
+
+
+###
+# Routing for your application.
+###
+
+# Please create all new routes and view functions above this route.
+# This route is now our catch all route for our VueJS single page
+# application.
+
 
 """
+#This is how we will connect to the SQL server and make queries to the database in FLask.
+cur = mysql.connection.cursor()
+cur.execute('''SELECT * FROM customer''')
+rv = cur.fetchall()
+e
+mysql.close()
+"""
+
+
+
 
 # Here we define a function to collect form errors from Flask-WTF
 # which we can later use
