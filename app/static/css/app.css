@@ -1,12 +1,28 @@
 body {
   overflow-x: hidden;
+  background-color: #00A99D;
 
+}
+
+.home-icon{
+  width:16px; 
+  height:16px;
 }
 
 .bg-signup{
-  background-color: rgb(179, 221, 218);
+  background-color: rgb(234, 250, 249);
 }
 
+.home-image{
+  width: 75%;
+  height: 75%;
+
+}
+
+.image-container{
+  width: 400px;
+  height: 400px;
+}
 .center {
   float: center;
 }

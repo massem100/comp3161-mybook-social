@@ -11,7 +11,7 @@ class UploadForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     email = StringField('Email', [Email( message=('Not a valid email address.')), DataRequired('Email field is empty')])
-    password = PasswordField('Password', validators = [DataRequired('Please enter a password'), Length(max =10)])
+    password = PasswordField('Password', validators = [DataRequired('Please enter a password')])
     
 
 class SignupForm(FlaskForm):

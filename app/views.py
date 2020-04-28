@@ -18,35 +18,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 # Initializing the SQL connection to our app.
 mysql = MySQL(app)
 
-@app.route('/')
-@app.route('/login', methods = ['POST', 'GET'])
-def login(): 
-    form = LoginForm()
-
-    """ 
-    waiting to setup when database has been added
-    
-    """
-    if form.validate_on_submit():
-
-        return redirect(url_for('dashboard'))
-    
-    form.email.data
-    form.password.data
-
-
-    return render_template('login.html', form = form)
-
-@app.route('/signup')
-def signup():
-
-    form = SignupForm()
-    if form.validate_on_submit():
-
-        # flash('Sign Up Successful', 'success')
-        return redirect(url_for('login'))
-
-    return render_template('signup.html', form = form)
 
 
 @app.route('/dashboard')
@@ -72,6 +43,34 @@ def friends():
     return render_template('friends.html')
 
 
+@app.route('/')
+@app.route('/login', methods = ['POST', 'GET'])
+def login(): 
+    form = LoginForm()
+
+    """ 
+    waiting to setup when database has been added
+    
+    """
+    if form.validate_on_submit():
+        form.email.data
+        form.password.data
+
+        return redirect(url_for('dashboard'))
+    
+        
+    return render_template('login.html', form = form)
+
+@app.route('/signup')
+def signup():
+
+    form = SignupForm()
+    if form.validate_on_submit():
+
+        # flash('Sign Up Successful', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('signup.html', form = form)
 
 ###
 # Routing for your application.

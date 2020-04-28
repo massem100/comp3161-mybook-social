@@ -23,7 +23,7 @@
                         
                         <!-- Logout    -->
                         <li class="nav-item"><a href="{{url_for('login')}}" class="nav-link logout"> <span
-                                    class="d-none d-sm-inline">Logout <img class = "icon" src = "/static/uploads/logout.png"></span><i class="fa fa-sign-out"></i></a></li>
+                                    class="d-none d-sm-inline">Logout </span><i class="fa fa-sign-out"><img class="icon" src="/static/uploads/logout.png"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -31,7 +31,7 @@
     </header>
     <div class="page-content d-flex align-items-stretch">
         <!-- Side Navbar -->
-        <nav class="side-navbar">
+        <nav class="side-navbar ">
             <!-- Sidebar Header-->
             <div class="sidebar-header d-flex align-items-center">
                 <div class="avatar"><img src="img/avatar-1.jpg" alt="..." class="img-fluid rounded-circle"></div>
@@ -42,10 +42,10 @@
             </div>
             <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
             <ul class="list-unstyled">
-                <li class="active"><a href="{{url_for('dashboard')}}"> <i class="icon-home"></i>Dashboard </a></li>
-                <li><a href="{{url_for('userprofile')}}"> <i class="icon-grid"></i>My Profile </a></li>
-                <li><a href="{{url_for('friends')}}"> <i class="fa fa-bar-chart"></i>My Friends</a></li>
-                <li><a href="{{url_for('groups')}}"> <i class="icon-padnote"></i>My Groups</a></li>
+                <li class="active"><a href="{{url_for('dashboard')}}"><img class= "home-icon"src = "/static/uploads/home.png"><i class="icon-home"></i>Dashboard </a></li>
+                <li><a href="{{url_for('userprofile')}}"><img class="home-icon" src="/static/uploads/user.png"> <i class="icon-grid"></i>My Profile </a></li>
+                <li><a href="{{url_for('friends')}}"> <img class="home-icon" src="/static/uploads/friend.png"><i class="fa fa-bar-chart"></i>My Friends</a></li>
+                <li><a href="{{url_for('groups')}}"><img class="home-icon" src="/static/uploads/group.png"> <i class="icon-padnote"></i>My Groups</a></li>
                 <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i
                             class="icon-interface-windows"></i>Example dropdown </a>
                     <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
