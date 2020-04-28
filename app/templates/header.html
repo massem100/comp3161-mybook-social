@@ -19,7 +19,9 @@
                         <!-- Search-->
                         <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i
                                     class="icon-search"></i></a></li>
-                       
+                        <li class="nav-item"><a href="" class="nav-link "> <span class="d-none d-sm-inline">Settings
+
+                        </span><i class="fa fa-sign-out"><img class="icon" src="/static/uploads/settings.png"></i></a></li>
                         
                         <!-- Logout    -->
                         <li class="nav-item"><a href="{{url_for('login')}}" class="nav-link logout"> <span
@@ -43,17 +45,10 @@
             <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
             <ul class="list-unstyled">
                 <li class="active"><a href="{{url_for('dashboard')}}"><img class= "home-icon"src = "/static/uploads/home.png"><i class="icon-home"></i>Dashboard </a></li>
-                <li><a href="{{url_for('userprofile')}}"><img class="home-icon" src="/static/uploads/user.png"> <i class="icon-grid"></i>My Profile </a></li>
-                <li><a href="{{url_for('friends')}}"> <img class="home-icon" src="/static/uploads/friend.png"><i class="fa fa-bar-chart"></i>My Friends</a></li>
-                <li><a href="{{url_for('groups')}}"><img class="home-icon" src="/static/uploads/group.png"> <i class="icon-padnote"></i>My Groups</a></li>
-                <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i
-                            class="icon-interface-windows"></i>Example dropdown </a>
-                    <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                    </ul>
-                </li>
+                <li><a href="{{url_for('userprofile')}}"><img class="home-icon" src="/static/uploads/user.png"><i class="icon-grid"></i>My Profile </a></li>
+                <li><a href="{{url_for('friends')}}"> <img class="home-icon" src="/static/uploads/friend.png"><i class="fa fa-bar-chart"></i>Find Friends</a></li>
+                <li><a href="{{url_for('groups')}}"><img class="home-icon" src="/static/uploads/group.png"><i class="icon-padnote"></i>Groups</a></li>
+                
                 </ul>
         </nav>
 

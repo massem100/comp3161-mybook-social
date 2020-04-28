@@ -1,11 +1,65 @@
 {% extends 'base.html' %}
-
+<!-- Flask inheritance, allows each child component to be linked with any styling or script tags needed etc -->
 
 {% block main %}
-
+<!-- This is to prevent rewriting code, header.html and all its elements will be included on each page  -->
 {% include 'header.html' %}
 
-<div class="page">
+<div class="d-flex flex-column justify-content-center m-4  w-100 ">
+   <!-- This is the search bar to search the database for any user matching the name typed. -->
+   <!-- If the user is already a friend with one of the results, the buttton to add Friend should change to show a tick and 'Friend Already' -->
+    <input class = "d-flex align-self-center friends-search border rounded mb-2"type= "text" placeholder="Search for friends"> 
+    <hr>
+    <div class = "bg-light"> 
+        
+    </div>
+
+    <!-- This lists out the current user friends in the different categories -->
+    <div class= "d-flex flex-column">
+        
+        <!-- Container to list the friends in the relatives category -->
+        <div class = "card ml-2 mb-2 mt-4 mr-2"> 
+            <div class = "card-header bg-primary text-white font-weight-bold"> 
+                Relatives
+
+            </div>
+            <div class = "card-body"> 
+                <p> 
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique reiciendis 
+                </p>
+
+            </div>
+
+        </div>
+        <!-- Container to list the friends in the school category -->
+        <div class="card ml-2 mb-2 mt-4 mr-2">
+            <div class="card-header bg-primary text-white font-weight-bold">
+                School
+        
+            </div>
+            <div class="card-body">
+                <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique reiciendis
+                </p>
+        
+            </div>
+        
+        </div>
+        <!-- Container to list the friends in the work category -->
+        <div class="card ml-2 mb-2 mt-4 mr-2">
+            <div class="card-header bg-primary text-white font-weight-bold">
+                Work
+        
+            </div>
+            <div class="card-body">
+                <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique reiciendis
+                </p>
+        
+            </div>
+        
+        </div>
+    </div>
 
 </div>
 
