@@ -5,10 +5,60 @@
 
     {% include 'header.html' %}
 
-<div class="">
+<div class="d-flex flex-column m-4 w-100">
 
-
+    <div class = "d-flex flex-row card justify-content-center rounded">
+                <!--   Profile image for user profile   -->
+        <div>
+            <img id="profile-photo" src="{{url_for ('static', filename = 'uploads/' + 'krys.png' )}}">
+        </div>
+        <!-- Profile Details of User  -->
+        <div class="d-flex flex-column p-2 ml-1 w-75 bd-highlight text-light-grey justify-content-center">
+            <h5 class="text-dark font-md bold ml-2 font-weight-bold"> Tracy Daniels</h5>
+            <p>
+                <img id="icons" src="{{url_for('static', filename ='uploads/email.png')}}" />
+                <span class="bold ml-1 ">Janedoe@exmaple.com </span>
+            </p>
+            <p>
+                <img id="icons" src="{{url_for('static', filename ='uploads/pin.png')}}" />
+                <span class="bold ml-1 "> add location </span>
+            </p>
+            <p>
+                <img id="icons" src="{{url_for('static', filename ='uploads/calendar.png')}}" />
+                <span class="bold ml-1 "> add date created  </span>
+            </p>
+        </div>
     </div>
+
+    <!-- Photo Div  -->
+    <div class = "d-flex flex-column "> 
+        
+        <div class = "card d-flex flex-column m-2 "> 
+            <div class = "card=header bg-primary "> 
+                <h5 class = "m-2 text-white font-weight-bold" > Photos </h5>
+            </div>
+            <div class = "card-body bg-light d-flex flex-row justify-content-center"> 
+                <img class="profile-image m-2 rounded" src="/static/uploads/blue_lagoon.jpg">
+                <img class="profile-image m-2 rounded" src="/static/uploads/beach.jpg">
+                <img class="profile-image m-2 rounded" src="/static/uploads/blue_lagoon.jpg">
+                <img class="profile-image m-2 rounded" src="/static/uploads/beach.jpg">
+
+
+            </div>
+            <div class = "card-footer bg-primary">
+                <form class="form-group " action methods=['POST'] enctype="multipart/form-data">
+                    {{ form.csrf_token}}
+                    <div class="d-flex flex-row justify-content-end ">
+                        {{ form.photo.label('Upload Photo', class = "text-white mr-1 ml-2 mb-1") }}
+                        {{ form.photo(class ="mr-1 ml-2 mb-1 text-white") }}
+                    </div>
+                
+                </form>
+
+            </div>            
+        </div>
+    </div>
+</div>
     
 
 {% endblock %}

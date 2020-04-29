@@ -11,7 +11,7 @@ from datetime import datetime
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask import Flask,render_template, request, jsonify, redirect, url_for, flash
-from app.forms import UploadForm, LoginForm, SignupForm
+from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -27,14 +27,20 @@ def dashboard():
 
 @app.route('/userprofile')
 def userprofile():
+    form = PhotoForm()
 
-    return render_template('user_profile.html')
+    return render_template('user_profile.html', form=form)
 
 
 @app.route('/groups')
 def groups():
 
     return render_template('groups.html')
+
+@app.route('/creategroup')
+def creategroup(): 
+
+    return render_template('create_group.html')
 
 
 @app.route('/friends')
@@ -44,12 +50,15 @@ def friends():
 
 
 @app.route('/')
-@app.route('/login', methods = ['POST', 'GET'])
-def login(): 
+@app.route('/login', methods=['POST', 'GET'])
+def login():
     form = LoginForm()
 
     """ 
     waiting to setup when database has been added
+    Fetch data from database to validate login 
+
+    add request.method = 'POST in form.validate_on_submit if statement
     
     """
     if form.validate_on_submit():
@@ -57,20 +66,25 @@ def login():
         form.password.data
 
         return redirect(url_for('dashboard'))
-    
-        
-    return render_template('login.html', form = form)
+
+    return render_template('login.html', form=form)
+
 
 @app.route('/signup')
 def signup():
 
     form = SignupForm()
+    """
+    waiting to setup when database has been added
+    Query: 
+
+    """
     if form.validate_on_submit():
 
         # flash('Sign Up Successful', 'success')
         return redirect(url_for('login'))
 
-    return render_template('signup.html', form = form)
+    return render_template('signup.html', form=form)
 
 ###
 # Routing for your application.

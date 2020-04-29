@@ -22,3 +22,13 @@ class SignupForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(message="Please enter a password.")])
     confirmPassword = PasswordField('Repeat Password', [EqualTo(password, message='Passwords must match.')])
     birthday = DateField('Date of Birth', validators=[DataRequired(message = "Please enter your date of birth")])
+
+class GroupForm(FlaskForm):
+    group_name = StringField('Group Name', validators=[DataRequired('Group must have a name')])
+    desc = TextAreaField('Group Description', validators=[Length( max =150)])
+
+class PhotoForm(FlaskForm):
+    photo = FileField('photo', validators=[FileRequired('No photo was submitted.'), FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
+
+
+     
