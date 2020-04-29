@@ -4,6 +4,7 @@ body {
   /* background-color: #00A99D; */
 
 }
+
 .photo-grid{
   width:150px; 
   height:150px;
@@ -11,6 +12,7 @@ body {
 .profile-image{
   width: 200px;
   height:200px;
+
 
 }
 #profile-photo{ 
@@ -22,6 +24,11 @@ body {
   height:16px;
 }
 
+#icon{
+  width:16px; 
+  height:16px;
+
+}
 .bg-signup{
   background-color: rgb(234, 250, 249);
 }
@@ -30,6 +37,16 @@ body {
   width: 75%;
   height: 75%;
 
+}
+.red{
+  color: red;
+}
+.btn-green{ 
+    background-color: #32CD32 !important;
+}
+
+.btn-blue{
+  background-color: rgb(6, 155, 255);
 }
 
 .friends-search{

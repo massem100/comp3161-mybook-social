@@ -143,6 +143,25 @@ $(document).ready(function () {
         window.open($(this).attr("href"));
     });
 
-   
+    // ------------------------------------------------------- //
+    // Posts characters left feature
+    // ------------------------------------------------------ //
+    $('#characterLeft').text('140 characters left');
+    $('#message').keyup(function () {
+        var max = 140;
+        var len = $(this).val().length;
+        var ch = max - len;
+        if (len >= max) {
+            $('#characterLeft').text(-ch +' ' + 'words over the limit');
+            $('#characterLeft').addClass('red');
+            $('#btnSubmit').addClass('disabled');
+        }
+        else {
+            var ch = max - len;
+            $('#characterLeft').text(ch + ' characters left');
+            $('#btnSubmit').removeClass('disabled');
+            $('#characterLeft').removeClass('red');
+        }
+    });    
 
 });

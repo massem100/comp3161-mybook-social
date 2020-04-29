@@ -13,20 +13,25 @@
             <img id="profile-photo" src="{{url_for ('static', filename = 'uploads/' + 'krys.png' )}}">
         </div>
         <!-- Profile Details of User  -->
-        <div class="d-flex flex-column p-2 ml-1 w-75 bd-highlight text-light-grey justify-content-center">
+        <div class="d-flex flex-column p-2 ml-1 w-75  text-light-grey justify-content-center">
             <h5 class="text-dark font-md bold ml-2 font-weight-bold"> Tracy Daniels</h5>
             <p>
-                <img id="icons" src="{{url_for('static', filename ='uploads/email.png')}}" />
+                <img id="icon" src="{{url_for('static', filename ='uploads/email.png')}}" />
                 <span class="bold ml-1 ">Janedoe@exmaple.com </span>
             </p>
             <p>
-                <img id="icons" src="{{url_for('static', filename ='uploads/pin.png')}}" />
+                <img id="icon" src="{{url_for('static', filename ='uploads/pin.png')}}" />
                 <span class="bold ml-1 "> add location </span>
             </p>
             <p>
-                <img id="icons" src="{{url_for('static', filename ='uploads/calendar.png')}}" />
+                <img id="icon" src="{{url_for('static', filename ='uploads/calendar.png')}}" />
                 <span class="bold ml-1 "> add date created  </span>
             </p>
+        </div>
+        <div> 
+            <button class= "btn-primary rounded"> Add Friend </button>
+            <button class = "btn-primary"> Edit Profile </button>
+
         </div>
     </div>
 
@@ -37,7 +42,7 @@
             <div class = "card=header bg-primary "> 
                 <h5 class = "m-2 text-white font-weight-bold" > Photos </h5>
             </div>
-            <div class = "card-body bg-light d-flex flex-row justify-content-center"> 
+            <div class = "card-body  d-flex flex-row justify-content-center"> 
                 <img class="profile-image m-2 rounded" src="/static/uploads/blue_lagoon.jpg">
                 <img class="profile-image m-2 rounded" src="/static/uploads/beach.jpg">
                 <img class="profile-image m-2 rounded" src="/static/uploads/blue_lagoon.jpg">
