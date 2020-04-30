@@ -10,10 +10,14 @@ body {
   height:150px;
 }
 .profile-image{
-  width: 200px;
-  height:200px;
+  width: 150px;
+  height:150px;
 
 
+}
+
+#scroll{
+  overflow-y: scroll;
 }
 #profile-photo{ 
   width: 250px;
