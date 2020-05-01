@@ -3448,3 +3448,53 @@ a > code {
   padding-bottom: 0.375rem;
   font-size: 125%;
 }
+
+/* friends search bar */
+searchContainer {
+  display: grid;
+  grid-template-columns:1.5rem 4fr 1fr;
+  width:300px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.searchContainer:focus-within i {
+  display: none;
+}
+
+.searchContainer:focus-within .searchBox{
+  grid-column:1/4;
+}
+
+.searchContainer:focus-within .searchBox::placeholder {
+  color:transparent;
+}
+
+.searchIcon {
+  padding: 0.5rem;
+  grid-row:1;
+  grid-column:1/2;
+  z-index:2
+}
+
+.searchBox {
+  border: 0;
+  padding: 0.5rem;
+  grid-column:2/4;
+  grid-row:1;
+  outline:none;
+}
+
+.searchButton {
+  background: #00A99D;
+  border: 0;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0;
+  grid-column:4/5;
+  grid-row:1;
+}
+#friendsbtn{
+ float: right;
+}
