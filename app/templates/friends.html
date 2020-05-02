@@ -8,11 +8,18 @@
 <div class="d-flex flex-column justify-content-center m-4  w-100 ">
    <!-- This is the search bar to search the database for any user matching the name typed. -->
    <!-- If the user is already a friend with one of the results, the buttton to add Friend should change to show a tick and 'Friend Already' -->
-    <input class = "d-flex align-self-center friends-search border rounded mb-2"type= "text" placeholder="Search for friends"> 
+    <!-- <input class = "d-flex align-self-center friends-search border rounded mb-2"type= "text" placeholder="Search for friends">  -->
+    <div class="searchContainer">
+        <i class="fa fa-search searchIcon"></i>
+        <input class="searchBox" type="search" name="search" placeholder="Search for friends">
+        <input type="submit" value="Search" class="searchButton">
+      </div>
     <hr>
     <!-- This container holds the results from the search, if statement should be added if no results are there, add 'No user found' text -->
     <div class = "d-flex flex-column bg-light border  rounded m-2 h-50"> 
-        <h5 class = "font-weight-bold m-2 text-primary"> SEARCH RESULTS MATCHING</h5>
+        <h5 class = "font-weight-bold m-2 text-primary"> SEARCH RESULTS MATCHING </h5>
+        <img id="profile-photo" src="/static/uploads/krys.png">
+        <div><button id= "friendsbtn" class="btn-primary rounded"> Add Friend </button></div>
         <!-- Return results of search inside div -->
 
              <p class = "text-center text-secondary"> No Searches made yet</p>
@@ -28,7 +35,7 @@
         <!-- Container to list the friends in the relatives category -->
         <div class = "card ml-2 mb-2 mt-4 mr-2"> 
             <div class = "card-header bg-primary text-white font-weight-bold"> 
-                Relatives
+                <i class="fas fa-heart"></i> Relatives
 
             </div>
             <div class = "card-body"> 
@@ -42,7 +49,7 @@
         <!-- Container to list the friends in the school category -->
         <div class="card ml-2 mb-2 mt-4 mr-2">
             <div class="card-header bg-primary text-white font-weight-bold">
-                School
+                <i class="fas fa-school"></i> School
         
             </div>
             <div class="card-body">
@@ -56,7 +63,7 @@
         <!-- Container to list the friends in the work category -->
         <div class="card ml-2 mb-2 mt-4 mr-2">
             <div class="card-header bg-primary text-white font-weight-bold">
-                Work
+                <i class="fas fa-briefcase"></i> Work
         
             </div>
             <div class="card-body">
