@@ -18,8 +18,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 # Initializing the SQL connection to our app.
 mysql = MySQL(app)
 
-
-
 @app.route('/dashboard')
 def dashboard():
 
@@ -29,25 +27,25 @@ def dashboard():
 def userprofile():
     form = PhotoForm()
     
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM customer WHERE customer_id ="CUS-00001" ')
-    customer = cur.fetchall()
-    cur.close()
-    return render_template('user_profile.html',form = form, customer =customer)
+    # cur = mysql.connection.cursor()
+    # cur.execute('SELECT * FROM customer WHERE customer_id ="CUS-00001" ')
+    # customer = cur.fetchall()
+    # cur.close()
+    return render_template('user_profile.html',form = form)
     
 @app.route('/groups')
 def groups():
 
     return render_template('groups.html')
 
-@app.route('/creategroup', methods = ['GET'])
-def creategroup(): 
+@app.route('/searchgroup', methods = ['GET'])
+def searchgroup(): 
     
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM customer WHERE customer_id ="CUS-00001" ')
-    customer = cur.fetchall()
-    cur.close()
-    return render_template('create_group.html', customer = customer)
+    # cur = mysql.connection.cursor()
+    # cur.execute('SELECT * FROM customer WHERE customer_id ="CUS-00001" ')
+    # customer = cur.fetchall()
+    # cur.close()
+    return render_template('create_group.html')
 
 
 @app.route('/friends')
@@ -71,6 +69,10 @@ def login():
     if request.method == 'POST' and form.validate_on_submit():
         form.username.data
         form.password.data
+        
+        # cur = mysql.connection.cursor()
+        # cur.execute('INSERT INTO user VALUES (')
+        # rv = cur.fetchall()
 
         return redirect(url_for('dashboard'))
     else:
@@ -81,21 +83,51 @@ def login():
         return render_template('login.html')
 
 
-@app.route('/signup')
+@app.route('/signup', methods = ['POST','GET'])
 def signup():
-
     form = SignupForm()
-    """
-    waiting to setup when database has been added
-    Query: 
+    # print('YOU REACH YASUH?')
+    if request.method == 'POST' and form.validate():
+        # print('passing threshold')
+        if form.validate_on_submit():
+            # print('DEH YAH YUTE')   
+            num = 0 
+            num += 5
+            # userid = "user-" +"{}".format(num + 1)
+            username = form.username.data
+            first_name = form.f_name.data
+            last_name = form.l_name.data 
+            gender = form.gender.data
+            date_of_birth = form.birthday.data
+            user_password = generate_password_hash(form.password.data)
+            confirm_password = check_password_hash(user_password, form.password.data)
+            # print(confirm_password)
+            # print('DATA READ')
+            """
+            1. write if statement that if corfirm_password returns fall.. raise error.. Passwords dont match!
+            2. Setup actual userid to work and increment properly
 
-    """
-    if form.validate_on_submit():
+            """
 
-        # flash('Sign Up Successful', 'success')
-        return redirect(url_for('login'))
+            cur = mysql.connection.cursor()
+            cur.execute('''INSERT INTO user VALUES (%s, %s, %s, %s, %s, %s, %s)''', ("user-" + "{}".format(num),
+                        username, first_name, last_name, gender, date_of_birth, user_password))
 
-    return render_template('signup.html', form=form)
+            data = cur.fetchall()
+            mysql.connection.commit()
+            cur.close()
+
+            flash('Congratulations, you are now a registered user!')
+            return redirect(url_for('login'))
+        return render_template('signup.html', form = form)
+    else:
+        # print( 'NOT REACHING POST')
+        # Remember to setup error display messages
+        return render_template('signup.html', form = form)
+    
+    
+    
+
 
 ###
 # Routing for your application.

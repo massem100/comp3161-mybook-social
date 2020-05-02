@@ -7,7 +7,8 @@
             
             <div class = "d-flex justify-content-center ">
                 
-                <form action class= "d-flex flex-column justify-content-center p-2 m-3  rounded border border-primary form-group " methods= ['POST']>
+                <form action method="POST" class= "d-flex flex-column justify-content-center p-2 m-3  rounded border border-primary form-group ">
+                    {{form.csrf_token}}
                     <div>
                         <h2 class="text-center m-2"> Welcome to MyBook </h2>
                         <p class="text-center">

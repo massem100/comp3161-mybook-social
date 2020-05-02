@@ -48,9 +48,9 @@
                 <li class="active"><a href="{{url_for('dashboard')}}"><img class= "home-icon"src = "/static/uploads/home.png"><i class="icon-home"></i>Dashboard </a></li>
                 <li><a href="{{url_for('userprofile')}}"><img class="home-icon" src="/static/uploads/user.png"><i class="icon-grid"></i>My Profile </a></li>
                 <li><a href="{{url_for('friends')}}"> <img class="home-icon" src="/static/uploads/friend.png"><i class="fa fa-bar-chart"></i>Find Friends</a></li>
-                <li><a href="#exampledropdownDropdown" class="" aria-expanded="false" data-toggle="collapse" ><img class="home-icon" src="/static/uploads/group.png"><i></i>Groups</a>
-                        <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                            <li><a href="{{url_for('creategroup')}}">Search group</a></li>
+                <li><a href="#groupsdropdown" class="" aria-expanded="false" data-toggle="collapse" ><img class="home-icon" src="/static/uploads/group.png"><i></i>Groups</a>
+                        <ul id="groupsdropdown" class="collapse list-unstyled ">
+                            <li><a href="{{url_for('searchgroup')}}">Search group</a></li>
                             <li><a href="{{url_for('groups')}}">My Groups</a></li>
                             
                         </ul>
