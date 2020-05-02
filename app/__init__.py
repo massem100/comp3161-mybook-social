@@ -14,8 +14,8 @@ app.config['SECRET_KEY'] = 'v\xf9\xf7\x11\x13\x18\xfaMYp\xed_\xe8\xc9w\x06\x8e\x
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'SQLpass'
-app.config['MYSQL_DB'] = 'bankdb'
-mysql = MySQL(app)
+app.config['MYSQL_DB'] = 'mybook'
+
 
 
 csrf = CSRFProtect(app)

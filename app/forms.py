@@ -10,18 +10,18 @@ class UploadForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    email = StringField('Email', [Email( message=('Not a valid email address.')), DataRequired('Email field is empty')])
+    username = StringField('Username', validators=[DataRequired('A username is required')])
     password = PasswordField('Password', validators = [DataRequired('Please enter a password')])
     
 
 class SignupForm(FlaskForm):
     f_name = StringField('First Name', validators=[DataRequired(message ='First name field empty')])
     l_name = StringField('Last Name',validators=[DataRequired('Last name field empty')])
-    email = EmailField('Email', validators=[Email(), InputRequired(), Length(max=50)])
+    username = StringField('Username', validators=[DataRequired('A username is required')])
     gender = SelectField('Gender', choices=[('Male', 'Male'), ('Female', 'Female')], validators=[InputRequired()])
     password = PasswordField('Password', validators=[DataRequired(message="Please enter a password.")])
     confirmPassword = PasswordField('Repeat Password', [EqualTo(password, message='Passwords must match.')])
-    birthday = DateField('Date of Birth', validators=[DataRequired(message = "Please enter your date of birth")])
+    birthday = DateField('Date of Birth', format="'%m/%d/%Y'", validators=[DataRequired(message="Please enter your date of birth")])
 
 class GroupForm(FlaskForm):
     group_name = StringField('Group Name', validators=[DataRequired('Group must have a name')])

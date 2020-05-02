@@ -8,7 +8,7 @@
     <div class="d-flex justify-content-center">
 
 
-        <div class="col-md-4 m-5 bg-signup rounded border p-4 shadow-lg">
+        <div class="col-md-4 m-5 rounded border p-4 shadow-lg">
             <div class="wrap-login100  d-flex flex-column align-self-center">
                 <div class="mb-5">
                     <h2 class="text-center font-weight-bold"> Welcome to MyBook </h2>
@@ -19,8 +19,8 @@
                 <form action="{{ url_for('login') }}" method="POST">
                     {{ form.csrf_token }}
                     <div class="form-group">
-                        {{ form.email.label }}
-                        {{ form.email(class='form-control rounded border', placeholder="Eg. janedoe@example.com") }}
+                        {{ form.username.label }}
+                        {{ form.username(class='form-control rounded border', placeholder="Eg. Jane Doe") }}
                     </div>
                     <div class="form-group">
                         {{ form.password.label }}
@@ -44,7 +44,7 @@
 
                                 
                             </div>
-
+                            
                         </div>
                     </form>
                 </div>

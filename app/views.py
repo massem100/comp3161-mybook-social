@@ -25,22 +25,29 @@ def dashboard():
 
     return render_template('dashboard.html')
 
-@app.route('/userprofile')
+@app.route('/userprofile', methods = ['POST','GET'])
 def userprofile():
     form = PhotoForm()
-
-    return render_template('user_profile.html', form=form)
-
-
+    
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM customer WHERE customer_id ="CUS-00001" ')
+    customer = cur.fetchall()
+    cur.close()
+    return render_template('user_profile.html',form = form, customer =customer)
+    
 @app.route('/groups')
 def groups():
 
     return render_template('groups.html')
 
-@app.route('/creategroup')
+@app.route('/creategroup', methods = ['GET'])
 def creategroup(): 
-
-    return render_template('create_group.html')
+    
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM customer WHERE customer_id ="CUS-00001" ')
+    customer = cur.fetchall()
+    cur.close()
+    return render_template('create_group.html', customer = customer)
 
 
 @app.route('/friends')
@@ -61,13 +68,17 @@ def login():
     add request.method = 'POST in form.validate_on_submit if statement
     
     """
-    if form.validate_on_submit():
-        form.email.data
+    if request.method == 'POST' and form.validate_on_submit():
+        form.username.data
         form.password.data
 
         return redirect(url_for('dashboard'))
+    else:
 
-    return render_template('login.html', form=form)
+        return render_template('login.html', form = form)
+    if request.method =='GET':
+        
+        return render_template('login.html')
 
 
 @app.route('/signup')
@@ -100,7 +111,7 @@ def signup():
 cur = mysql.connection.cursor()
 cur.execute('''SELECT * FROM customer''')
 rv = cur.fetchall()
-e
+
 mysql.close()
 """
 

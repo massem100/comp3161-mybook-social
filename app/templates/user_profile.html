@@ -7,43 +7,62 @@
 <div class = "d-flex flex-column bg-light w-100">
     <div class="  m-3">
         <!-- Card with Profile photo and username -->
-        <div class = "d-flex flex-row card justify-content-center rounded ">
+        <div class = "d-flex flex-column card  justify-content-center rounded " >
                     <!--   Profile image for user profile   -->
-            <div>
+            <div class = "d-flex justify-content-center" id ="bg-profile-image">
                 <img id="profile-photo" src="{{url_for ('static', filename = 'uploads/' + 'krys.png' )}}">
             </div>
-            <!-- Profile Details of User  -->
-            <div class="d-flex flex-column p-2 ml-1 w-75  text-light-grey justify-content-center">
-                <h5 class="text-dark font-md bold ml-2 font-weight-bold"> Tracy Daniels</h5>
-                <p>
-                    <img id="icon" src="{{url_for('static', filename ='uploads/email.png')}}" />
-                    <span class="bold ml-1 ">Janedoe@exmaple.com </span>
-                </p>
-                <p>
-                    <img id="icon" src="{{url_for('static', filename ='uploads/pin.png')}}" />
-                    <span class="bold ml-1 "> add location </span>
-                </p>
-                <p>
-                    <img id="icon" src="{{url_for('static', filename ='uploads/calendar.png')}}" />
-                    <span class="bold ml-1 "> add date created  </span>
-                </p>
+            
+           <div class ="">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs d-flex justify-content-start" id="myTab" role="tablist">
+                    
+                    <li class="nav-item">
+                        <a class="nav-link active" id="posts-tab" data-toggle="tab" role="tab" aria-controls="posts"
+                            aria-selected="true" href="#posts">Profile Feed</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="edit-tab" data-toggle="tab" href="#editprofile" role="tab" aria-controls="edits"
+                            aria-selected="false">Edit Profile</a>
+                    </li>
+                </ul>
             </div>
-            <div> 
-                <button class= "btn-primary rounded"> Add Friend </button>
-                <button class = "btn-primary"> Edit Profile </button>
-
-            </div>
+           </div>
         </div>
-
+        <div class="tab-content" id="myTabContent">
+            
+        <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
         <div class = "d-flex flex-row"> 
             <div class = "d-flex flex-column ">
                 <!-- container to hold friends and photo cards -->
                 <div>
-                    <!-- add friends card -->
-                
+                   
+                    <div class="card h-25 m-2"> 
+                        <!-- Profile Details of User  -->
+                        <div class = "card-header bg-primary text-white"> 
+                            <h4>User Details</h4> 
+
+                        </div>
+                        <div class="d-flex flex-column p-2 ml-1 w-75  text-light-grey justify-content-center">
+                            <h5 class="text-dark font-md bold ml-2 font-weight-bold"> Tracy Daniels</h5>
+                            <p>
+                                <img id="icon" src="{{url_for('static', filename ='uploads/email.png')}}" />
+                                <span class="bold ml-1 ">Janedoe@exmaple.com </span>
+                            </p>
+                            <p>
+                                <img id="icon" src="{{url_for('static', filename ='uploads/pin.png')}}" />
+                                <span class="bold ml-1 "> add location </span>
+                            </p>
+                            <p>
+                                <img id="icon" src="{{url_for('static', filename ='uploads/calendar.png')}}" />
+                                <span class="bold ml-1 "> add date created </span>
+                            </p>
+                        </div>
+                    </div>
+                <!-- add friends card -->
                     <div class="card d-flex flex-column m-2 ">
-                        <div class="card=header ">
-                            <h5 class="m-2  font-weight-bold"> Friends </h5>
+                        <div class="card-header bg-primary text-white ">
+                            <h4 class=" font-weight-bold"> Friends </h4>
                         </div>
                         <div class="card-body  d-flex flex-row justify-content-center">
                     
@@ -52,12 +71,15 @@
                                 <img class="profile-image m-3 rounded" src="/static/uploads/beach.jpg">
                             </div>
                             <div class="d-flex flex-column">
-                                <img class="profile-image m-3 rounded" src="/static/uploads/blue_lagoon.jpg">
-                                <img class="profile-image m-3 rounded" src="/static/uploads/beach.jpg">
+                                <img class="profile-image m-3 mb-1 rounded" src="/static/uploads/blue_lagoon.jpg">
+                                <img class="profile-image m-3 mb-1 rounded" src="/static/uploads/beach.jpg">
                             </div>
+                        
                     
                     
-                    
+                        </div>
+                        <div>
+                            <button href = "{{url_for('friends')}}"type = "submit" class = "btn d-flex btn-primary float-right mr-5 mt-0 mb-3 "> See all Friends </button>
                         </div>
                     </div>
                 </div>
@@ -65,8 +87,8 @@
                     <div class = "d-flex flex-column "> 
                         
                         <div class = "card d-flex flex-column m-2 "> 
-                            <div class = "card=header "> 
-                                <h5 class = "m-2  font-weight-bold" > Photos </h5>
+                            <div class = "card-header bg-primary text-white"> 
+                                <h4 class = "font-weight-bold" > Photos </h4>
                             </div>
                             <div class = "card-body  d-flex flex-row justify-content-center"> 
                                 
@@ -99,60 +121,52 @@
                     <div class = "d-flex flex-column m-2 w-100"> 
                         <!-- add Create - Post card -->
                         <div class = "w-100">
-                            <div class="d-flex card m-2 mr-1 w-100 ">
-                            
-                                <div class="card-header">
-                                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab"
-                                                aria-controls="posts" aria-selected="true"> Create a post</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images"
-                                                aria-selected="false" href="">Images</a>
-                                        </li>
-                                    </ul>
-                            
-                                </div>
-                                <div class="card-body">
-                                    <div class="tab-content " id="myTabContent">
-                                        <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
-                                            <div class="form-group">
-                                                <label class="sr-only" for="message">post</label>
-                                                <textarea class="form-control" id="message" rows="3" columns = "7"                                                    placeholder="What are you thinking?"></textarea>
-                                                <span class="help-block d-flex justify-content-end">
-                                                    <p id="characterLeft" class=" ">You have reached the limit</p>
-                                                </span>
-                                            </div>
-                            
-                                        </div>
-                                        <div class="tab-pane fade " id="images" role="tabpanel" aria-labelledby="images-tab">
-                                            <div class="form-group">
-                                                <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="customFile">
-                                                    <label class="custom-file-label" for="customFile">Upload image</label>
+                                <!--- \\\\\\\Post-->
+                                <div class="card m-2 mr-2 w-100">
+                                    <div class="card-header">
+                                        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab"
+                                                    aria-controls="posts" aria-selected="true">Make
+                                                    a publication</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images"
+                                                    aria-selected="false" href="#images">Images</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="tab-content" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                                                <div class="form-group">
+                                                    <label class="sr-only" for="message">post</label>
+                                                    <textarea class="form-control" id="message" rows="3"
+                                                        placeholder="What are you thinking?"></textarea>
+                                                        <span class="help-block d-flex justify-content-end">
+                                                            <p id="characterLeft" class=" ">You have reached the limit</p>
+                                                        </span>
                                                 </div>
+                                
                                             </div>
-                                            <div class="py-4"></div>
+                                            <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
+                                                <div class="form-group">
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" id="customFile">
+                                                        <label class="custom-file-label" for="customFile">Upload image</label>
+                                                    </div>
+                                                </div>
+                                                <div class="py-4"></div>
+                                            </div>
+                                        </div>
+                                        <div class="btn-toolbar justify-content-end">
+                                            <div class="btn-group">
+                                                <button type="submit" class=" btn btn-primary ">share</button>
+                                            </div>
+                                            
                                         </div>
                                     </div>
-                            
                                 </div>
-                            
-                                <div class="card-footer">
-                                    <div class="btn-toolbar justify-content-end">
-                                        <div class="btn-group">
-                                            <button class="form-control input-sm btn btn-primary disabled" id="#btnSubmit" type="submit"
-                                                class="btn btn-primary text-white">Post</button>
-                                        </div>
-                            
-                                    </div>
-                            
-                                </div>
-                            
-                            
-                            </div>
-                        </div>
                         <div id = "">
                             <!-- add posts -->
                             <div class="" id = "">
@@ -191,14 +205,9 @@
                                             <h5 class="card-title"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit consectetur
                                                 deserunt illo esse distinctio.</h5>
                                         </a>
-                            
+                                        
                                         <p class="card-text">
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam omnis nihil, aliquam est, voluptates
-                                            officiis iure soluta
-                                            alias vel odit, placeat reiciendis ut libero! Quas aliquid natus cumque quae repellendus. Lorem
-                                            ipsum dolor sit amet consectetur adipisicing elit. Ipsa, excepturi. Doloremque, reprehenderit!
-                                            Quos in maiores, soluta doloremque molestiae reiciendis libero expedita assumenda fuga quae.
-                                            Consectetur id molestias itaque facere? Hic!
+                                            {{customer}}
                                         </p>
                             
                                     </div>
@@ -255,6 +264,145 @@
                     </div>
                         
                 </div>
+            </div>
+        
+        <div class="tab-pane fade" id="editprofile" role="tabpanel" aria-labelledby="edit-tab">
+            <!-- Edit Profile Form -->
+            <div>
+
+        <div class="container bootstrap snippet">
+            <div class="row">
+                <div class="col-sm-10">
+                    <h1>User name</h1>
+                </div>
+                <div class="col-sm-2"><a href="/users" class="pull-right"></a></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <!--left col-->
+
+
+                    <div class="text-center">
+                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail"
+                            alt="avatar">
+                        <h6>Upload a different photo...</h6>
+                        <input type="file" class="text-center center-block file-upload">
+                    </div>
+                    </hr><br>
+
+
+                
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Social Media</div>
+                        <div class="panel-body">
+                            <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i
+                                class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i> <i
+                                class="fa fa-google-plus fa-2x"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <!--/col-3-->
+                <div class="col-sm-9">
+                    
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="home">
+                            <form class="form" action="##" method="post" id="registrationForm">
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="first_name">
+                                            <h4>First name</h4>
+                                        </label>
+                                        <input type="text" class="form-control" name="first_name" id="first_name"
+                                            placeholder="first name" title="enter your first name if any.">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="last_name">
+                                            <h4>Last name</h4>
+                                        </label>
+                                        <input type="text" class="form-control" name="last_name" id="last_name"
+                                            placeholder="last name" title="enter your last name if any.">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="phone">
+                                            <h4>Phone</h4>
+                                        </label>
+                                        <input type="text" class="form-control" name="phone" id="phone"
+                                            placeholder="enter phone" title="enter your phone number if any.">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-xs-6">
+                                        <label for="mobile">
+                                            <h4>Mobile</h4>
+                                        </label>
+                                        <input type="text" class="form-control" name="mobile" id="mobile"
+                                            placeholder="enter mobile number" title="enter your mobile number if any.">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="email">
+                                            <h4>Email</h4>
+                                        </label>
+                                        <input type="email" class="form-control" name="email" id="email"
+                                            placeholder="you@email.com" title="enter your email.">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="email">
+                                            <h4>Location</h4>
+                                        </label>
+                                        <input type="email" class="form-control" id="location" placeholder="somewhere"
+                                            title="enter a location">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="password">
+                                            <h4>Password</h4>
+                                        </label>
+                                        <input type="password" class="form-control" name="password" id="password"
+                                            placeholder="password" title="enter your password.">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <label for="password2">
+                                            <h4>Verify</h4>
+                                        </label>
+                                        <input type="password" class="form-control" name="password2" id="password2"
+                                            placeholder="password2" title="enter your password2.">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <br>
+                                        <button class="btn btn-lg btn-success" type="submit"><i
+                                                class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                                        <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i>
+                                            Reset</button>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+        </div> 
+        </div>
         </div>
     </div>
     </div>

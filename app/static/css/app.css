@@ -13,9 +13,14 @@ body {
   width: 150px;
   height:150px;
 
-
 }
-
+#bg-profile-image{
+  background-image: url('/static/uploads/pattern.jpg');
+  width: 100%;
+  height: 10%;
+  background-color: #075561;
+ 
+}
 #scroll{
   overflow-y: scroll;
 }
@@ -940,9 +945,7 @@ nav.navbar .dropdown-menu h3 {
 
 /* MAIN NAVBAR MEDIAQUERIES ----------------------------------- */
 @media (max-width: 1199px) {
-  nav.navbar {
-    /*==== Toggle Sidebar Btn ====*/
-  }
+  
   nav.navbar .menu-btn {
     margin-right: 20px;
     font-size: 1.2em;
@@ -2236,9 +2239,9 @@ STYLE SWITCHER FOR DEMO
 }
 
 .btn-primary:hover {
-  color: color-yiq(#199fa8);
-  background-color: #199fa8;
-  border-color: #199fa8;
+  color: color-yiq(#0a595f);
+  background-color: #0a595f;
+  border-color: #0a595f;
 }
 
 .btn-primary:focus, .btn-primary.focus {
