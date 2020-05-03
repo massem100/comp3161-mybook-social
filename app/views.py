@@ -10,7 +10,7 @@ from app import app
 from datetime import datetime
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from flask import Flask,render_template, request, jsonify, redirect, url_for, flash
+from flask import Flask,render_template, request, jsonify, redirect, url_for, flash, session
 from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -92,7 +92,7 @@ def signup():
         if form.validate_on_submit():
             # print('DEH YAH YUTE')   
             num = 0 
-            num += 5
+            num += 6
             # userid = "user-" +"{}".format(num + 1)
             username = form.username.data
             first_name = form.f_name.data
@@ -104,11 +104,10 @@ def signup():
             # print(confirm_password)
             # print('DATA READ')
             """
-            1. write if statement that if corfirm_password returns fall.. raise error.. Passwords dont match!
+            1. write if statement that if corfirm_password returns false.. raise error.. Passwords dont match!
             2. Setup actual userid to work and increment properly
 
             """
-
             cur = mysql.connection.cursor()
             cur.execute('''INSERT INTO user VALUES (%s, %s, %s, %s, %s, %s, %s)''', ("user-" + "{}".format(num),
                         username, first_name, last_name, gender, date_of_birth, user_password))

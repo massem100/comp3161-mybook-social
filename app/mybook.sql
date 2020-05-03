@@ -1,17 +1,15 @@
-
 /* 
-
-Database for MyBook Application
-
-*/
-
+ 
+ Database for MyBook Application
+ 
+ */
+ 
 DROP DATABASE IF EXISTS mybook;
 CREATE DATABASE mybook;
 use mybook;
 
 -- Add DROP TABLE IF EXISTS statements
 -- Prevents duplicating tables. 
-
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS user_info;
 DROP TABLE IF EXISTS userprofile;
@@ -19,11 +17,10 @@ DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS text_post;
 DROP TABLE IF EXISTS image_post;
 DROP TABLE IF EXISTS comment;
-DROP TABLE IF EXISTS group;
+DROP TABLE IF EXISTS friend_group;
 DROP TABLE IF EXISTS friend;
 DROP TABLE IF EXISTS photo;
 DROP TABLE IF EXISTS group_editor;
-
 
 /*
  user - ( user_ID, f_name, l_name, gender, date_of_birth, username, password) 
@@ -40,29 +37,25 @@ DROP TABLE IF EXISTS group_editor;
  
  
  */
-
- /* derived from entities */
+/* derived from entities */
 CREATE TABLE user(
-    userid varchar(10) not null unique, 
-    username varchar(25), not null unique,
-    f_name varchar(25) not null, 
-    l_name varchar(25) not null, 
-    gender varchar(10), 
-    date_of_birth date,  
-    user_password varchar(),
+    userid varchar(10) not null unique,
+    username varchar(25) not null unique,
+    f_name varchar(25) not null,
+    l_name varchar(25) not null,
+    gender varchar(10),
+    date_of_birth date,
+    user_password varchar(30),
     primary key(userid)
-
 );
 
 CREATE TABLE user_info(
     userid varchar(10) not null unique,
-    email  varchar(50),
+    email varchar(50),
     phone_num varchar(25),
-    primary key(userid)
-    foreign key(userid) references user(userid) on update cascade on delete cascade;
-
+    primary key(userid),
+    foreign key(userid) references user(userid) on update cascade on delete cascade
 );
-
 
 CREATE table userprofile(
     profile_id varchar(10) not null unique,
@@ -70,19 +63,17 @@ CREATE table userprofile(
     profile_photo varchar(100),
     nationality varchar(25),
     user_bio varchar(150),
-    primary key(profile_id) /* deciding whether just profile_id must be a PK or both */
-    foreign key(userid) references user(userid) on update cascade on delete cascade;
+    primary key(profile_id),
+    foreign key(userid) references user(userid) on update cascade on delete cascade
 );
 
 CREATE TABLE post(
     post_id varchar(10) not null unique,
     userid varchar(10) not null unique,
     post_date date,
-    post_time time, 
-    location varchar(50),
-    primary key(postid, userid)
-    foreign key(userid) references user(userid) on update cascade on delete cascade;
-
+    post_time time,
+    primary key(post_id, userid),
+    foreign key(userid) references user(userid) on update cascade on delete cascade
 );
 
 /* derived from ISA */
@@ -90,70 +81,68 @@ CREATE TABLE text_post(
     text_id varchar(10) not null unique,
     post_id varchar(10) not null unique,
     text_message varchar(250),
-    primary key(text_id, post_id)
-    foreign key(post_id) references post(post_id) on update cascade on delete cascade;
+    primary key(text_id, post_id),
+    foreign key(post_id) references post(post_id) on update cascade on delete cascade
 );
 
 CREATE TABLE image_post(
     image_id varchar(10) not null unique,
     post_id varchar(10) not null unique,
     image_filename varchar(100),
-    caption varchar(150), 
-    primary key (image_id, post_id)
-    foreign key(post_id) references post(post_id) on update cascade on delete cascade;
-
+    caption varchar(150),
+    primary key (image_id, post_id),
+    foreign key(post_id) references post(post_id) on update cascade on delete cascade
 );
 
 CREATE TABLE friend(
     fid varchar(10) not null unique,
     userid varchar(10) not null,
     friend_type varchar(9),
-    primary key(fid, userid) 
-    foreign key(userid) references user(userid) on update cascade on delete cascade;
+    primary key(fid, userid),
+    foreign key(userid) references user(userid) on update cascade on delete cascade
 );
+
 CREATE TABLE comment(
     comment_id varchar(10) not null unique,
-    postid varchar(10) not null,
+    post_id varchar(10) not null,
     userid varchar(10) not null,
     comment_Content varchar(250),
     time_posted time not null,
-    date_posted date not null, 
-    primary key(comment_id, post_id)
-    foreign key(post_id) references post(post_id) on update cascade on delete cascade;
-    foreign key(userid) references user(userid) on update cascade on delete cascade;
-); 
-
-CREATE TABLE group(
-    group_id varchar(10) not null unique,
-    admin_id varchar(10) not null,
-    groupname varchar(25)  not null ,
-    dateCreated date not null,
-    grouptype varchar(7) not null,
-    group_description varchar(150),
-    primary key(group_id)
-    foreign key(admin_id) references user(userid) on update cascade on delete cascade;
-    -
+    date_posted date not null,
+    primary key(comment_id, post_id),
+    foreign key(post_id) references post(post_id) on update cascade on delete cascade,
+    foreign key(userid) references user(userid) on update cascade on delete cascade
 );
 
+CREATE TABLE friend_group (
+    group_id varchar(10) not null unique,
+    admin_id varchar(10) not null,
+    groupname varchar(25) not null unique,
+    date_created date not null,
+    grouptype varchar(7) not null,
+    group_description varchar(150),
+    primary key(group_id),
+    foreign key(admin_id) references user(userid) on update cascade on delete cascade
+);
+
+CREATE TABLE group_editor (
+    admin_id varchar (10) not null unique,
+    group_id varchar (10) not null,
+    content_editors varchar(25),
+    primary key(group_id, admin_id),
+    foreign key(admin_id) references user(userid) on update cascade on delete cascade,
+    foreign key(group_id) references friend_group(group_id) on update cascade on delete cascade
+);
 
 CREATE TABLE photo (
     photo_id varchar(10) not null unique,
     userid varchar(10) not null,
     photo_desc varchar(150),
     photo_filename varchar(100) not null,
-    date_added date not null, 
-    primary key(photo_id)
-    foreign key(userid) references user(userid) on update cascade on delete cascade;
+    date_added date not null,
+    primary key(photo_id),
+    foreign key(userid) references user(userid) on update cascade on delete cascade
 );
 
-CREATE TABLE group_editor (
-    admin_id varchar (10) not null unique,
-    group_id varchar () not null,
-    content_editors varchar(25), 
-    primary key(admin_id, group_id)
-    foreign key(admin_id) references user(userid) on update cascade on delete cascade;
-    foreign key(group_id) references group(group_id) on update cascade on delete cascade;
-
 /* derived from relationships - do we have any? Based on ERD? */
-
--- modify 
+-- modify

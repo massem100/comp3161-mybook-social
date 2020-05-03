@@ -1,7 +1,9 @@
 from flask import Flask
 from flask_wtf.csrf import CSRFProtect 
 from flask_mysqldb import MySQL
+from flask_login import LoginManager
 from werkzeug.security import check_password_hash, generate_password_hash
+
 
 # Folder to store images etc to be used in the app, only filename will be stored in the database.
 UPLOAD_FOLDER = './app/static/uploads'
@@ -14,10 +16,8 @@ app.config['SECRET_KEY'] = 'v\xf9\xf7\x11\x13\x18\xfaMYp\xed_\xe8\xc9w\x06\x8e\x
 # Statements below allow us to initicalize the MYSQL database
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'SQLpass'
+app.config['MYSQL_PASSWORD'] ='SQLpass'
 app.config['MYSQL_DB'] = 'mybook'
-
-
 
 csrf = CSRFProtect(app)
 
