@@ -20,7 +20,7 @@ def dummy_data(x):
         fake_data[i]['Phone Number']=fake.numerify('###-###-####')
         fake_data[i]['Date of Birth']=fake.date_of_birth(minimum_age=18, maximum_age=80)
         fake_data[i]['Gender']=fake.profile()['sex']
-        fake_data[i]['Profile Picture']=fake.file_name()
+        fake_data[i]['Profile Picture']=fake.file_name(category='image',extension=('png'))
         fake_data[i]['Nationality']=fake.country()
         fake_data[i]['Post ID']=fake.bothify(text='P?-######')
         fake_data[i]['Post Date']=fake.date_this_century()
@@ -44,7 +44,7 @@ def dummy_data(x):
         fake_data[i]['Friend email']=fake.free_email()
         fake_data[i]['Pic ID']=fake.bothify(text='PI?-######')
         fake_data[i]['Picture Description']=fake.text(max_nb_chars=10)
-        fake_data[i]['Picture Name']=fake.file_name(png)
+        fake_data[i]['Picture Name']=fake.file_name(category='image',extension=('png'))
         fake_data[i]['Date Pic Posted']=fake.date_this_century()
       
     return fake_data
