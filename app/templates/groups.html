@@ -6,7 +6,31 @@
 {% include 'header.html' %}
 
 <div class="page">
-
+    {% include 'flash_messages.html' %}
+    <h3 class="">
+        <i class="fa fa-users" aria-hidden="true"></i>
+        Create a group where you can interact with other friends and discuss important things together.
+    </h3>
+    <div class="card ml-2 mb-2 mt-4 mr-2">
+        <div class="card-header bg-primary text-white font-weight-bold">
+            <i class="fa fa-users" aria-hidden="true"></i>
+            Name of Group
+    
+        </div>
+        <form>
+            <label for="Group_name">Group name:</label>
+            <input id="Group_name" type="text" placeholder="Group name" required>
+    </div>
+    <div class="card ml-2 mb-2 mt-4 mr-2">
+        <div class="card-header bg-primary text-white font-weight-bold">
+            <i class="fa fa-address-card" aria-hidden="true"></i>
+            Name of Group
+    
+        </div>
+        <form>
+            <label for="people">Add people:</label>
+            <input id="people" type="text" required>
+    </div>
 </div>
 
 

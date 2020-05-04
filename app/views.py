@@ -7,7 +7,7 @@ This file creates your application.
 import os
 from datetime import datetime
 from app import app, login_manager, mysql
-from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, textForm, ImageForm, SearchFriends
+from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, textForm, ImageForm, SearchFriends, SearchGroups
 from app.models import User
 from flask_mysqldb import MySQL
 from flask_cors import CORS
@@ -26,7 +26,6 @@ rv = cur.fetchall()
 
 mysql.close()
 """
-
 
 
 @app.route('/dashboard', methods = ['POST', 'GET'])
@@ -50,30 +49,40 @@ def dashboard():
 @app.route('/userprofile', methods = ['POST','GET'])
 def userprofile():
     form = PhotoForm()
+    text_form = textForm()
+    image_form = ImageForm()
     
    
-    return render_template('user_profile.html',form = form)
+    return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form)
     
 @app.route('/groups', methods = ['GET', 'POST'])
 def groups():
 
     return render_template('groups.html')
 
+# Route to host form to search group
 @app.route('/searchgroup', methods = ['GET'])
 def searchgroup(): 
-    
+    groupform = SearchGroups()
     # cur = mysql.connection.cursor()
     # cur.execute('SELECT * FROM customer WHERE customer_id ="CUS-00001" ')
     # customer = cur.fetchall()
     # cur.close()
-    return render_template('create_group.html')
+    return render_template('search_group.html', form= groupform)
 
+# Route to display the active group 
+@app.route('/groups/<group_id>', methods =['POST'])
+def viewGroup():
+    
+    return 'route to display group'
 
-@app.route('/friends')
+@app.route('/friends', methods = ['POST', 'GET'])
 def friends():
     form = SearchFriends()
+    if request.method =='POST': 
 
-    return render_template('friends.html')
+        return 'x'
+    return render_template('friends.html', form = form)
 
 
 @app.route('/')

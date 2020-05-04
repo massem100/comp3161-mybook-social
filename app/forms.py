@@ -39,3 +39,17 @@ class ImageForm(FlaskForm):
 
 class SearchFriends(FlaskForm):
     friends_search = StringField('Friend Search', validators=[])
+
+class SearchGroups(FlaskForm):
+    group_search = StringField('Group Search', validators=[])
+
+
+class EditProfileForm(FlaskForm):
+    f_name = StringField('First Name', validators=[DataRequired('First name field empty')])
+    l_name = StringField('Last Name',validators=[DataRequired('Last name field empty')])
+    username = StringField('Username', validators=[DataRequired('A username is required')])
+    gender = SelectField('Gender', choices=[('Male', 'Male'), ('Female', 'Female')], validators=[DataRequired('Select a Gender')])
+    password = PasswordField('Password', validators=[DataRequired("Please enter a password.")])
+    confirmPassword = PasswordField('Repeat Password', validators=[DataRequired()])
+    birthday = DateField('Date of Birth', format='%m/%d/%Y', validators=[DataRequired("Please enter your date of birth")])
+

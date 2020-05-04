@@ -1,6 +1,11 @@
 $(document).ready(function () {
 
     'use strict';
+    // ------------------------------------------------------- //
+    // Setting the sidebar height to adjust as page adjusts
+    // ------------------------------------------------------ //
+    var height = $('.content').height()
+    $('.sidebar').height(height)​
 
     // ------------------------------------------------------- //
     // Search Box
@@ -182,5 +187,7 @@ $(document).ready(function () {
             $('#characterRemaining').removeClass('red');
         }
     });    
+
+    
 
 });
