@@ -5,35 +5,56 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 import os
-from flask_mysqldb import MySQL
-from app import app
 from datetime import datetime
+from app import app, login_manager, mysql
+from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, textForm, ImageForm, SearchFriends
+from app.models import User
+from flask_mysqldb import MySQL
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask import Flask,render_template, request, jsonify, redirect, url_for, flash, session
-from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm
+from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 
-# Initializing the SQL connection to our app.
-mysql = MySQL(app)
 
-@app.route('/dashboard')
+"""
+#This is how we will connect to the SQL server and make queries to the database in FLask.
+cur = mysql.connection.cursor()
+cur.execute('''SELECT * FROM customer''')
+rv = cur.fetchall()
+
+mysql.close()
+"""
+
+
+
+@app.route('/dashboard', methods = ['POST', 'GET'])
 def dashboard():
 
-    return render_template('dashboard.html')
+    text_form = textForm()
+    image_form = ImageForm()
+    if request.method =='POST':
+        worded_post = text_form.text_post.data 
+
+
+        """
+        validate form and set up if statements to get data into tables.
+
+        Need to setup in such a way to fill posts table too.. to set userid = call on current_user
+        get current date and time and format it and generate post id.
+        """
+
+    return render_template('dashboard.html', text_form = text_form, image_form = image_form)
 
 @app.route('/userprofile', methods = ['POST','GET'])
 def userprofile():
     form = PhotoForm()
     
-    # cur = mysql.connection.cursor()
-    # cur.execute('SELECT * FROM customer WHERE customer_id ="CUS-00001" ')
-    # customer = cur.fetchall()
-    # cur.close()
+   
     return render_template('user_profile.html',form = form)
     
-@app.route('/groups')
+@app.route('/groups', methods = ['GET', 'POST'])
 def groups():
 
     return render_template('groups.html')
@@ -50,6 +71,7 @@ def searchgroup():
 
 @app.route('/friends')
 def friends():
+    form = SearchFriends()
 
     return render_template('friends.html')
 
@@ -59,22 +81,29 @@ def friends():
 def login():
     form = LoginForm()
 
-    """ 
-    waiting to setup when database has been added
-    Fetch data from database to validate login 
-
-    add request.method = 'POST in form.validate_on_submit if statement
-    
-    """
     if request.method == 'POST' and form.validate_on_submit():
-        form.username.data
-        form.password.data
+        username = form.username.data
+        password = generate_password_hash(form.password.data)
         
-        # cur = mysql.connection.cursor()
-        # cur.execute('INSERT INTO user VALUES (')
-        # rv = cur.fetchall()
+        # using your model, query database for a user based on the username
+        # and password submitted. Remember you need to compare the password hash.
+        # You will need to import the appropriate function to do so.
+        # Then store the result of that query to a `user` variable so it can be
+        # passed to the login_user() method below.
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM user WHERE username = %s', (username))
+        user = cur.fetchone()
 
-        return redirect(url_for('dashboard'))
+        if user is not None and check_password_hash(user.user_password, password):
+            remember_me = False
+            login_user(user, remember=remember_me)
+            if 'remember_me' in request.form:
+                remember_me = True
+                # get user id, load into session
+
+                # remember to flash a message to the user
+
+            return redirect(url_for('dashboard'))
     else:
 
         return render_template('login.html', form = form)
@@ -83,6 +112,8 @@ def login():
         return render_template('login.html')
 
 
+
+        
 @app.route('/signup', methods = ['POST','GET'])
 def signup():
     form = SignupForm()
@@ -116,41 +147,54 @@ def signup():
             mysql.connection.commit()
             cur.close()
 
-            flash('Congratulations, you are now a registered user!')
+            flash('Congratulations, you are now a registered user!', 'success')
             return redirect(url_for('login'))
         return render_template('signup.html', form = form)
     else:
         # print( 'NOT REACHING POST')
         # Remember to setup error display messages
         return render_template('signup.html', form = form)
+
+
+@login_manager.user_loader
+def user_loader(id):
     
-    
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM users WHERE userid = %s', (id))
+    user = cur.fetchone()
+
+    return user
     
 
+@login_manager.unauthorized_handler
+def unauthorized():
+    """Redirect unauthorized users to Login page."""
+    flash('You must be logged in to view that page.')
+    return redirect(url_for('login'))
+
+
+@login_manager.request_loader
+def request_loader(request):
+    # email = request.form.get('email')
+
+    # if email not in users:
+    #     return
+
+    # user = User()
+    # user.id = email
+
+    # # DO NOT ever store passwords in plaintext and always compare password
+    # # hashes using constant-time comparison!
+    # user.is_authenticated = request.form['password'] == users[email]['password']
+
+    return 'user'
 
 ###
 # Routing for your application.
 ###
-
 # Please create all new routes and view functions above this route.
-# This route is now our catch all route for our VueJS single page
-# application.
 
-
-"""
-#This is how we will connect to the SQL server and make queries to the database in FLask.
-cur = mysql.connection.cursor()
-cur.execute('''SELECT * FROM customer''')
-rv = cur.fetchall()
-
-mysql.close()
-"""
-
-
-
-
-# Here we define a function to collect form errors from Flask-WTF
-# which we can later use
+# Here we define a function to collect form errors from Flask-WTF which we can later use
 def form_errors(form):
     error_messages = []
     """Collects form errors"""

@@ -144,9 +144,10 @@ $(document).ready(function () {
     });
 
     // ------------------------------------------------------- //
-    // Posts characters left feature
+    // Text_Posts characters left feature
     // ------------------------------------------------------ //
     $('#characterLeft').text('140 characters left');
+    
     $('#message').keyup(function () {
         var max = 140;
         var len = $(this).val().length;
@@ -161,6 +162,24 @@ $(document).ready(function () {
             $('#characterLeft').text(ch + ' characters left');
             $('#btnSubmit').removeClass('disabled');
             $('#characterLeft').removeClass('red');
+        }
+    });    
+
+    $('#characterRemaining').text('150 characters left');
+    $('#caption').keyup(function () {
+        var max = 150;
+        var len = $(this).val().length;
+        var ch = max - len;
+        if (len >= max) {
+            $('#characterRemaining').text(-ch + ' ' + 'words over the limit');
+            $('#characterRemaining').addClass('red');
+            $('#btnSubmit').addClass('disabled');
+        }
+        else {
+            var ch = max - len;
+            $('#characterRemaining').text(ch + ' characters left');
+            $('#btnSubmit').removeClass('disabled');
+            $('#characterRemaining').removeClass('red');
         }
     });    
 
