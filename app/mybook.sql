@@ -89,7 +89,7 @@ CREATE TABLE friend(
     friend_owner varchar(10) not null,
     friend_id varchar(10) not null,
     friend_type varchar(9),
-    primary key(fid, userid),
+    primary key(fid),
     foreign key(friend_id) references user(userid) on update cascade on delete cascade
     
 );
@@ -119,10 +119,10 @@ CREATE TABLE friend_group (
 
 CREATE TABLE group_member(
   group_id int(10) not null,
-  userid int(10) not null,
+  userid varchar(10) not null,
   date_created date not null,
-  primary key (userid, group_id)
-  foreign key(userid) references user(userid) on update cascade on delete cascade
+  primary key (group_id),
+  foreign key(userid) references user(userid) on update cascade on delete cascade,
   foreign key(group_id) references friend_group(group_id) on update cascade on delete cascade
 );
 
@@ -140,13 +140,13 @@ CREATE TABLE group_post(
     group_id int(10) not null, 
     userid varchar(10) not null, 
     gp_heading varchar(25) not null, 
-    post_type varchar(10) not null
+    post_type varchar(10) not null,
     image_filename varchar(50),
     text_content varchar(250),
     date_created date not null,
     time_created time not null, 
     primary key (group_postid), 
-    foreign key(userid) references user(userid) on update cascade on delete cascade
+    foreign key(userid) references user(userid) on update cascade on delete cascade,
     foreign key(group_id) references friend_group(group_id) on update cascade on delete cascade
     
 );
