@@ -18,25 +18,14 @@ DROP TABLE IF EXISTS text_post;
 DROP TABLE IF EXISTS image_post;
 DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS friend_group;
+DROP TABLE IF EXISTS group_editor;
+DROP TABLE IF EXISTS group_member;
+DROP TABLE IF EXISTS group_post;
 DROP TABLE IF EXISTS friend;
 DROP TABLE IF EXISTS photo;
-DROP TABLE IF EXISTS group_editor;
 
-/*
- user - ( user_ID, f_name, l_name, gender, date_of_birth, username, password) 
- user_info - ( user_ID, email, phon_num)
- userprofile - ( profile_ID, userid,username,  profile_photo,  nationality,user_bio) 
- Post - ( post_ID, userid, post_date, post_time )
- post_text (text_ID, post_ID, text_message) 
- post_image (image_ID, post_ID, image_filename, caption)
- Group - ( group_ID, admin_ID, groupname, dateCreated, grouptype, group_description )
- Comment ( comment_ID, user_ID, comment_Content, time_posted, date_posted ) 
- Friend (fid, userid, friend_type)
- Photo ( photo_id, photo_desc, photo_filename, date_added )
- Admin (admin_ID, group_ID, content_editors)  rename to group_admin
- 
- 
- */
+
+
 /* derived from entities */
 CREATE TABLE user(
     userid varchar(10) not null unique,
@@ -44,23 +33,23 @@ CREATE TABLE user(
     f_name varchar(25) not null,
     l_name varchar(25) not null,
     gender varchar(10),
-    date_of_birth date,
-    user_password varchar(30),
+    date_of_birth date not null,
+    user_password varchar(250) not null,
     primary key(userid)
 );
 
 CREATE TABLE user_info(
     userid varchar(10) not null unique,
-    email varchar(50),
+    email varchar(50) ,
     phone_num varchar(25),
     primary key(userid),
     foreign key(userid) references user(userid) on update cascade on delete cascade
 );
 
 CREATE table userprofile(
-    profile_id varchar(10) not null unique,
+    profile_id int(10) not null unique AUTO_INCREMENT,
     userid varchar(10) not null unique,
-    profile_photo varchar(100),
+    profile_photo varchar(100) ,
     nationality varchar(25),
     user_bio varchar(150),
     primary key(profile_id),
@@ -68,45 +57,48 @@ CREATE table userprofile(
 );
 
 CREATE TABLE post(
-    post_id varchar(10) not null unique,
-    userid varchar(10) not null unique,
-    post_date date,
-    post_time time,
-    primary key(post_id, userid),
+    post_id int(10) not null unique AUTO_INCREMENT,
+    userid varchar(10) not null,
+    post_heading varchar(25) not null,
+    post_date date not null,
+    post_time time not null,
+    primary key(post_id),
     foreign key(userid) references user(userid) on update cascade on delete cascade
 );
 
 /* derived from ISA */
 CREATE TABLE text_post(
-    text_id varchar(10) not null unique,
-    post_id varchar(10) not null unique,
-    text_message varchar(250),
+    text_id int(10) not null unique AUTO_INCREMENT,
+    post_id int(10) not null unique,
+    text_message varchar(250) not null,
     primary key(text_id, post_id),
     foreign key(post_id) references post(post_id) on update cascade on delete cascade
 );
 
 CREATE TABLE image_post(
-    image_id varchar(10) not null unique,
-    post_id varchar(10) not null unique,
-    image_filename varchar(100),
+    image_id int(10) not null unique AUTO_INCREMENT,
+    post_id int(10) not null unique,
+    image_filename varchar(100) not null,
     caption varchar(150),
     primary key (image_id, post_id),
     foreign key(post_id) references post(post_id) on update cascade on delete cascade
 );
 
 CREATE TABLE friend(
-    fid varchar(10) not null unique,
-    userid varchar(10) not null,
+    fid int(10) not null unique AUTO_INCREMENT,
+    friend_owner varchar(10) not null,
+    friend_id varchar(10) not null,
     friend_type varchar(9),
     primary key(fid, userid),
-    foreign key(userid) references user(userid) on update cascade on delete cascade
+    foreign key(friend_id) references user(userid) on update cascade on delete cascade
+    
 );
 
 CREATE TABLE comment(
-    comment_id varchar(10) not null unique,
-    post_id varchar(10) not null,
+    comment_id int(11) not null unique AUTO_INCREMENT,
+    post_id int(10) not null,
     userid varchar(10) not null,
-    comment_Content varchar(250),
+    comment_Content varchar(250) not null,
     time_posted time not null,
     date_posted date not null,
     primary key(comment_id, post_id),
@@ -115,7 +107,7 @@ CREATE TABLE comment(
 );
 
 CREATE TABLE friend_group (
-    group_id varchar(10) not null unique,
+    group_id int(10) not null unique,
     admin_id varchar(10) not null,
     groupname varchar(25) not null unique,
     date_created date not null,
@@ -125,17 +117,42 @@ CREATE TABLE friend_group (
     foreign key(admin_id) references user(userid) on update cascade on delete cascade
 );
 
+CREATE TABLE group_member(
+  group_id int(10) not null,
+  userid int(10) not null,
+  date_created date not null,
+  primary key (userid, group_id)
+  foreign key(userid) references user(userid) on update cascade on delete cascade
+  foreign key(group_id) references friend_group(group_id) on update cascade on delete cascade
+);
+
 CREATE TABLE group_editor (
-    admin_id varchar (10) not null unique,
-    group_id varchar (10) not null,
-    content_editors varchar(25),
-    primary key(group_id, admin_id),
-    foreign key(admin_id) references user(userid) on update cascade on delete cascade,
+    group_id int(10) not null,
+    content_editor varchar(10),
+    date_added date not null,
+    primary key(group_id, content_editor),
+    foreign key(content_editor) references user(userid) on update cascade on delete cascade,
     foreign key(group_id) references friend_group(group_id) on update cascade on delete cascade
 );
 
+CREATE TABLE group_post(
+    group_postid int(10) not null unique,
+    group_id int(10) not null, 
+    userid varchar(10) not null, 
+    gp_heading varchar(25) not null, 
+    post_type varchar(10) not null
+    image_filename varchar(50),
+    text_content varchar(250),
+    date_created date not null,
+    time_created time not null, 
+    primary key (group_postid), 
+    foreign key(userid) references user(userid) on update cascade on delete cascade
+    foreign key(group_id) references friend_group(group_id) on update cascade on delete cascade
+    
+);
+
 CREATE TABLE photo (
-    photo_id varchar(10) not null unique,
+    photo_id int(10) not null unique AUTO_INCREMENT,
     userid varchar(10) not null,
     photo_desc varchar(150),
     photo_filename varchar(100) not null,
@@ -143,6 +160,3 @@ CREATE TABLE photo (
     primary key(photo_id),
     foreign key(userid) references user(userid) on update cascade on delete cascade
 );
-
-/* derived from relationships - do we have any? Based on ERD? */
--- modify
