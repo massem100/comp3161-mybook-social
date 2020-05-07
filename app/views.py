@@ -5,7 +5,7 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 import os
-from datetime import datetime
+from datetime import date, time, datetime
 from app import app, login_manager, mysql
 from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, textForm, ImageForm, SearchFriends, SearchGroups
 from app.models import User
@@ -34,9 +34,38 @@ def dashboard():
 
     text_form = textForm()
     image_form = ImageForm()
-    if request.method =='POST':
-        worded_post = text_form.text_post.data 
 
+    # use statements below with implemented functions to format the time before storing on the database 
+    post_datetime = datetime.now()
+    post_date = format_date_joined(datetime.now())
+    post_time = format_time_joined(datetime.now())
+
+    # print(post_date)
+    # print(post_time)
+    
+    if request.method =='POST':
+
+        worded_post = text_form.text_post.data 
+        # post_id = 1
+        post_date = datetime.now()
+        # post_time = time.now()
+        print(post_date)
+            # cur = mysql.connection.cursor()
+            # cur.execute(
+
+            # data = cur.fetchall()
+            # mysql.connection.commit()
+            # cur.close()
+
+            # flash('Congratulations, you are now a registered user!', 'success')
+            # return redirect(url_for('login'))
+        return render_template('dashboard.html')
+    # else:
+    #     # print( 'NOT REACHING POST')
+    #     # Remember to setup error display messages
+    #     return render_template('signup.html')
+
+        
 
         """
         validate form and set up if statements to get data into tables.
@@ -46,6 +75,8 @@ def dashboard():
         """
 
     return render_template('dashboard.html', text_form = text_form, image_form = image_form)
+
+
 
 @app.route('/userprofile', methods = ['POST','GET'])
 @login_required
@@ -91,9 +122,9 @@ def friends():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     form = LoginForm()
-    if current_user.is_authenticated:
-        flash('You are already logged in', 'success')
-        return redirect(url_for('dashboard'))
+    # if current_user.is_authenticated:
+    #     flash('You are already logged in, logout to reach login page', 'info')
+    #     return redirect(url_for('dashboard'))
         
     if request.method == 'POST' and form.validate_on_submit():
         
@@ -111,23 +142,23 @@ def login():
         
         user = cur.fetchall()
         print(user)
-
-        id= user[0][0]
-        username_  = user[0][1]
-        f_name = user[0][2]
-        l_name = user[0][3]
-        gender = user[0][4]
-        dob = user[0][5]
-        user_password_hash = user[0][6]
+        if user is not None: 
+            id= user[0][0]
+            username_  = user[0][1]
+            f_name = user[0][2]
+            l_name = user[0][3]
+            gender = user[0][4]
+            dob = user[0][5]
+            user_password_hash = user[0][6]
         # print(username, user_password_hash)
         
         if user is not None and check_password_hash(user_password_hash, password):
-            remember_me = False
-            print ('pass here')
+            # remember_me = False
+            # # print ('pass here')
             
             login_user(User(id,username_,f_name, l_name, gender, dob, user_password_hash))
             
-            print('reaching here')
+            # print('reaching here')
             return redirect(url_for('dashboard'))
         else: 
             flash('Password not a match', 'danger')
@@ -184,33 +215,43 @@ def signup():
         # Remember to setup error display messages
         return render_template('signup.html', form = form)
 
+# user_loader callback. This callback is used to reload the user object from
+# the user ID stored in the session
+# @login_manager.user_loader
+# def load_user(id):
+#     # print(type(id))
+#     # userid = str(id)
+#     cur = mysql.connection.cursor()
+#     cur.execute('''SELECT * FROM user WHERE userid = "{}"'''.format(id))
+#     user = cur.fetchall()
+#     print (user)
+#     if user is not None:
+#         id = user[0][1]
+#         username_ = user[0][1]
+#         f_name = user[0][2]
+#         l_name = user[0][3]
+#         gender = user[0][4]
+#         dob = user[0][5]
+#         user_password_hash = user[6]
+#         # print('this a print' + user)
+#         result = User(id, username_, f_name, l_name,
+#                       gender, dob, user_password_hash)
 
-@login_manager.user_loader
-def load_user(id):
-    # print(type(id))
-    # userid = str(id)
-    cur = mysql.connection.cursor()
-    cur.execute('''SELECT * FROM user WHERE userid = "{}"'''.format(id))
-    user = cur.fetchall()
+#         return result
+#     else: 
+#         return "No user to load"
 
-    id = user[0][0]
-    username_ = user[0][1]
-    f_name = user[0][2]
-    l_name = user[0][3]
-    gender = user[0][4]
-    dob = user[0][5]
-    user_password_hash = user[0][6]
-    # print('this a print' + user)
-
-    result = User(id, username_, f_name, l_name, gender, dob, user_password_hash)
-
-    return result
     
+
+    """
+  cur.execute('''INSERT INTO user (username, f_name, l_name, gender, date_of_birth, user_password) VALUES (%s, %s, %s, %s, %s, %s)''', (
+                        username, first_name, last_name, gender, date_of_birth, user_password))
+  """
 
 @login_manager.unauthorized_handler
 def unauthorized():
     """Redirect unauthorized users to Login page."""
-    flash('You must be logged in to view that page.')
+    flash('You must be logged in to view that page.', 'warning')
     return redirect(url_for('login'))
 
 
@@ -220,6 +261,24 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'success')
     return redirect(url_for('login'))
+
+
+def get_uploaded_images():
+    lst = []
+    rootdir = os.getcwd()
+    # print rootdir
+    for subdir, dirs, files in os.walk(rootdir + '/app/static/uploads'):
+        for file in files:
+            lst.append(file)
+    return lst
+
+
+def format_date_joined(date_joined):
+    return (date_joined.strftime("%B %d, %Y"))
+
+
+def format_time_joined(date_joined):
+    return (date_joined.strftime("%X"))
 
 
 ###

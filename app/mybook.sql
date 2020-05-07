@@ -28,7 +28,7 @@ DROP TABLE IF EXISTS photo;
 
 /* derived from entities */
 CREATE TABLE user(
-    userid varchar(10) not null unique,
+    userid int(10) not null unique,
     username varchar(25) not null unique,
     f_name varchar(25) not null,
     l_name varchar(25) not null,
@@ -39,7 +39,7 @@ CREATE TABLE user(
 );
 
 CREATE TABLE user_info(
-    userid varchar(10) not null unique,
+    userid int(10) not null unique,
     email varchar(50) ,
     phone_num varchar(25),
     primary key(userid),
@@ -48,7 +48,7 @@ CREATE TABLE user_info(
 
 CREATE table userprofile(
     profile_id int(10) not null unique AUTO_INCREMENT,
-    userid varchar(10) not null unique,
+    userid int(10) not null unique,
     profile_photo varchar(100) ,
     nationality varchar(25),
     user_bio varchar(150),
