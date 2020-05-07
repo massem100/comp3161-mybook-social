@@ -29,6 +29,7 @@ mysql.close()
 
 
 @app.route('/dashboard', methods = ['POST', 'GET'])
+@login_required
 def dashboard():
 
     text_form = textForm()
@@ -47,6 +48,7 @@ def dashboard():
     return render_template('dashboard.html', text_form = text_form, image_form = image_form)
 
 @app.route('/userprofile', methods = ['POST','GET'])
+@login_required
 def userprofile():
     form = PhotoForm()
     text_form = textForm()
@@ -107,10 +109,15 @@ def friends():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     form = LoginForm()
-
+    if current_user.is_authenticated:
+        flash('You are already logged in', 'success')
+        return redirect(url_for('dashboard'))
+        
     if request.method == 'POST' and form.validate_on_submit():
+        
         username = form.username.data
-        password = generate_password_hash(form.password.data)
+        # print(username)
+        password = (form.password.data)
         
         # using your model, query database for a user based on the username
         # and password submitted. Remember you need to compare the password hash.
@@ -118,22 +125,35 @@ def login():
         # Then store the result of that query to a `user` variable so it can be
         # passed to the login_user() method below.
         cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM user WHERE username = %s', (username))
-        user = cur.fetchone()
+        cur.execute('''SELECT * FROM user WHERE username = "{}" '''.format(username))
+        
+        user = cur.fetchall()
+        print(user)
 
-        if user is not None and check_password_hash(user.user_password, password):
+        id= user[0][0]
+        username_  = user[0][1]
+        f_name = user[0][2]
+        l_name = user[0][3]
+        gender = user[0][4]
+        dob = user[0][5]
+        user_password_hash = user[0][6]
+        # print(username, user_password_hash)
+        
+        if user is not None and check_password_hash(user_password_hash, password):
             remember_me = False
-            login_user(user, remember=remember_me)
-            if 'remember_me' in request.form:
-                remember_me = True
-                # get user id, load into session
-
-                # remember to flash a message to the user
-
+            print ('pass here')
+            
+            login_user(User(id,username_,f_name, l_name, gender, dob, user_password_hash))
+            
+            print('reaching here')
             return redirect(url_for('dashboard'))
+        else: 
+            flash('Password not a match', 'danger')
+            return render_template('login.html', form= form)
     else:
 
         return render_template('login.html', form = form)
+
     if request.method =='GET':
         
         return render_template('login.html')
@@ -144,13 +164,13 @@ def login():
 @app.route('/signup', methods = ['POST','GET'])
 def signup():
     form = SignupForm()
+    
     # print('YOU REACH YASUH?')
     if request.method == 'POST' and form.validate():
         # print('passing threshold')
         if form.validate_on_submit():
             # print('DEH YAH YUTE')   
-            num = 0 
-            num += 6
+           
             # userid = "user-" +"{}".format(num + 1)
             username = form.username.data
             first_name = form.f_name.data
@@ -167,7 +187,7 @@ def signup():
 
             """
             cur = mysql.connection.cursor()
-            cur.execute('''INSERT INTO user VALUES (%s, %s, %s, %s, %s, %s, %s)''', ("user-" + "{}".format(num),
+            cur.execute('''INSERT INTO user VALUES (%s, %s, %s, %s, %s, %s, %s)''', ("U" + "{}".format('000004'),
                         username, first_name, last_name, gender, date_of_birth, user_password))
 
             data = cur.fetchall()
@@ -184,13 +204,25 @@ def signup():
 
 
 @login_manager.user_loader
-def user_loader(id):
-    
+def load_user(id):
+    # print(type(id))
+    # userid = str(id)
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM users WHERE userid = %s', (id))
-    user = cur.fetchone()
+    cur.execute('''SELECT * FROM user WHERE userid = "{}"'''.format(id))
+    user = cur.fetchall()
 
-    return user
+    id = user[0][0]
+    username_ = user[0][1]
+    f_name = user[0][2]
+    l_name = user[0][3]
+    gender = user[0][4]
+    dob = user[0][5]
+    user_password_hash = user[0][6]
+    # print('this a print' + user)
+
+    result = User(id, username_, f_name, l_name, gender, dob, user_password_hash)
+
+    return result
     
 
 @login_manager.unauthorized_handler
@@ -200,21 +232,13 @@ def unauthorized():
     return redirect(url_for('login'))
 
 
-@login_manager.request_loader
-def request_loader(request):
-    # email = request.form.get('email')
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('login'))
 
-    # if email not in users:
-    #     return
-
-    # user = User()
-    # user.id = email
-
-    # # DO NOT ever store passwords in plaintext and always compare password
-    # # hashes using constant-time comparison!
-    # user.is_authenticated = request.form['password'] == users[email]['password']
-
-    return 'user'
 
 ###
 # Routing for your application.
