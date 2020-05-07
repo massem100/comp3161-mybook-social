@@ -50,6 +50,24 @@ def dashboard():
 def userprofile():
     form = PhotoForm()
     text_form = textForm()
+    
+    if request.method== 'POST' and text_form.validate:
+        if text_form.validate_on_submit():
+            text_post= text_form.text_post.data
+           
+            cur=mysql.connection.cursor()
+            cur.execute('INSERT INTO text_post VALUES(%d,%d,%s)',("text-" + "{}".format(num),"post-" + "{}".format(num),textmessage))
+            data= cur.fetchall()
+            mysql.connection.commit()
+            cur.close()
+
+            flash('Your post has been created!','success')
+            return redirect(url_for('myprofile'))
+        return render_template('user_profile.html',text_form=text_form)
+     
+    
+
+
     image_form = ImageForm()
     
    
