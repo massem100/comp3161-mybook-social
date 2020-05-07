@@ -217,29 +217,29 @@ def signup():
 
 # user_loader callback. This callback is used to reload the user object from
 # the user ID stored in the session
-# @login_manager.user_loader
-# def load_user(id):
-#     # print(type(id))
-#     # userid = str(id)
-#     cur = mysql.connection.cursor()
-#     cur.execute('''SELECT * FROM user WHERE userid = "{}"'''.format(id))
-#     user = cur.fetchall()
-#     print (user)
-#     if user is not None:
-#         id = user[0][1]
-#         username_ = user[0][1]
-#         f_name = user[0][2]
-#         l_name = user[0][3]
-#         gender = user[0][4]
-#         dob = user[0][5]
-#         user_password_hash = user[6]
-#         # print('this a print' + user)
-#         result = User(id, username_, f_name, l_name,
-#                       gender, dob, user_password_hash)
+@login_manager.user_loader
+def load_user(id):
+    # print(type(id))
+    # userid = str(id)
+    cur = mysql.connection.cursor()
+    cur.execute('''SELECT * FROM user WHERE userid = "{}"'''.format(id))
+    user = cur.fetchall()
+    print (user)
+    if user is not None:
+        id = user[0][1]
+        username_ = user[0][1]
+        f_name = user[0][2]
+        l_name = user[0][3]
+        gender = user[0][4]
+        dob = user[0][5]
+        user_password_hash = user[6]
+        # print('this a print' + user)
+        result = User(id, username_, f_name, l_name,
+                      gender, dob, user_password_hash)
 
-#         return result
-#     else: 
-#         return "No user to load"
+        return result
+    else: 
+        return "No user to load"
 
     
 
