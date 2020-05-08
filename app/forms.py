@@ -34,8 +34,8 @@ class textForm(FlaskForm):
     text_post = TextAreaField('Text Post', validators=[DataRequired('Post content missing')])
 
 class ImageForm(FlaskForm):
-    photo = FileField('Upload Image', validators=[FileRequired('No photo was submitted.'), FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
-    image_desc = TextAreaField('Caption', validators=[Length(max=150)])
+    photo = FileField('Upload Image', validators=[FileRequired(), FileAllowed(['jpg', 'png'], 'Images only!')])
+    image_desc = TextAreaField('Caption', validators=[])
 
 class SearchFriends(FlaskForm):
     friends_search = StringField('Friend Search', validators=[])

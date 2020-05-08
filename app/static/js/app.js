@@ -184,8 +184,5 @@ $(document).ready(function () {
             $('#characterRemaining').removeClass('red');
         }
     });    
-        setTimeout(function () {
-            $('.test').fadeOut('fast');
-        }, 7000); // <-- time in milliseconds
-
+       
 });

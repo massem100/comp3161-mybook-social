@@ -35,47 +35,79 @@ def dashboard():
     text_form = textForm()
     image_form = ImageForm()
 
-    # use statements below with implemented functions to format the time before storing on the database 
-    post_datetime = datetime.now()
-    post_date = format_date_joined(datetime.now())
-    post_time = format_time_joined(datetime.now())
+    if request.method == 'POST':
 
-    # print(post_date)
-    # print(post_time)
+        return render_template('dashboard.html', text_form = text_form, image_form = image_form)
+    else:   
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form)
     
-    if request.method =='POST':
-
-        worded_post = text_form.text_post.data 
-        # post_id = 1
-        post_date = datetime.now()
-        # post_time = time.now()
-        print(post_date)
-            # cur = mysql.connection.cursor()
-            # cur.execute(
-
-            # data = cur.fetchall()
-            # mysql.connection.commit()
-            # cur.close()
-
-            # flash('Congratulations, you are now a registered user!', 'success')
-            # return redirect(url_for('login'))
-        return render_template('dashboard.html')
-    # else:
-    #     # print( 'NOT REACHING POST')
-    #     # Remember to setup error display messages
-    #     return render_template('signup.html')
-
         
+@app.route('/dashboard/text_post', methods= ['POST'])
+@login_required
+def text(): 
+    text_form = textForm()
+    image_form = ImageForm()
+     
+    if request.method == 'POST':
+        if text_form.validate_on_submit() and text_form.text_post.data:
 
-        """
-        validate form and set up if statements to get data into tables.
+            worded_post = text_form.text_post.data
+            # use statements below with implemented functions to format the time before storing on the database
+            userid = current_user.id
+            post_date = format_date_joined(datetime.now())
+            post_time = format_time_joined(datetime.now())
 
-        Need to setup in such a way to fill posts table too.. to set userid = call on current_user
-        get current date and time and format it and generate post id.
-        """
+            cur = mysql.connection.cursor()
+            cur.execute(""" INSERT INTO post (post_id, userid, post_date, post_time) 
+                        VALUES (NULL, "{}", "{}", "{}") """.format(userid, post_date, post_time))
 
-    return render_template('dashboard.html', text_form = text_form, image_form = image_form)
+            cur.execute(""" INSERT INTO text_post (text_id, post_id, text_message) 
+                    VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}") """.format(userid, worded_post))
 
+            mysql.connection.commit()
+            
+
+            flash('Text Uploaded', 'success')
+            return  redirect(url_for('dashboard'))
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form)
+    else: 
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form)
+
+@app.route('/dashboard/image_post', methods = ['POST'])
+@login_required
+def image(): 
+    image_form = ImageForm()
+    text_form = textForm()
+    print('SIGH MAN CHRO')
+    if request.method == 'POST': 
+        print('DEH YA')
+        if image_form.validate_on_submit():
+            print('reaching here')
+            photo = image_form.photo.data
+            caption = image_form.image_desc.data
+
+            photo_filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
+
+            userid = current_user.id
+            post_date = format_date_joined(datetime.now())
+            post_time = format_time_joined(datetime.now())
+
+            cur = mysql.connection.cursor()
+            cur.execute(""" INSERT INTO post (post_id, userid, post_date, post_time) 
+                        VALUES (NULL, "{}", "{}", "{}") """.format(userid, post_date, post_time))
+
+            cur.execute(""" INSERT INTO image_post (image_id, post_id, image_filename, caption) 
+                    VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}", "{}") """.format(userid, photo_filename, caption))
+
+            mysql.connection.commit()
+            
+
+            flash('Image Uploaded!', 'success')
+            return redirect(url_for('dashboard'))
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form)
+    else: 
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form)
 
 
 @app.route('/userprofile', methods = ['POST','GET'])
@@ -244,7 +276,7 @@ def load_user(id):
     user = cur.fetchall()
     # print (user)
     if user > ():
-        id = user[0][1]
+        id = user[0][0]
         username_ = user[0][1]
         f_name = user[0][2]
         l_name = user[0][3]
@@ -252,6 +284,9 @@ def load_user(id):
         dob = user[0][5]
         user_password_hash = user[0][6]
         # print('this a print' + user)
+        # print(id)
+        # print(username_)
+        # print(user)
         result = User(id, username_, f_name, l_name, gender, dob, user_password_hash)
 
         return result
@@ -286,7 +321,7 @@ def get_uploaded_images():
 
 
 def format_date_joined(date_joined):
-    return (date_joined.strftime("%B %d, %Y"))
+    return (date_joined.strftime("%Y-%m-%d"))
 
 
 def format_time_joined(date_joined):
