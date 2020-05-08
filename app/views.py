@@ -35,37 +35,38 @@ def dashboard():
     text_form = textForm()
     image_form = ImageForm()
 
-    # use statements below with implemented functions to format the time before storing on the database 
-    post_datetime = datetime.now()
-    post_date = format_date_joined(datetime.now())
-    post_time = format_time_joined(datetime.now())
-
-    # print(post_date)
-    # print(post_time)
-    
+    # print(current_user.id)
     if request.method =='POST':
+        if text_form.validate_on_submit():
 
-        worded_post = text_form.text_post.data 
-        # post_id = 1
-        post_date = datetime.now()
-        # post_time = time.now()
-        print(post_date)
-            # cur = mysql.connection.cursor()
-            # cur.execute(
+            worded_post = text_form.text_post.data 
+            # use statements below with implemented functions to format the time before storing on the database
+            userid = current_user.id
+            post_date = format_date_joined(datetime.now())
+            post_time = format_time_joined(datetime.now())
 
-            # data = cur.fetchall()
-            # mysql.connection.commit()
-            # cur.close()
 
-            # flash('Congratulations, you are now a registered user!', 'success')
-            # return redirect(url_for('login'))
-        return render_template('dashboard.html')
-    # else:
-    #     # print( 'NOT REACHING POST')
-    #     # Remember to setup error display messages
-    #     return render_template('signup.html')
+           
+            cur = mysql.connection.cursor()
+            cur.execute(""" INSERT INTO post (post_id, userid, post_date, post_time) 
+                        VALUES (NULL, "{}", "{}", "{}") """.format(userid,post_date,post_time))
+            
+            cur.execute(""" INSERT INTO text_post (text_id, post_id, text_message) 
+                    VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}") """.format(userid, worded_post))
+         
+            mysql.connection.commit()
+            cur.close()
+            
+            flash('Post created!', 'success')
+            return render_template('dashboard.html', text_form = text_form, image_form = image_form)
+           
 
-        
+        return render_template('dashboard.html', text_form = text_form, image_form = image_form)
+            
+    else: 
+            
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form)
+    
 
         """
         validate form and set up if statements to get data into tables.
@@ -226,7 +227,7 @@ def load_user(id):
     user = cur.fetchall()
     # print (user)
     if user > ():
-        id = user[0][1]
+        id = user[0][0]
         username_ = user[0][1]
         f_name = user[0][2]
         l_name = user[0][3]
@@ -234,6 +235,9 @@ def load_user(id):
         dob = user[0][5]
         user_password_hash = user[0][6]
         # print('this a print' + user)
+        # print(id)
+        # print(username_)
+        # print(user)
         result = User(id, username_, f_name, l_name, gender, dob, user_password_hash)
 
         return result
@@ -268,7 +272,7 @@ def get_uploaded_images():
 
 
 def format_date_joined(date_joined):
-    return (date_joined.strftime("%B %d, %Y"))
+    return (date_joined.strftime("%Y-%m-%d"))
 
 
 def format_time_joined(date_joined):
