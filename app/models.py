@@ -4,8 +4,7 @@ from app import app, login_manager, mysql
 
 
 class User(UserMixin):
-    
-        
+            
     def __init__(self, id, username, f_name, l_name, gender, date_of_birth, password):
         self.id= id
         self.f_name = f_name
