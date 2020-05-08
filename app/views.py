@@ -35,48 +35,79 @@ def dashboard():
     text_form = textForm()
     image_form = ImageForm()
 
-    # print(current_user.id)
-    if request.method =='POST':
-        if text_form.validate_on_submit():
+    if request.method == 'POST':
 
-            worded_post = text_form.text_post.data 
+        return render_template('dashboard.html', text_form = text_form, image_form = image_form)
+    else:   
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form)
+    
+        
+@app.route('/dashboard/text_post', methods= ['POST'])
+@login_required
+def text(): 
+    text_form = textForm()
+    image_form = ImageForm()
+     
+    if request.method == 'POST':
+        if text_form.validate_on_submit() and text_form.text_post.data:
+
+            worded_post = text_form.text_post.data
             # use statements below with implemented functions to format the time before storing on the database
             userid = current_user.id
             post_date = format_date_joined(datetime.now())
             post_time = format_time_joined(datetime.now())
 
-
-           
             cur = mysql.connection.cursor()
             cur.execute(""" INSERT INTO post (post_id, userid, post_date, post_time) 
-                        VALUES (NULL, "{}", "{}", "{}") """.format(userid,post_date,post_time))
-            
+                        VALUES (NULL, "{}", "{}", "{}") """.format(userid, post_date, post_time))
+
             cur.execute(""" INSERT INTO text_post (text_id, post_id, text_message) 
                     VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}") """.format(userid, worded_post))
-         
+
             mysql.connection.commit()
-            cur.close()
             
-            flash('Post created!', 'success')
-            return render_template('dashboard.html', text_form = text_form, image_form = image_form)
-           
 
-        return render_template('dashboard.html', text_form = text_form, image_form = image_form)
-            
-    else: 
-            
+            flash('Text Uploaded', 'success')
+            return  redirect(url_for('dashboard'))
         return render_template('dashboard.html', text_form=text_form, image_form=image_form)
-    
+    else: 
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form)
 
-        """
-        validate form and set up if statements to get data into tables.
+@app.route('/dashboard/image_post', methods = ['POST'])
+@login_required
+def image(): 
+    image_form = ImageForm()
+    text_form = textForm()
+    print('SIGH MAN CHRO')
+    if request.method == 'POST': 
+        print('DEH YA')
+        if image_form.validate_on_submit():
+            print('reaching here')
+            photo = image_form.photo.data
+            caption = image_form.image_desc.data
 
-        Need to setup in such a way to fill posts table too.. to set userid = call on current_user
-        get current date and time and format it and generate post id.
-        """
+            photo_filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
 
-    return render_template('dashboard.html', text_form = text_form, image_form = image_form)
+            userid = current_user.id
+            post_date = format_date_joined(datetime.now())
+            post_time = format_time_joined(datetime.now())
 
+            cur = mysql.connection.cursor()
+            cur.execute(""" INSERT INTO post (post_id, userid, post_date, post_time) 
+                        VALUES (NULL, "{}", "{}", "{}") """.format(userid, post_date, post_time))
+
+            cur.execute(""" INSERT INTO image_post (image_id, post_id, image_filename, caption) 
+                    VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}", "{}") """.format(userid, photo_filename, caption))
+
+            mysql.connection.commit()
+            
+
+            flash('Image Uploaded!', 'success')
+            return redirect(url_for('dashboard'))
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form)
+    else: 
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form)
 
 
 @app.route('/userprofile', methods = ['POST','GET'])
