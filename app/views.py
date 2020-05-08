@@ -122,15 +122,15 @@ def friends():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     form = LoginForm()
-    # if current_user.is_authenticated:
-    #     flash('You are already logged in, logout to reach login page', 'info')
-    #     return redirect(url_for('dashboard'))
+    if current_user.is_authenticated:
+        flash('You are already logged in, logout to reach login page', 'info')
+        return redirect(url_for('dashboard'))
         
     if request.method == 'POST' and form.validate_on_submit():
         
         username = form.username.data
         # print(username)
-        password = (form.password.data)
+        password = form.password.data
         
         # using your model, query database for a user based on the username
         # and password submitted. Remember you need to compare the password hash.
@@ -139,9 +139,8 @@ def login():
         # passed to the login_user() method below.
         cur = mysql.connection.cursor()
         cur.execute('''SELECT * FROM user WHERE username = "{}" '''.format(username))
-        
         user = cur.fetchall()
-        print(user)
+        # print(user)
         if user is not None: 
             id= user[0][0]
             username_  = user[0][1]
@@ -153,12 +152,12 @@ def login():
         # print(username, user_password_hash)
         
         if user is not None and check_password_hash(user_password_hash, password):
-            # remember_me = False
-            # # print ('pass here')
+            remember_me = False
+            # print ('pass here')
             
             login_user(User(id,username_,f_name, l_name, gender, dob, user_password_hash))
             
-            # print('reaching here')
+            print('reaching here')
             return redirect(url_for('dashboard'))
         else: 
             flash('Password not a match', 'danger')
@@ -200,8 +199,9 @@ def signup():
 
             """
             cur = mysql.connection.cursor()
-            cur.execute('''INSERT INTO user VALUES (%s, %s, %s, %s, %s, %s, %s)''', ("U" + "{}".format('000004'),
-                        username, first_name, last_name, gender, date_of_birth, user_password))
+            
+            cur.execute('''INSERT INTO user (userid,username, f_name, l_name, gender, date_of_birth, user_password) VALUES (NULL, %s, %s, %s, %s, %s, %s)''',
+            (username, first_name, last_name, gender, date_of_birth, user_password))
 
             data = cur.fetchall()
             mysql.connection.commit()
@@ -224,30 +224,24 @@ def load_user(id):
     cur = mysql.connection.cursor()
     cur.execute('''SELECT * FROM user WHERE userid = "{}"'''.format(id))
     user = cur.fetchall()
-    print (user)
-    if user is not None:
+    # print (user)
+    if user > ():
         id = user[0][1]
         username_ = user[0][1]
         f_name = user[0][2]
         l_name = user[0][3]
         gender = user[0][4]
         dob = user[0][5]
-        user_password_hash = user[6]
+        user_password_hash = user[0][6]
         # print('this a print' + user)
-        result = User(id, username_, f_name, l_name,
-                      gender, dob, user_password_hash)
+        result = User(id, username_, f_name, l_name, gender, dob, user_password_hash)
 
         return result
-    else: 
-        return "No user to load"
+   
 
     
 
-    """
-  cur.execute('''INSERT INTO user (username, f_name, l_name, gender, date_of_birth, user_password) VALUES (%s, %s, %s, %s, %s, %s)''', (
-                        username, first_name, last_name, gender, date_of_birth, user_password))
-  """
-
+   
 @login_manager.unauthorized_handler
 def unauthorized():
     """Redirect unauthorized users to Login page."""

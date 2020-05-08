@@ -16,7 +16,7 @@ app.config['SECRET_KEY'] = 'v\xf9\xf7\x11\x13\x18\xfaMYp\xed_\xe8\xc9w\x06\x8e\x
 # Statements below allow us to initicalize the MYSQL database
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] ='SQLpass'
+app.config['MYSQL_PASSWORD'] = 'SQLpass'
 app.config['MYSQL_DB'] = 'mybook'
 
 # Initializing the SQL connection to our app.
