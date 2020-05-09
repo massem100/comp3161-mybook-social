@@ -3506,9 +3506,9 @@ searchContainer {
 /* group column */
 .column {
   float: left;
-  width: 50%;
+  width: 100%;
   padding: 10px;
-  height: 300px;
+  height: 100%;
 
 }
 
@@ -3519,5 +3519,5 @@ searchContainer {
 }
 
 #friendsbtn2{
-  float: right;
+  size: 20%;
 }
