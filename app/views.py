@@ -150,16 +150,16 @@ def viewGroup():
     
     return 'route to display group'
 
+# @app.route('/friends', methods = ['POST', 'GET'])
+# def friends():
+#     sf_form = SearchFriends()
+#     if request.method =='POST': 
+
+#         return 'x'
+#     return render_template('friends.html', form = sf_form)
+
 @app.route('/friends', methods = ['POST', 'GET'])
 def friends():
-    sf_form = SearchFriends()
-    if request.method =='POST': 
-
-        return 'x'
-    return render_template('friends.html', form = sf_form)
-
-@app.route('/friends/search', methods = ['POST'])
-def search_friends():
 
     sf_form = SearchFriends()
     if request.method == 'POST':
@@ -183,15 +183,15 @@ def search_friends():
                    user_password = i[6]
 
                    users.append(User(userid,username, f_name, l_name, gender, dob, user_password))
-                return render_template('friends.html', form = sf_form, users=users)
-                # print(users)
+                return render_template('friends.html', form=sf_form, users=users)
 
                 # print(users[0].id, users[0]. username)
 
         
         return render_template('friends.html', form = sf_form, users = users)
+    else:
         
-    return render_template('friends.html', form = sf_form, users = users)
+        return render_template('friends.html', form = sf_form)
 
 @app.route('/')
 @app.route('/login', methods=['POST', 'GET'])
