@@ -7,7 +7,7 @@ This file creates your application.
 import os
 from datetime import date, time, datetime
 from app import app, login_manager, mysql
-from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, textForm, ImageForm, SearchFriends, SearchGroups
+from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, textForm, ImageForm, SearchFriends, SearchGroups, EditProfileForm
 from app.models import User
 from flask_mysqldb import MySQL
 from flask_cors import CORS
@@ -77,6 +77,7 @@ def text():
 @login_required
 def image(): 
     image_form = ImageForm()
+    
     text_form = textForm()
     print('SIGH MAN CHRO')
     if request.method == 'POST': 
@@ -105,38 +106,94 @@ def image():
 
             flash('Image Uploaded!', 'success')
             return redirect(url_for('dashboard'))
-        return render_template('dashboard.html', text_form=text_form, image_form=image_form)
+        return render_template('dashboard.html', text_form = text_form, image_form = image_form)
     else: 
-        return render_template('dashboard.html', text_form=text_form, image_form=image_form)
+        return render_template('dashboard.html', text_form = text_form, image_form = image_form)
 
 
 @app.route('/userprofile', methods = ['POST','GET'])
 @login_required
 def userprofile():
+    image_form = ImageForm()
     form = PhotoForm()
     text_form = textForm()
-    
-    if request.method== 'POST' and text_form.validate:
-        if text_form.validate_on_submit():
-            text_post= text_form.text_post.data
-           
-            cur=mysql.connection.cursor()
-            cur.execute('INSERT INTO text_post VALUES(%d,%d,%s)',("text-" + "{}".format(num),"post-" + "{}".format(num),textmessage))
-            data= cur.fetchall()
+    edit_form= EditProfileForm()
+
+    if request.method == 'POST':
+        if text_form.validate_on_submit() and text_form.text_post.data:
+
+            worded_post = text_form.text_post.data
+            # use statements below with implemented functions to format the time before storing on the database
+            userid = current_user.id
+            post_date = format_date_joined(datetime.now())
+            post_time = format_time_joined(datetime.now())
+
+            cur = mysql.connection.cursor()
+            cur.execute(""" INSERT INTO post (post_id, userid, post_date, post_time) 
+                        VALUES (NULL, "{}", "{}", "{}") """.format(userid, post_date, post_time))
+
+            cur.execute(""" INSERT INTO text_post (text_id, post_id, text_message) 
+                    VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}") """.format(userid, worded_post))
+
             mysql.connection.commit()
-            cur.close()
+            
 
-            flash('Your post has been created!','success')
-            return redirect(url_for('myprofile'))
-        return render_template('user_profile.html',text_form=text_form)
-     
+            flash('Text Uploaded', 'success')
+            return  redirect(url_for('userprofile'))
+        return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
+
+        if image_form.validate_on_submit():
+            
+            photo = image_form.photo.data
+            caption = image_form.image_desc.data
+
+            photo_filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
+
+            userid = current_user.id
+            post_date = format_date_joined(datetime.now())
+            post_time = format_time_joined(datetime.now())
+
+            cur = mysql.connection.cursor()
+            cur.execute(""" INSERT INTO post (post_id, userid, post_date, post_time) 
+                        VALUES (NULL, "{}", "{}", "{}") """.format(userid, post_date, post_time))
+
+            cur.execute(""" INSERT INTO image_post (image_id, post_id, image_filename, caption) 
+                    VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}", "{}") """.format(userid, photo_filename, caption))
+
+            mysql.connection.commit()
+
+            flash('Image Uploaded!', 'success')
+            return redirect(url_for('userprofile'))
+        return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
+    
+    #Working on this section. To upload photo to profile 
+    if form.validate_on_submit():
+        photo = form.photo.data
+
+        photo_filename = secure_filename(photo.filename)
+        photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
+        userid = current_user.id
+        post_date = format_date_joined(datetime.now())
+        post_time = format_time_joined(datetime.now())
+
+        cur = mysql.connection.cursor()
+        ###
+        #cur.execute(""" INSERT INTO post (post_id, userid, post_date, post_time) 
+        #               VALUES (NULL, "{}", "{}", "{}") """.format(userid, post_date, post_time))
+
+        #cur.execute(""" INSERT INTO photo (photo_id, userid, photo_desc, photo_filename,date_added) 
+        #           VALUES (NULL, (SELECT max(photo_id) FROM post WHERE userid = '{}'), "{}", "{}","{}") """.format(userid,photo_desc, photo_filename, date_added))
+        ###
+        mysql.connection.commit()
+
+        flash('Image Uploaded!', 'success')
+        return redirect(url_for('userprofile'))
+    return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
     
 
-
-    image_form = ImageForm()
     
-   
-    return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form)
+    
     
 @app.route('/groups', methods = ['GET', 'POST'])
 def groups():
