@@ -34,12 +34,19 @@ def dashboard():
 
     text_form = textForm()
     image_form = ImageForm()
-
+    # cur = mysql.connection.cursor()
+    # cur.execute(""" SELECT * """)
     if request.method == 'POST':
 
         return render_template('dashboard.html', text_form = text_form, image_form = image_form)
     else:   
         return render_template('dashboard.html', text_form=text_form, image_form=image_form)
+
+        """ 
+        print out posts on dashboard.. queries to be written.. 
+
+        
+        """
     
         
 @app.route('/dashboard/text_post', methods= ['POST'])
@@ -65,6 +72,7 @@ def text():
                     VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}") """.format(userid, worded_post))
 
             mysql.connection.commit()
+            cur.close()
             
 
             flash('Text Uploaded', 'success')
@@ -79,11 +87,11 @@ def image():
     image_form = ImageForm()
     
     text_form = textForm()
-    print('SIGH MAN CHRO')
+    # print('SIGH MAN CHRO')
     if request.method == 'POST': 
-        print('DEH YA')
+        # print('DEH YA')
         if image_form.validate_on_submit():
-            print('reaching here')
+            # print('reaching here')
             photo = image_form.photo.data
             caption = image_form.image_desc.data
 
@@ -102,6 +110,7 @@ def image():
                     VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}", "{}") """.format(userid, photo_filename, caption))
 
             mysql.connection.commit()
+            cur.close()
             
 
             flash('Image Uploaded!', 'success')
@@ -218,12 +227,46 @@ def viewGroup():
 
 @app.route('/friends', methods = ['POST', 'GET'])
 def friends():
-    form = SearchFriends()
+    sf_form = SearchFriends()
     if request.method =='POST': 
 
         return 'x'
-    return render_template('friends.html', form = form)
+    return render_template('friends.html', form = sf_form)
 
+@app.route('/friends/search', methods = ['POST'])
+def search_friends():
+
+    sf_form = SearchFriends()
+    if request.method == 'POST':
+        if sf_form.validate_on_submit(): 
+            search_result = sf_form.friends_search.data
+
+            if search_result == '':
+                
+                cur= mysql.connection.cursor()
+                cur.execute(""" SELECT * from user """)
+                all_users = cur.fetchall()
+                # print(all_users)
+                users = []
+                for i in all_users: 
+                   userid = i[0]
+                   username = i[1]
+                   f_name = i[2]
+                   l_name = i[3]
+                   gender = i[4]
+                   dob = i[5]
+                   user_password = i[6]
+
+                   users.append(User(userid,username, f_name, l_name, gender, dob, user_password))
+                return render_template('friends.html', form = sf_form, users=users)
+                # print(users)
+
+                # print(users[0].id, users[0]. username)
+
+        
+        return render_template('friends.html', form = sf_form, users = users)
+        
+    return render_template('friends.html', form = sf_form, users = users)
 
 @app.route('/')
 @app.route('/login', methods=['POST', 'GET'])
@@ -248,7 +291,7 @@ def login():
         cur.execute('''SELECT * FROM user WHERE username = "{}" '''.format(username))
         user = cur.fetchall()
         # print(user)
-        if user is not None: 
+        if user > (): 
             id= user[0][0]
             username_  = user[0][1]
             f_name = user[0][2]
@@ -258,17 +301,21 @@ def login():
             user_password_hash = user[0][6]
         # print(username, user_password_hash)
         
-        if user is not None and check_password_hash(user_password_hash, password):
-            remember_me = False
-            # print ('pass here')
-            
-            login_user(User(id,username_,f_name, l_name, gender, dob, user_password_hash))
-            
-            print('reaching here')
-            return redirect(url_for('dashboard'))
-        else: 
-            flash('Password not a match', 'danger')
-            return render_template('login.html', form= form)
+        
+            if user is not None and check_password_hash(user_password_hash, password):
+                remember_me = False
+                # print ('pass here')
+                
+                login_user(User(id,username_,f_name, l_name, gender, dob, user_password_hash))
+                
+                print('reaching here')
+                return redirect(url_for('dashboard'))
+            else: 
+                flash('Password not a match', 'danger')
+                return render_template('login.html', form= form)
+        else:
+            flash('No users in database', 'danger')
+            return render_template('login.html', form = form)
     else:
 
         return render_template('login.html', form = form)
@@ -305,14 +352,16 @@ def signup():
             2. Setup actual userid to work and increment properly
 
             """
+            
             cur = mysql.connection.cursor()
             
             cur.execute('''INSERT INTO user (userid,username, f_name, l_name, gender, date_of_birth, user_password) VALUES (NULL, %s, %s, %s, %s, %s, %s)''',
             (username, first_name, last_name, gender, date_of_birth, user_password))
 
-            data = cur.fetchall()
             mysql.connection.commit()
+
             cur.close()
+            
 
             flash('Congratulations, you are now a registered user!', 'success')
             return redirect(url_for('login'))
@@ -347,8 +396,7 @@ def load_user(id):
         result = User(id, username_, f_name, l_name, gender, dob, user_password_hash)
 
         return result
-   
-
+    
     
 
    

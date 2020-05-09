@@ -1,61 +1,23 @@
--- Query to INSERT INTO TEXT_POST but also get generate post_id from post_id as it is generated
+if request.method =='POST':
+        if text_form.validate_on_submit() and text_form.text_post.data:
 
--- FRAME insert into text_post then select from post table, insert into post table 
-
-
--- INSERT INTO
---     text_post 
--- SELECT post_id FROM (
-    
--- );
-
--- --  INSERT INTO table2 (column1, column2, column3, ...)
--- -- SELECT column1, column2, column3, ...
--- -- FROM table1
--- -- WHERE condition;
-
--- INSERT INTO
---     post (post_id, userid, post_date, post_time)
--- VALUES
---     (
---         NULL,
---         4,
---         12 / 7 / 1999,
---         9 :34 :21
---     ),
---     OUTPUT post_id
-
-INSERT INTO
-    joke(joke_text, joke_date, author_id) 
-VALUES
-    (
-        ‘ Humpty Dumpty had a great fall.’,
-        ‘ 1899 – 03 – 13 ’,
-        (
-            SELECT
-                id
-            FROM
-                author
-            WHERE
-                author_name = ‘ Famous Anthony ’
-        )
-    );
+            worded_post = text_form.text_post.data 
+            -- # use statements below with implemented functions to format the time before storing on the database
+            userid = current_user.id
+            post_date = format_date_joined(datetime.now())
+            post_time = format_time_joined(datetime.now())
 
 
-INSERT INTO 
-    text_post(text_id, post_id, text_message )
-VALUES
-    (NULL,
-    (SELECT 
-        post_id
-    FROM 
-        (INSERT INTO 
-                post(post_id,userid, post_date, post_time)                
-            VALUES 
-            (NULL, 
-            '5',
-            12/10/2009,
-            16:24)
-            OUTPUT postid
-        ), 
-    "Feeling Happy!")
+           
+            cur = mysql.connection.cursor()
+            cur.execute(""" INSERT INTO post (post_id, userid, post_date, post_time) 
+                        VALUES (NULL, "{}", "{}", "{}") """.format(userid,post_date,post_time))
+            
+            cur.execute(""" INSERT INTO text_post (text_id, post_id, text_message) 
+                    VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}") """.format(userid, worded_post))
+         
+            mysql.connection.commit()
+            cur.close()
+            
+            flash('Text Uploaded', 'success')
+            return render_template('dashboard.html', text_form = text_form, image_form = image_form)
