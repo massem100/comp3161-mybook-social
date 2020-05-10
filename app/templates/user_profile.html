@@ -105,10 +105,13 @@
                                 
                             </div>
                             <div>
-                                <form class="form-group " action methods=['POST'] enctype="multipart/form-data">
+                                <form class="form-group " action="{{url_for('Userform')}}" methods='POST' enctype="multipart/form-data">
                                     {{ form.csrf_token}}
                                     <div class="d-flex flex-row justify-content-end ">
-                                       {{ form.photo(class ="mr-1 ml-2 mb-1 ") }}
+                                       {{ form.photo(class ="mr-1 ml-2 mb-1, id='customFile' ") }}
+                                       
+                                
+                                                                           
                                     </div>
                                    
                                     <div class="btn-group">
@@ -129,6 +132,7 @@
                         <!-- add Create - Post card -->
                         <div class = "w-100">
                                 <!--- \\\\\\\Post-->
+                                
                                 <div class = "d-flex card m-3 p-2 w-90">
 
                                     <div class = "card-header">
@@ -148,7 +152,7 @@
                                         <div class="tab-content " id="myTabContent">
                                             <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab" aria-selected="true">
                                                 <div class="form-group">
-                                                    <form action  method = 'POST' enctype="multipart/form-data"> 
+                                                    <form action="{{url_for('Usertext')}}"  method = 'POST' enctype="multipart/form-data"> 
                                                     {{ text_form.csrf_token }}
                                                         {{text_form.text_post(class="form-control ", id="message" , rows="3", placeholder="What are you thinking?")}}
                                                             <span class="help-block d-flex justify-content-end">
@@ -163,9 +167,9 @@
                                             </div>
                                             <div class="tab-pane fade " id="images" role="tabpanel" aria-labelledby="images-tab" aria-selected="false">
                                                 <div class="form-group">
-                        
+                                                        
                                                     <div class="custom-file">
-                                                        <form action  class = "form-group"  method= 'POST' enctype="multipart/form-data"> 
+                                                        <form action="{{url_for('Userimage')}}"  class = "form-group"  method= 'POST' enctype="multipart/form-data"> 
                                                             {{ image_form.csrf_token }}
                                                             <div class = "mr-2">
                                                                 {{image_form.photo.label(class = "mr-2")}}
@@ -206,8 +210,10 @@
                                 
                                 </div>
                                 <!-- create posts ends here -->
+                        {% for post in posts %}        
                         <div id = "">
                             <!-- add posts -->
+                            
                         <div class="">
                                 <div class="card m-2  w-80">
                                     <div class="card-header">
@@ -217,8 +223,17 @@
                                                     <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
                                                 </div>
                                                 <div class="ml-2">
-                                                    <div class="h5 m-0">@LeeCross</div>
+                                                    <div class="h5 m-0">{{post.username}}</div>
                                                     <div class="h7 text-muted">Miracles Lee Cross</div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-link" type="button" id="gedf-drop1"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-h"></i>
+                                                    </button>
+                                                   
                                                 </div>
                                             </div>
                             
@@ -227,18 +242,31 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> 10 min ago</div>
-                                        <a class="card-link" href="#">
-                                            <h5 class="card-title"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit consectetur
-                                                deserunt illo esse distinctio.</h5>
-                                        </a>
-                            
-                                        <p class="card-text">
-                                            <!-- Comment message will go here -->
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam libero tempore atque ex id eius porro
-                                            voluptas nesciunt facilis,
-                                            maxime in, quos molestiae iure corporis debitis consequuntur dolorem aliquid repudiandae.
-                                        </p>
-                            
+                                                    
+                                        <div>
+                
+                                            
+                                            
+                                            {% if post.image_filename == "" %}
+                                                <div class="">
+                                                    
+                                                    
+                                                    <p> {{post.text_message}}</p>
+                                                    
+                                                   
+                                                </div>
+                                            {%else %}
+                                              <div>
+                                                <img class="post-img" onerror="this.style.display='none'" src="{{url_for('static', filename = 'uploads/' + post.image_filename)}}">
+                                                <p> {{post.caption}}</p>
+                                                <p> 
+                                                    {{post.text_message}}
+                                                </p>
+                                                  
+                                              </div>
+                                             {% endif %}
+                                        </div>
+                                        
                                     </div>
                                     <div class="card-footer">
                                         
@@ -280,12 +308,13 @@
                             
                             </div>
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                        
                 </div>
+                        
             </div>
-        
+        </div>
+            
         <div class="tab-pane fade" id="editprofile" role="tabpanel" aria-labelledby="edit-tab">
             <!-- Edit Profile Form -->
             <div>
@@ -329,24 +358,20 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="home">
                             <form class="form" action="##" method="post" id="registrationForm">
+                                {{ edit_form.csrf_token }}
                                 <div class="form-group">
 
                                     <div class="col-xs-6">
-                                        <label for="first_name">
-                                            <h4>First name</h4>
-                                        </label>
-                                        <input type="text" class="form-control" name="first_name" id="first_name"
-                                            placeholder="first name" title="enter your first name if any.">
+                                        {{edit_form.f_name.label}}
+                                        {{edit_form.f_name(class = "form-control  mb-2 rounded border", placeholder = "first name",title="Enter your first name if any.")}}
+                                        
                                     </div>
                                 </div>
                                 <div class="form-group">
 
                                     <div class="col-xs-6">
-                                        <label for="last_name">
-                                            <h4>Last name</h4>
-                                        </label>
-                                        <input type="text" class="form-control" name="last_name" id="last_name"
-                                            placeholder="last name" title="enter your last name if any.">
+                                        {{edit_form.l_name.label}}
+                                        {{edit_form.l_name(class = "form-control  mb-2 rounded border", placeholder = "last name", title="Enter your last name if any.")}}
                                     </div>
                                 </div>
 
@@ -393,27 +418,22 @@
                                 <div class="form-group">
 
                                     <div class="col-xs-6">
-                                        <label for="password">
-                                            <h4>Password</h4>
-                                        </label>
-                                        <input type="password" class="form-control" name="password" id="password"
-                                            placeholder="password" title="enter your password.">
+                                        {{edit_form.password.label}}
+                                        {{edit_form.password(class = "form-control mb-2 rounded border ")}}
                                     </div>
                                 </div>
                                 <div class="form-group">
 
                                     <div class="col-xs-6">
-                                        <label for="password2">
-                                            <h4>Verify</h4>
-                                        </label>
-                                        <input type="password" class="form-control" name="password2" id="password2"
-                                            placeholder="password2" title="enter your password2.">
+                                        {{edit_form.confirmPassword.label}}
+                                        {{edit_form.confirmPassword(class = "form-control  mb-2 rounded border")}}
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-xs-12">
                                         <br>
-                                        <button class="btn btn-lg btn-success" type="submit"><i
+
+                                        <button class="btn btn-lg btn-success" id="#btnSubmit" type="submit"><i
                                                 class="glyphicon glyphicon-ok-sign"></i> Save</button>
                                         <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i>
                                             Reset</button>
