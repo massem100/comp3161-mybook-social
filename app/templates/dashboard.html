@@ -4,11 +4,11 @@
 
  {% include 'header.html' %}
 
-<div class = "d-flex flex-row ">
-    <div class="d-flex flex-column m-3">
+<div class = "d-flex flex-row m-4  w-100">
+    <div class="d-flex flex-column m-2  w-100">
         {% include 'flash_messages.html' %}
 <!-- Create post card start -->
-        <div class = "d-flex card m-3 p-2 w-80">
+        <div class = "d-flex card m-3 p-2 w-100">
 
             <div class = "card-header">
                     <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
@@ -76,9 +76,11 @@
         <!-- Create post end-->
 
         <!-- Posts div start below -->
+        {% for post in posts %}
         <div>
             <div class="">
-                <div class="card m-3  w-80">
+                <div class="card m-3  w-100">
+                   
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
@@ -86,7 +88,7 @@
                                     <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
                                 </div>
                                 <div class="ml-2">
-                                    <div class="h5 m-0">@LeeCross</div>
+                                    <div class="h5 m-0">{{post.username}}</div>
                                     <div class="h7 text-muted">Miracles Lee Cross</div>
                                 </div>
                             </div>
@@ -104,19 +106,30 @@
                     </div>
                     <div class="card-body">
                         <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> 10 min ago</div>
-                        <a class="card-link" href="#">
-                            <h5 class="card-title"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit consectetur
-                                deserunt illo esse distinctio.</h5>
-                        </a>
-            
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam omnis nihil, aliquam est, voluptates
-                            officiis iure soluta
-                            alias vel odit, placeat reiciendis ut libero! Quas aliquid natus cumque quae repellendus. Lorem
-                            ipsum dolor sit amet consectetur adipisicing elit. Ipsa, excepturi. Doloremque, reprehenderit!
-                            Quos in maiores, soluta doloremque molestiae reiciendis libero expedita assumenda fuga quae.
-                            Consectetur id molestias itaque facere? Hic!
-                        </p>
+                                    
+                        <div>
+
+                            
+                            
+                            {% if post.image_filename == "" %}
+                                <div class="">
+                                    
+                                    
+                                    <p> {{post.text_message}}</p>
+                                    
+                                   
+                                </div>
+                            {%else %}
+                              <div>
+                                <img class="post-img" onerror="this.style.display='none'" src="{{url_for('static', filename = 'uploads/' + post.image_filename)}}">
+                                <p> {{post.caption}}</p>
+                                <p> 
+                                    {{post.text_message}}
+                                </p>
+                                  
+                              </div>
+                             {% endif %}
+                        </div>
                         
                     </div>
                     <div class="card-footer ">
@@ -126,7 +139,7 @@
                         <!-- <button type="button" class="btn btn-primary justify-content-end" data-toggle="modal" data-target="#exampleModalCenter">
                             <i class = "fa fa-comment">  </i> Comment
                         </button> -->
-                        
+                     
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
                             aria-hidden="true">
@@ -156,12 +169,12 @@
             
             </div>
             </div>
-
+{% endfor %}
     <!-- Posts div end here-->
     </div>
     
     <!-- Cards on right - start below -->
-    <div class = "d-flex flex-column">
+    <!-- <div class = "d-flex flex-column">
         <div> 
             <div class="card  m-3">
                 <div class="card-body">
@@ -188,7 +201,7 @@
             </div>
         
         </div>
-    </div>
+    </div> -->
     <!-- Cards on right- end -->
 </div>
 {% endblock %}

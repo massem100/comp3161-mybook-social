@@ -40,8 +40,7 @@ def dashboard():
     if request.method == 'GET': 
 
         cur = mysql.connection.cursor()
-        cur.execute(""" SELECT p.post_id, userid, post_date, post_time, text_message from post p JOIN text_post as tp ON 
-                    p.post_id = tp.post_id """)
+        cur.execute(""" select post.post_id, post.userid,post_date, post_time, user.username, text_message from post JOIN text_post JOIN user ON post.post_id = text_post.post_id and post.userid = user.userid; """)
         text_posts = cur.fetchall()
 
         # print(text_posts)
@@ -50,34 +49,36 @@ def dashboard():
             userid = i[1]
             post_date = i[2]
             post_time = i[3]
-            text_message = i[4]
+            username = i[4]
+            text_message = i[5]
             # print(post_id, userid, post_date, post_time, text_message)
             # users.append(User(userid,username, f_name, l_name, gender, dob, user_password))
-            posts.append(Post(post_id, userid, post_date, post_time, text_message, "", ""))
+            posts.append(Post(post_id, userid,username, post_date, post_time, text_message, " ", " "))
 
         cur = mysql.connection.cursor()
-        cur.execute(""" SELECT p.post_id, userid, post_date, post_time, image_filename,caption from post p JOIN 
-                    image_post as ip ON p.post_id = ip.post_id  """)
+        cur.execute(""" select post.post_id, post.userid,post_date, post_time, user.username, image_filename,caption from post JOIN
+                 image_post JOIN user ON post.post_id = image_post.post_id and post.userid = user.userid; """)
         image_posts = cur.fetchall()
 
-        
+        cur = mysql.connection.cursor()
+        cur.execute(
+            """ SELECT username FROM user WHERE userid = '{}' """.format(userid))
+        username = cur.fetchall()
 
         for i in image_posts: 
             post_id = i[0]
             userid = i[1]
             post_date = i[2]
             post_time = i[3]
-            image_filename = i[4]
-            caption = i[5]
+            username = i[4]
+            image_filename = secure_filename(i[5])
+            caption = i[6]
 
-            cur = mysql.connection.cursor()
-            cur.execute(
-            """ SELECT username FROM user WHERE userid = '{}' """.format(userid))
-            username = cur.fetchall()
-        
+            # photo_filename = secure_filename(photo.filename)
+
             # print(post_id, userid, post_date, post_time, image_filename, caption)
-            posts.append(Post(post_id, userid, post_date, post_time, " ", image_filename, caption))
-        
+            posts.append(Post(post_id, userid, username, post_date, post_time, " ", image_filename, caption))
+    
 
         # I sorted the the array first by date and then
         #  sorted the result by time in order to achieve accurate results
@@ -93,13 +94,13 @@ def dashboard():
         # print(posts[5].post_id, posts[5].post_date, posts[5].post_time)
         # print(posts[6].post_id, posts[6].post_date, posts[6].post_time)
         # print(posts[7].post_id, posts[7].post_date, posts[7].post_time)
-        # print(posts[8].post_id, posts[8].post_date, posts[8].post_time)
-        # print(username)
+        print(posts[8].post_id, posts[8].post_date, posts[8].post_time, posts[7].image_filename)
+        
         # print(posts)
         # print(sorted_by_time_date)
         # print(sorted_by_date)
         # print(posts[0].image_filename)
-        return render_template('dashboard.html', text_form= text_form, image_form= image_form, posts = posts)
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form, posts=sorted_by_time_date)
 
     if request.method == 'POST':
 
@@ -108,7 +109,7 @@ def dashboard():
 
 
 
-        return render_template('dashboard.html', text_form = text_form, image_form = image_form)
+        return render_template('dashboard.html', text_form = text_form, image_form = image_form, posts = posts)
     else:   
         return render_template('dashboard.html', text_form=text_form, image_form=image_form)
 

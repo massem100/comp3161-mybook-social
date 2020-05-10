@@ -27,8 +27,9 @@ class User(UserMixin):
 
 class Post(UserMixin): 
 
-    def __init__(self, post_id, username, post_date, post_time, text_message, image_filename, caption):
+    def __init__(self, post_id, userid,username, post_date, post_time, text_message, image_filename, caption):
         self.post_id = post_id
+        self.userid = userid
         self.username =username
         self.post_date =post_date
         self.post_time = post_time 
