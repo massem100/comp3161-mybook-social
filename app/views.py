@@ -8,7 +8,7 @@ import os
 from datetime import date, time, datetime
 from app import app, login_manager, mysql
 from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, textForm, ImageForm, SearchFriends, SearchGroups, EditProfileForm
-from app.models import User
+from app.models import User, Post
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -16,7 +16,7 @@ from flask import Flask,render_template, request, jsonify, redirect, url_for, fl
 from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from operator import attrgetter, itemgetter
 
 """
 #This is how we will connect to the SQL server and make queries to the database in FLask.
@@ -36,17 +36,83 @@ def dashboard():
     image_form = ImageForm()
     # cur = mysql.connection.cursor()
     # cur.execute(""" SELECT * """)
+    posts = []
+    if request.method == 'GET': 
+
+        cur = mysql.connection.cursor()
+        cur.execute(""" SELECT p.post_id, userid, post_date, post_time, text_message from post p JOIN text_post as tp ON 
+                    p.post_id = tp.post_id """)
+        text_posts = cur.fetchall()
+
+        # print(text_posts)
+        for i in text_posts: 
+            post_id = i[0]
+            userid = i[1]
+            post_date = i[2]
+            post_time = i[3]
+            text_message = i[4]
+            # print(post_id, userid, post_date, post_time, text_message)
+            # users.append(User(userid,username, f_name, l_name, gender, dob, user_password))
+            posts.append(Post(post_id, userid, post_date, post_time, text_message, "", ""))
+
+        cur = mysql.connection.cursor()
+        cur.execute(""" SELECT p.post_id, userid, post_date, post_time, image_filename,caption from post p JOIN 
+                    image_post as ip ON p.post_id = ip.post_id  """)
+        image_posts = cur.fetchall()
+
+        
+
+        for i in image_posts: 
+            post_id = i[0]
+            userid = i[1]
+            post_date = i[2]
+            post_time = i[3]
+            image_filename = i[4]
+            caption = i[5]
+
+            cur = mysql.connection.cursor()
+            cur.execute(
+            """ SELECT username FROM user WHERE userid = '{}' """.format(userid))
+            username = cur.fetchall()
+        
+            # print(post_id, userid, post_date, post_time, image_filename, caption)
+            posts.append(Post(post_id, userid, post_date, post_time, " ", image_filename, caption))
+        
+
+        # I sorted the the array first by date and then
+        #  sorted the result by time in order to achieve accurate results
+        
+        sorted_by_time_date= sorted(posts, key= lambda i: ( i.post_date, i.post_time ), reverse =True)
+
+        #This was done just to test the arrangement of the posts- leaving it here in case I need to test again        
+        # print(posts[0].post_id, posts[0].post_date, posts[0].post_time)
+        # print(posts[1].post_id, posts[1].post_date, posts[1].post_time)
+        # print(posts[2].post_id, posts[2].post_date, posts[2].post_time)
+        # print(posts[3].post_id, posts[3].post_date, posts[3].post_time)
+        # print(posts[4].post_id, posts[4].post_date, posts[4].post_time)
+        # print(posts[5].post_id, posts[5].post_date, posts[5].post_time)
+        # print(posts[6].post_id, posts[6].post_date, posts[6].post_time)
+        # print(posts[7].post_id, posts[7].post_date, posts[7].post_time)
+        # print(posts[8].post_id, posts[8].post_date, posts[8].post_time)
+        # print(username)
+        # print(posts)
+        # print(sorted_by_time_date)
+        # print(sorted_by_date)
+        # print(posts[0].image_filename)
+        return render_template('dashboard.html', text_form= text_form, image_form= image_form, posts = posts)
+
     if request.method == 'POST':
+
+        
+        # Post(post_id, userid, post_date, post_time, text_message, image_filename, caption)
+
+
 
         return render_template('dashboard.html', text_form = text_form, image_form = image_form)
     else:   
         return render_template('dashboard.html', text_form=text_form, image_form=image_form)
 
-        """ 
-        print out posts on dashboard.. queries to be written.. 
-
         
-        """
     
         
 @app.route('/dashboard/text_post', methods= ['POST'])
@@ -258,9 +324,10 @@ def friends():
                    user_password = i[6]
 
                    users.append(User(userid,username, f_name, l_name, gender, dob, user_password))
+                #    print(users)
                 return render_template('friends.html', form=sf_form, users=users)
 
-                # print(users[0].id, users[0]. username)
+                
 
         
         return render_template('friends.html', form = sf_form, users = users)
