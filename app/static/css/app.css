@@ -3502,3 +3502,22 @@ searchContainer {
 #friendsbtn{
  float: right;
 }
+
+/* group column */
+.column {
+  float: left;
+  width: 100%;
+  padding: 10px;
+  height: 100%;
+
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#friendsbtn2{
+  size: 20%;
+}

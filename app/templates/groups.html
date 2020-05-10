@@ -7,30 +7,198 @@
 
 <div class="page">
     {% include 'flash_messages.html' %}
-    <h3 class="">
-        <i class="fa fa-users" aria-hidden="true"></i>
-        Create a group where you can interact with other friends and discuss important things together.
-    </h3>
-    <div class="card ml-2 mb-2 mt-4 mr-2">
-        <div class="card-header bg-primary text-white font-weight-bold">
-            <i class="fa fa-users" aria-hidden="true"></i>
-            Name of Group
+    <div class="row">
+        <div class="column">
+            <div class="card ml-2 mb-2 mt-4 mr-2">
+                <div class="card-header bg-primary text-white font-weight-bold">
+                    Name of Group
+            
+                </div>
+                 <!-- add Create - Post card -->
+                 <div class = "w-100">
+                    <!--- \\\\\\\Post-->
+                    <div class="d-flex card m-3 p-2 w-90">
+                    
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab"
+                                        aria-controls="posts" aria-selected="true"> Create a post </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images"
+                                        aria-selected="false" href="#images">Upload an image</a>
+                                </li>
+                            </ul>
+                    
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content " id="myTabContent">
+                                <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab"
+                                    aria-selected="true">
+                                    <div class="form-group">
+                                        <form action method='POST'>
+                                            {{text_form.text_post(class="form-control ", id="message" , rows="3", placeholder="What are you thinking?")}}
+                                            <span class="help-block d-flex justify-content-end">
+                                                <p id="characterLeft" class=" ">You have reached the limit</p>
+                                            </span>
+                                        </form>
+                                    </div>
+                    
+                                </div>
+                                <div class="tab-pane fade " id="images" role="tabpanel" aria-labelledby="images-tab" aria-selected="false">
+                                    <div class="form-group">
+                    
+                                        <div class="custom-file">
+                                            <form class="form-group" action method="POST">
+                                                <div class="mr-2">
+                                                    {{image_form.photo.label(class = "mr-2")}}
+                                                    {{image_form.photo(class="", id="customFile")}}
+                                                </div>
+                                                <div>
+                                                    {{image_form.image_desc.label}}
+                                                    {{image_form.image_desc(class = "form-control " , id="caption")}}
+                                                    <span class="help-block d-flex justify-content-end">
+                                                        <p id="characterRemaining" class=" ">You have reached the limit</p>
+                                                    </span>
+                                                </div>
+                    
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="py-4"></div>
+                                </div>
+                            </div>
+                    
+                        </div>
+                    
+                        <div class="card-footer">
+                            <div class="btn-toolbar justify-content-end">
+                                <div class="btn-group">
+                                    <button class="form-control input-sm btn btn-primary disabled" id="#btnSubmit" type="submit"
+                                        class="btn btn-primary text-white">Post</button>
+                                </div>
+                    
+                            </div>
+                    
+                        </div>
+                    
+                    
+                    </div>
+                    <!-- create posts ends here -->
+            <div id = "">
+                <!-- add posts -->
+            <div class="">
+                    <div class="card m-2  w-80">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mr-2">
+                                        <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                    </div>
+                                    <div class="ml-2">
+                                        <div class="h5 m-0">@LeeCross</div>
+                                        <div class="h7 text-muted">Miracles Lee Cross</div>
+                                    </div>
+                                </div>
+                
+                            </div>
+                
+                        </div>
+                        <div class="card-body">
+                            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> 10 min ago</div>
+                            <a class="card-link" href="#">
+                                <h5 class="card-title"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit consectetur
+                                    deserunt illo esse distinctio.</h5>
+                            </a>
+                
+                            <p class="card-text">
+                                <!-- Comment message will go here -->
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam libero tempore atque ex id eius porro
+                                voluptas nesciunt facilis,
+                                maxime in, quos molestiae iure corporis debitis consequuntur dolorem aliquid repudiandae.
+                            </p>
+                
+                        </div>
+                        <div class="card-footer">
+                            
+                            <!-- add comment icon here -->
+                            <a href="" class="card-link d-flex justify-content-end " data-toggle="modal" data-target="#exampleModalCenter"><i
+                                    class="fa fa-comment"> </i> Comment</a>
+                            
+                            <!-- <button type="button" class="btn btn-primary justify-content-end" data-toggle="modal" data-target="#exampleModalCenter">
+                                                        <i class = "fa fa-comment">  </i> Comment
+                                                    </button> -->
+                            
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle"> Comment Section</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>
+                                                Add comment form
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                
+                </div>
+                </div>
+            </div>
+        </div>
+            
+    </div>
+</div>
+
+
+        </div>
+        <div class="column">
+            <h3 class="">
+                <i class="fa fa-users" aria-hidden="true"></i>
+                Create a group where you can interact with other friends and discuss important things together.
+            </h3>
+            <div class="card ml-2 mb-2 mt-4 mr-2">
+                <div class="card-header bg-primary text-white font-weight-bold">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    Create Group
+            
+                </div>
+                <form>
+                    <label for="Group_name">Group name:</label>
+                    <input id="Group_name" type="text" placeholder="Group name" required>
+            </div>
+            <div class="card ml-2 mb-2 mt-4 mr-2">
+                <div class="card-header bg-primary text-white font-weight-bold">
+                    <i class="fa fa-address-card" aria-hidden="true"></i>
+                    Name of Group
+            
+                </div>
+                    <input id="people" type="text" placeholder="search for friends to add"required>
+                    
+                    <li<button id="friendsbtn2" class="btn btn-primary rounded"> Add Friend </button>
+                    </li>
+        </div>
     
         </div>
-        <form>
-            <label for="Group_name">Group name:</label>
-            <input id="Group_name" type="text" placeholder="Group name" required>
+        
     </div>
-    <div class="card ml-2 mb-2 mt-4 mr-2">
-        <div class="card-header bg-primary text-white font-weight-bold">
-            <i class="fa fa-address-card" aria-hidden="true"></i>
-            Name of Group
     
-        </div>
-        <form>
-            <label for="people">Add people:</label>
-            <input id="people" type="text" required>
-    </div>
 </div>
 
 

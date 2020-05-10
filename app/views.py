@@ -272,8 +272,13 @@ def userprofile():
     
 @app.route('/groups', methods = ['GET', 'POST'])
 def groups():
-
-    return render_template('groups.html')
+    form = PhotoForm()
+    text_form = textForm()
+    image_form = ImageForm()
+    
+   
+    return render_template('groups.html',form = form, text_form = text_form, image_form = image_form)
+    
 
 # Route to host form to search group
 @app.route('/searchgroup', methods = ['GET'])
