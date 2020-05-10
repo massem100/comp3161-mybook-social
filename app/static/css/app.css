@@ -3505,19 +3505,13 @@ searchContainer {
 
 /* group column */
 .column {
-  float: left;
-  width: 100%;
-  padding: 10px;
+  padding-top: 0.2%;
+  width: 100vh;
   height: 100%;
-
+  background-color: white;
+  border-spacing: 5px;
 }
 
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-#friendsbtn2{
-  size: 20%;
+.create{
+  float: right;
 }

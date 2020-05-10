@@ -7,7 +7,7 @@
 
 <div class="page">
     {% include 'flash_messages.html' %}
-    <div class="row">
+   <!--  <div class="row">
         <div class="column">
             <div class="card ml-2 mb-2 mt-4 mr-2">
                 <div class="card-header bg-primary text-white font-weight-bold">
@@ -15,9 +15,9 @@
             
                 </div>
                  <!-- add Create - Post card -->
-                 <div class = "w-100">
+                 <!-- <div class = "w-100"> -->
                     <!--- \\\\\\\Post-->
-                    <div class="d-flex card m-3 p-2 w-90">
+                    <!-- <div class="d-flex card m-3 p-2 w-90">
                     
                         <div class="card-header">
                             <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
@@ -87,7 +87,7 @@
                     </div>
                     <!-- create posts ends here -->
             <div id = "">
-                <!-- add posts -->
+                <!-- add posts 
             <div class="">
                     <div class="card m-2  w-80">
                         <div class="card-header">
@@ -113,7 +113,7 @@
                             </a>
                 
                             <p class="card-text">
-                                <!-- Comment message will go here -->
+                                <!-- Comment message will go here 
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam libero tempore atque ex id eius porro
                                 voluptas nesciunt facilis,
                                 maxime in, quos molestiae iure corporis debitis consequuntur dolorem aliquid repudiandae.
@@ -122,7 +122,7 @@
                         </div>
                         <div class="card-footer">
                             
-                            <!-- add comment icon here -->
+                            <!-- add comment icon here 
                             <a href="" class="card-link d-flex justify-content-end " data-toggle="modal" data-target="#exampleModalCenter"><i
                                     class="fa fa-comment"> </i> Comment</a>
                             
@@ -130,7 +130,7 @@
                                                         <i class = "fa fa-comment">  </i> Comment
                                                     </button> -->
                             
-                            <!-- Modal -->
+                             <!-- Modal 
                             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
                                 aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -165,39 +165,75 @@
             
     </div>
 </div>
+ 
 
-
-        </div>
-        <div class="column">
-            <h3 class="">
+        </div> -->
+            <div class="container">
+            <h3 >
                 <i class="fa fa-users" aria-hidden="true"></i>
                 Create a group where you can interact with other friends and discuss important things together.
             </h3>
-            <div class="card ml-2 mb-2 mt-4 mr-2">
-                <div class="card-header bg-primary text-white font-weight-bold">
-                    <i class="fa fa-users" aria-hidden="true"></i>
-                    Create Group
             
-                </div>
-                <form>
-                    <label for="Group_name">Group name:</label>
-                    <input id="Group_name" type="text" placeholder="Group name" required>
+            <form>
+            <div class="card ml-2 mb-2 mt-4 mr-2">
+            <div class="card-header bg-primary text-white font-weight-bold">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    Name for Group
+            
             </div>
+            
+            <input id="group_name" type="text" maxlength="75" required>
+            </div>
+            
             <div class="card ml-2 mb-2 mt-4 mr-2">
                 <div class="card-header bg-primary text-white font-weight-bold">
                     <i class="fa fa-address-card" aria-hidden="true"></i>
-                    Name of Group
-            
+                    Group Type
                 </div>
-                    <input id="people" type="text" placeholder="search for friends to add"required>
+                <input id="group_type" type="text" placeholder="work,school,church etc" required>
+
+            </div>
+               
+            <div class="card ml-2 mb-2 mt-4 mr-2">
+                    <div class="card-header bg-primary text-white font-weight-bold">
+                        <i class="fa fa-address-card" aria-hidden="true"></i>
+                        Group Description
+
+                       
+                    </div>
+                    <input id="group_desc" type="text" required>
+            </div>
                     
-                    <li<button id="friendsbtn2" class="btn btn-primary rounded"> Add Friend </button>
-                    </li>
+            <div class="card ml-2 mb-2 mt-4 mr-2">
+                        <div class="card-header bg-primary text-white font-weight-bold">
+                            <i class="fa fa-address-card" aria-hidden="true"></i>
+                            Add friends
+                    
+                        </div>
+                    <input id="friends" type="text" placeholder="search for friends to add"required>
+      
+            </div>
+
+            <div>
+                <h5 class = "font-weight-bold m-2 text-primary"> SEARCH RESULTS MATCHING </h5>
+        <!-- <img id="profile-photo" src="/static/uploads/krys.png"> -->
+        <div>
+            <button id= "friendsbtn" class="btn btn-primary rounded"> Add Friend </button>
+        </div>
+        <!-- Return results of search inside div -->
+
+             <p class = "text-center text-secondary"> No Searches made yet</p>
+                  
+            </div> 
+            <hr>
+            <button type="button" class="btn btn-primary rounded create"> Create </button>    
+            </form>
+        </div>    
         </div>
     
-        </div>
         
     </div>
+
     
 </div>
 

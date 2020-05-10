@@ -225,10 +225,15 @@ def searchgroup():
     return render_template('search_group.html', form= groupform)
 
 # Route to display the active group 
-@app.route('/groups/<group_id>', methods =['POST'])
-def viewGroup():
+@app.route('/a_groups')
+def a_group():
+    form = PhotoForm()
+    text_form = textForm()
+    image_form = ImageForm()
     
-    return 'route to display group'
+   
+    return render_template('a_group.html',form = form, text_form = text_form, image_form = image_form)
+
 
 @app.route('/friends', methods = ['POST', 'GET'])
 def friends():
