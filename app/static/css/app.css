@@ -4,7 +4,10 @@ body {
   /* background-color: #00A99D; */
 
 }
-
+.post-img{
+  width: 400px; 
+  height:400px;
+}
 .photo-grid{
   width:150px; 
   height:150px;

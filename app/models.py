@@ -20,4 +20,28 @@ class User(UserMixin):
             return unicode(self.id)  # python 2 support
         except NameError:
             return str(self.id)  # python 3 support
-    
+
+    def __repr__(self):
+        return '<User "{}">'.format(self.username)
+
+
+class Post(UserMixin): 
+
+    def __init__(self, post_id, userid,username, post_date, post_time, text_message, image_filename, caption):
+        self.post_id = post_id
+        self.userid = userid
+        self.username =username
+        self.post_date =post_date
+        self.post_time = post_time 
+        self.text_message = text_message
+        self.image_filename = image_filename
+        self.caption = caption
+        
+    def get_id(self):
+        try:
+            return unicode(self.post_id)  # python 2 support
+        except NameError:
+            return str(self.post_id)  # python 3 support
+
+    def __repr__(self):
+        return '<Post "{}">'.format(self.post_id)

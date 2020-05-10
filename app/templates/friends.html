@@ -9,7 +9,7 @@
    <!-- This is the search bar to search the database for any user matching the name typed. -->
    <!-- If the user is already a friend with one of the results, the buttton to add Friend should change to show a tick and 'Friend Already' -->
     <!-- <input class = "d-flex align-self-center friends-search border rounded mb-2"type= "text" placeholder="Search for friends">  -->
-    <form action = "{{url_for('search_friends')}}" method ='POST'>
+    <form action = "{{url_for('friends')}}" method ='POST'>
         {{form.csrf_token}}
         <div class="searchContainer">
             <i class="fa fa-search searchIcon"></i>
