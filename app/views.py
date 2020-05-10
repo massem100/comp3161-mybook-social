@@ -148,6 +148,10 @@ def text():
     else: 
         return render_template('dashboard.html', text_form=text_form, image_form=image_form)
 
+@app.route('/dashboard/<post_id>/comments')
+def comments(): 
+    return 'x'
+
 @app.route('/dashboard/image_post', methods = ['POST'])
 @login_required
 def image(): 
