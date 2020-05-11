@@ -53,3 +53,5 @@ class EditProfileForm(FlaskForm):
     confirmPassword = PasswordField('Repeat Password', validators=[DataRequired()])
     birthday = DateField('Date of Birth', format='%m/%d/%Y', validators=[DataRequired("Please enter your date of birth")])
 
+class CommentForm(FlaskForm): 
+    comment = TextAreaField('Comment', validators=[DataRequired(' Comment Field cannot be empty')])

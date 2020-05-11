@@ -184,5 +184,35 @@ $(document).ready(function () {
             $('#characterRemaining').removeClass('red');
         }
     });    
-       
+   
+    $('#commentbtn').on('click', function (e) {
+        e.preventDefault();
+        // console.log('PRINTING')
+        let self = this;
+        let uploadForm = document.getElementById('uploadForm');
+        let form_data = new FormData(uploadForm);
+        fetch("/dashboard/<post_id>/comments", {
+            method: 'POST',
+            body: form_data,
+            headers: {
+                'X-CSRFToken': token
+            },
+            credentials: 'same-origin'
+
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (jsonResponse) {
+                // display a success message
+                console.log(jsonResponse);
+                self.success = jsonResponse.success;
+                self.errors = jsonResponse.errors;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    
+        
+    });
 });

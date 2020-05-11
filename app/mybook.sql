@@ -41,7 +41,7 @@ CREATE TABLE user(
 );
 
 CREATE TABLE user_info(
-    userid int(10) not null unique AUTO_INCREMENT,
+    userid int(10) not null unique,
     email varchar(50) ,
     phone_num varchar(25),
     primary key(userid),
@@ -87,12 +87,12 @@ CREATE TABLE image_post(
 
 CREATE TABLE friend(
     fid int(10) not null unique AUTO_INCREMENT,
-    friend_owner varchar(10) not null,
+    friend_owner int(10) not null,
     friend_id int(10) not null,
     friend_type varchar(9),
     primary key(fid),
-    foreign key(friend_id) references user(userid) on update cascade on delete cascade
-    
+    foreign key(friend_id) references user(userid) on update cascade on delete cascade,
+    foreign key(friend_ownwer) references user(userid) on update cascade on delete cascade
 );
 
 CREATE TABLE comment(

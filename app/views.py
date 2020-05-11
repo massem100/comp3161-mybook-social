@@ -7,7 +7,7 @@ This file creates your application.
 import os
 from datetime import date, time, datetime
 from app import app, login_manager, mysql
-from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, textForm, ImageForm, SearchFriends, SearchGroups, EditProfileForm
+from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, textForm, ImageForm, SearchFriends, SearchGroups, EditProfileForm, CommentForm
 from app.models import User, Post
 from flask_mysqldb import MySQL
 from flask_cors import CORS
@@ -34,6 +34,7 @@ def dashboard():
 
     text_form = textForm()
     image_form = ImageForm()
+    comment_form = CommentForm()
     # cur = mysql.connection.cursor()
     # cur.execute(""" SELECT * """)
     posts = []
@@ -89,17 +90,10 @@ def dashboard():
         # print(posts[0].post_id, posts[0].post_date, posts[0].post_time)
         # print(posts[1].post_id, posts[1].post_date, posts[1].post_time)
         # print(posts[2].post_id, posts[2].post_date, posts[2].post_time)
-        # print(posts[3].post_id, posts[3].post_date, posts[3].post_time)
-        # print(posts[4].post_id, posts[4].post_date, posts[4].post_time)
-        # print(posts[5].post_id, posts[5].post_date, posts[5].post_time)
-        # print(posts[6].post_id, posts[6].post_date, posts[6].post_time)
-        # print(posts[7].post_id, posts[7].post_date, posts[7].post_time)
-        print(posts[8].post_id, posts[8].post_date, posts[8].post_time, posts[7].image_filename)
         
-        # print(posts)
-        # print(sorted_by_time_date)
-        # print(sorted_by_date)
-        # print(posts[0].image_filename)
+        
+        
+
         return render_template('dashboard.html', text_form=text_form, image_form=image_form, posts=sorted_by_time_date)
 
     if request.method == 'POST':
@@ -116,7 +110,7 @@ def dashboard():
         
     
         
-@app.route('/dashboard/text_post', methods= ['POST'])
+@app.route('/dashboard/text_post', methods= ['POST', 'GET'])
 @login_required
 def text(): 
     text_form = textForm()
@@ -148,11 +142,9 @@ def text():
     else: 
         return render_template('dashboard.html', text_form=text_form, image_form=image_form)
 
-@app.route('/dashboard/<post_id>/comments')
-def comments(): 
-    return 'x'
 
-@app.route('/dashboard/image_post', methods = ['POST'])
+
+@app.route('/dashboard/image_post', methods = ['POST', 'GET'])
 @login_required
 def image(): 
     image_form = ImageForm()
@@ -191,98 +183,38 @@ def image():
         return render_template('dashboard.html', text_form = text_form, image_form = image_form)
 
 
+@app.route('/dashboard/<post_id>/comments', methods =['POST'])
+def comments(post_id):
+
+    comment_form = CommentForm()
+    text_form = textForm()
+    image_form = ImageForm()
+
+    if request.method == 'POST' and comment_form.comment.data: 
+        # thi
+        comment = comment_form.comment.data
+
+        userid = current_user.id
+        date_posted = format_date_joined(datetime.now())
+        time_posted = format_time_joined(datetime.now())
+
+
+        # cur = mysql.connection.cursor()
+        # cur.execute(""" INSERT INTO comment  """)
+
+        
+        # comment_id, post_id, userid, comment_Content, time_posted, date_posted
+
+
+        flash('Comment added successfully', 'success')
+        return redirect(url_for('dashboard'))
+
+    return render_template('dashboard.html', comment_form = comment_form,text_form = text_form, image_form = image_form)
+
 
 @app.route('/userprofile', methods = ['POST','GET'])
 @login_required
 def userprofile():
-
-    image_form = ImageForm()
-    form = PhotoForm()
-    text_form = textForm()
-    edit_form= EditProfileForm()
-    
-    posts = []
-    if request.method == 'GET': 
-
-        cur = mysql.connection.cursor()
-        cur.execute(""" select post.post_id, post.userid,post_date, post_time, user.username, text_message from post JOIN text_post JOIN user ON post.post_id = text_post.post_id and post.userid = user.userid; """)
-        text_posts = cur.fetchall()
-
-        # print(text_posts)
-        for i in text_posts: 
-            post_id = i[0]
-            userid = i[1]
-            post_date = i[2]
-            post_time = i[3]
-            username = i[4]
-            text_message = i[5]
-            # print(post_id, userid, post_date, post_time, text_message)
-            # users.append(User(userid,username, f_name, l_name, gender, dob, user_password))
-            posts.append(Post(post_id, userid,username, post_date, post_time, text_message, " ", " "))
-
-        cur = mysql.connection.cursor()
-        cur.execute(""" select post.post_id, post.userid,post_date, post_time, user.username, image_filename,caption from post JOIN
-                 image_post JOIN user ON post.post_id = image_post.post_id and post.userid = user.userid; """)
-        image_posts = cur.fetchall()
-
-        cur = mysql.connection.cursor()
-        cur.execute(
-            """ SELECT username FROM user WHERE userid = '{}' """.format(userid))
-        username = cur.fetchall()
-
-        for i in image_posts: 
-            post_id = i[0]
-            userid = i[1]
-            post_date = i[2]
-            post_time = i[3]
-            username = i[4]
-            image_filename = secure_filename(i[5])
-            caption = i[6]
-
-            # photo_filename = secure_filename(photo.filename)
-
-            # print(post_id, userid, post_date, post_time, image_filename, caption)
-            posts.append(Post(post_id, userid, username, post_date, post_time, " ", image_filename, caption))
-    
-
-        # I sorted the the array first by date and then
-        #  sorted the result by time in order to achieve accurate results
-        
-        sorted_by_time_date= sorted(posts, key= lambda i: ( i.post_date, i.post_time ), reverse =True)
-
-        #This was done just to test the arrangement of the posts- leaving it here in case I need to test again        
-        # print(posts[0].post_id, posts[0].post_date, posts[0].post_time)
-        # print(posts[1].post_id, posts[1].post_date, posts[1].post_time)
-        # print(posts[2].post_id, posts[2].post_date, posts[2].post_time)
-        # print(posts[3].post_id, posts[3].post_date, posts[3].post_time)
-        # print(posts[4].post_id, posts[4].post_date, posts[4].post_time)
-        # print(posts[5].post_id, posts[5].post_date, posts[5].post_time)
-        # print(posts[6].post_id, posts[6].post_date, posts[6].post_time)
-        # print(posts[7].post_id, posts[7].post_date, posts[7].post_time)
-        print(posts[8].post_id, posts[8].post_date, posts[8].post_time, posts[7].image_filename)
-        
-        # print(posts)
-        # print(sorted_by_time_date)
-        # print(sorted_by_date)
-        # print(posts[0].image_filename)
-        return render_template('user_profile.html',form= form, text_form=text_form, image_form=image_form,edit_form=edit_form, posts=sorted_by_time_date)
-
-    if request.method == 'POST':
-
-        
-        # Post(post_id, userid, post_date, post_time, text_message, image_filename, caption)
-
-
-
-        return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form,posts = posts)
-    else: 
-        return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
-        
-    
-    
-@app.route('/userprofile/text_post', methods= ['POST'])
-@login_required
-def Usertext():
     image_form = ImageForm()
     form = PhotoForm()
     text_form = textForm()
@@ -291,7 +223,7 @@ def Usertext():
     if request.method == 'POST':
         if text_form.validate_on_submit() and text_form.text_post.data:
 
-            usertext_post = text_form.text_post.data
+            worded_post = text_form.text_post.data
             # use statements below with implemented functions to format the time before storing on the database
             userid = current_user.id
             post_date = format_date_joined(datetime.now())
@@ -302,7 +234,7 @@ def Usertext():
                         VALUES (NULL, "{}", "{}", "{}") """.format(userid, post_date, post_time))
 
             cur.execute(""" INSERT INTO text_post (text_id, post_id, text_message) 
-                    VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}") """.format(userid, usertext_post))
+                    VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}") """.format(userid, worded_post))
 
             mysql.connection.commit()
             
@@ -310,19 +242,7 @@ def Usertext():
             flash('Text Uploaded', 'success')
             return  redirect(url_for('userprofile'))
         return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
-    else: 
-        return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
-    
-@app.route('/userprofile/image_post', methods = ['POST'])
-@login_required
-def Userimage():
 
-    image_form = ImageForm()
-    form = PhotoForm()
-    text_form = textForm()
-    edit_form= EditProfileForm()
-
-    if request.method=='POST':
         if image_form.validate_on_submit():
             
             photo = image_form.photo.data
@@ -347,92 +267,35 @@ def Userimage():
             flash('Image Uploaded!', 'success')
             return redirect(url_for('userprofile'))
         return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
-    else:
-        return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
-
-@app.route('/userprofile/form', methods = ['POST',"GET"])
-@login_required
-def Userform():
-
-    image_form = ImageForm()
-    form = PhotoForm()
-    text_form = textForm()
-    edit_form= EditProfileForm()
     
+    #Working on this section. To upload photo to profile 
+    # photo_id int(10) not null unique AUTO_INCREMENT,
+    # userid int(10) not null,
+    # photo_desc varchar(150),
+    # photo_filename varchar(100) not null,
+    # date_added date not null,
+    if form.validate_on_submit():
+        photo = form.photo.data
 
-    if request.method=='POST':
-        if form.validate_on_submit():
-            
-            photo = form.photo.data
-            caption = form.image_desc.data
+        photo_filename = secure_filename(photo.filename)
+        photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
+        userid = current_user.id
+        post_date = format_date_joined(datetime.now())
+        post_time = format_time_joined(datetime.now())
 
-            photo_filename = secure_filename(photo.filename)
-            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
+        # cur = mysql.connection.cursor()
+        ###
+        #cur.execute(""" INSERT INTO post (post_id, userid, post_date, post_time) 
+        #               VALUES (NULL, "{}", "{}", "{}") """.format(userid, post_date, post_time))
 
-            userid = current_user.id
-            post_date = format_date_joined(datetime.now())
-            post_time = format_time_joined(datetime.now())
+        #cur.execute(""" INSERT INTO photo (photo_id, userid, photo_desc, photo_filename,date_added) 
+        #           VALUES (NULL, (SELECT max(photo_id) FROM post WHERE userid = '{}'), "{}", "{}","{}") """.format(userid,photo_desc, photo_filename, date_added))
+        ###
+        # mysql.connection.commit()
 
-            cur = mysql.connection.cursor()
-            cur.execute(""" INSERT INTO post (post_id, userid, post_date, post_time) 
-                        VALUES (NULL, "{}", "{}", "{}") """.format(userid, post_date, post_time))
-
-            cur.execute(""" INSERT INTO photo (photo_id, userid, photo_desc, photo_filename,date_added) 
-                    VALUES (NULL, (SELECT max(user_id) FROM post WHERE userid = '{}'), "{}", "{}") """.format(userid, photo_filename, caption))
-                    
-
-            mysql.connection.commit()
-
-            flash('Image Uploaded!', 'success')
-            return redirect(url_for('userprofile'))
-        return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
-    else:
-        return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
-
-
-@app.route('/userprofile', methods = ['POST','GET'])
-def edit():
-    image_form = ImageForm()
-    form = PhotoForm()
-    text_form = textForm()
-    edit_form= EditProfileForm()
-    
-    if request.method == 'POST' and edit_form.validate():
-       
-        if edit_form.validate_on_submit():
-            
-            username = edit_form.username.data
-            first_Name =  edit_form.f_name.data
-            last_Name =  edit_form.l_name.data
-            
-            ###
-            #phone= edit_form.phone_num.data
-            #mobile= edit_form.phone_num.data
-            #email_addr= edit_form.email.data
-            #location= edit_form.location.data
-            ###
-            gender =  edit_form.gender.data
-            date_of_birth =  edit_form.birthday.data
-            user_password = generate_password_hash(edit_form.password.data)
-            confirm_password = check_password_hash(user_password, edit_form.password.data)
-
-            
-            
-            cur = mysql.connection.cursor()
-            
-            cur.execute('''INSERT INTO user (userid,username, f_name, l_name, gender, date_of_birth, user_password) VALUES (NULL, %s, %s, %s, %s, %s, %s)''',
-            (username, first_name, last_name, gender, date_of_birth, user_password))
-
-            mysql.connection.commit()
-
-            cur.close()
-            
-
-            flash('Profile Information Updated!', 'success')
-            return redirect(url_for('userprofile'))
-        return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
-    else:
-        return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
+        flash('Image Uploaded!', 'success')
+        return redirect(url_for('userprofile'))
+    return render_template('user_profile.html',form = form, text_form = text_form, image_form = image_form,edit_form=edit_form)
     
 
     
@@ -464,10 +327,7 @@ def a_group():
     form = PhotoForm()
     text_form = textForm()
     image_form = ImageForm()
-    
-   
-    return render_template('a_group.html',form = form, text_form = text_form, image_form = image_form)
-
+    return render_template('a_group.html', form=form, text_form=text_form, image_form=image_form)
 
 # @app.route('/friends', methods = ['POST', 'GET'])
 # def friends():
