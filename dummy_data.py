@@ -15,7 +15,7 @@ def dummy_data(x,headers):
               #for statement use to populate the the database by x amount into a lis
               for i in range(0,x):
                   writer.writerow({
-                      'User ID':fake.bothify(text='U?-######'),
+                      'User ID':fake.random_digit(0-499999),
                       'User Name':fake.profile()['username'],
                       'Full Name':fake.profile()['name'],
                       'Gender':fake.profile()['sex'],
