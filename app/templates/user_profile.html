@@ -105,7 +105,7 @@
                                 
                             </div>
                             <div>
-                                <form class="form-group " action="{{url_for('Userform')}}" methods='POST' enctype="multipart/form-data">
+                                <form class="form-group " action methods='POST' enctype="multipart/form-data">
                                     {{ form.csrf_token}}
                                     <div class="d-flex flex-row justify-content-end ">
                                        {{ form.photo(class ="mr-1 ml-2 mb-1, id='customFile' ") }}
@@ -135,77 +135,67 @@
                                 
                                 <div class = "d-flex card m-3 p-2 w-90">
 
-                                    <div class = "card-header">
-                                            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                                                <li class="nav-item">
-                                                    <a class="nav-link " id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts"
-                                                        aria-selected="true"> Create a post </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false"
-                                                        href="#images">Upload an image</a>
-                                                </li>
-                                            </ul>
-                        
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="tab-content " id="myTabContent">
-                                            <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab" aria-selected="true">
-                                                <div class="form-group">
-                                                    <form action="{{url_for('Usertext')}}"  method = 'POST' enctype="multipart/form-data"> 
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link " id="posts-tab" data-toggle="tab" href="#pposts" role="tab" aria-controls="posts"
+                                                aria-selected="true"> Create a post </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images"
+                                                aria-selected="false" href="#pimages">Upload an image</a>
+                                        </li>
+                                    </ul>
+                                
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content " id="myTabContent">
+                                        <div class="tab-pane fade show active" id="pposts" role="tabpanel" aria-labelledby="posts-tab"
+                                            aria-selected="true">
+                                            <div class="form-group">
+                                                <form action=" {{url_for('profile_textpost')}}" method='POST' enctype="multipart/form-data">
                                                     {{ text_form.csrf_token }}
-                                                        {{text_form.text_post(class="form-control ", id="message" , rows="3", placeholder="What are you thinking?")}}
+                                                    {{text_form.text_post(class="form-control ", id="message" , rows="3", placeholder="What are you thinking?")}}
+                                                    <span class="help-block d-flex justify-content-end">
+                                                        <p id="characterLeft" class=" ">You have reached the limit</p>
+                                                    </span>
+                                                    <div class="btn-group d-flex justify-content-end">
+                                                        <button id="#btnSubmit" type="submit" class="btn btn-primary text-white">Post</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                
+                                        </div>
+                                        <div class="tab-pane fade " id="pimages" role="tabpanel" aria-labelledby="images-tab" aria-selected="false">
+                                            <div class="form-group">
+                                
+                                                <div class="custom-file">
+                                                    <form action="{{url_for('profile_imagepost')}}" class="form-group" method='POST' enctype="multipart/form-data">
+                                                        {{ image_form.csrf_token }}
+                                                        <div class="mr-2">
+                                                            {{image_form.photo.label(class = "mr-2")}}
+                                                            {{image_form.photo(class="", id="customFile")}}
+                                                        </div>
+                                                        <div>
+                                                            {{image_form.image_desc.label}}
+                                                            {{image_form.image_desc(class = "form-control " , id="caption")}}
                                                             <span class="help-block d-flex justify-content-end">
-                                                            <p id="characterLeft" class=" ">You have reached the limit</p>
-                                                        </span>
+                                                                <p id="characterRemaining" class=" ">You have reached the limit</p>
+                                                            </span>
+                                                        </div>
                                                         <div class="btn-group d-flex justify-content-end">
-                                                            <button id="#btnSubmit" type="submit" class="btn btn-primary text-white ">Post</button>
+                                                            <button id="#btnSubmit" type="submit" class="btn btn-primary text-white">Post</button>
                                                         </div>
                                                     </form>
                                                 </div>
-                                            
                                             </div>
-                                            <div class="tab-pane fade " id="images" role="tabpanel" aria-labelledby="images-tab" aria-selected="false">
-                                                <div class="form-group">
-                                                        
-                                                    <div class="custom-file">
-                                                        <form action="{{url_for('Userimage')}}"  class = "form-group"  method= 'POST' enctype="multipart/form-data"> 
-                                                            {{ image_form.csrf_token }}
-                                                            <div class = "mr-2">
-                                                                {{image_form.photo.label(class = "mr-2")}}
-                                                                {{image_form.photo(class="", id="customFile")}}
-                                                            </div>
-                                                            <div>
-                                                                {{image_form.image_desc.label}}
-                                                                {{image_form.image_desc(class = "form-control " , id="caption")}}
-                                                                <span class="help-block d-flex justify-content-end">
-                                                                    <p id="characterRemaining" class=" ">You have reached the limit</p>
-                                                                </span>
-                                                            </div>
-                                                            <div class="btn-group d-flex justify-content-end">
-                                                                <button id="#btnSubmit" type="submit" class="btn btn-primary text-white">Post</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                <div class="py-4"></div>
-                                            </div>
+                                            <div class="py-4"></div>
                                         </div>
-                                
                                     </div>
-                                    <!--  
                                 
-                                    <div class="card-footer">
-                                        <div class="btn-toolbar justify-content-end">
-                                            <div class="btn-group">
-                                                <button class="form-control input-sm btn btn-primary disabled" id="#btnSubmit" type="submit"
-                                                    class="btn btn-primary text-white">Post</button>
-                                            </div>
+                                </div>
                                 
-                                        </div>
                                 
-                                    </div>
-                                    -->
                                 
                                 
                                 </div>
@@ -340,24 +330,13 @@
                     </hr><br>
 
 
-                
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Social Media</div>
-                        <div class="panel-body">
-                            <i class="fa fa-facebook fa-2x"></i> <i class="fa fa-github fa-2x"></i> <i
-                                class="fa fa-twitter fa-2x"></i> <i class="fa fa-pinterest fa-2x"></i> <i
-                                class="fa fa-google-plus fa-2x"></i>
-                        </div>
-                    </div>
-
                 </div>
                 <!--/col-3-->
-                <div class="col-sm-9">
+                <div class="col-sm-6">
                     
                     <div class="tab-content">
                         <div class="tab-pane active" id="home">
-                            <form class="form" action="##" method="post" id="registrationForm">
+                            <form class="form" action="##" method="post" id="">
                                 {{ edit_form.csrf_token }}
                                 <div class="form-group">
 
@@ -374,45 +353,48 @@
                                         {{edit_form.l_name(class = "form-control  mb-2 rounded border", placeholder = "last name", title="Enter your last name if any.")}}
                                     </div>
                                 </div>
-
                                 <div class="form-group">
-
+                                
                                     <div class="col-xs-6">
-                                        <label for="phone">
-                                            <h4>Phone</h4>
-                                        </label>
-                                        <input type="text" class="form-control" name="phone" id="phone"
-                                            placeholder="enter phone" title="enter your phone number if any.">
+                                        {{edit_form.gender.label}}
+                                        {{edit_form.gender(class="form-control mb-2 rounded border")}}
                                     </div>
                                 </div>
 
                                 <div class="form-group">
+
                                     <div class="col-xs-6">
-                                        <label for="mobile">
-                                            <h4>Mobile</h4>
-                                        </label>
-                                        <input type="text" class="form-control" name="mobile" id="mobile"
-                                            placeholder="enter mobile number" title="enter your mobile number if any.">
+                                        {{edit_form.phone_num.label}}
+                                        {{edit_form.phone_num(class = "form-control mb-2 rounded border")}}
                                     </div>
                                 </div>
+
                                 <div class="form-group">
 
                                     <div class="col-xs-6">
-                                        <label for="email">
-                                            <h4>Email</h4>
-                                        </label>
-                                        <input type="email" class="form-control" name="email" id="email"
-                                            placeholder="you@email.com" title="enter your email.">
+                                        {{edit_form.email.label}}                    
+                                        {{edit_form.email(class="form-control mb-2 rounded border")}}
                                     </div>
                                 </div>
                                 <div class="form-group">
-
+                                
                                     <div class="col-xs-6">
-                                        <label for="email">
-                                            <h4>Location</h4>
-                                        </label>
-                                        <input type="email" class="form-control" id="location" placeholder="somewhere"
-                                            title="enter a location">
+                                        {{edit_form.birthday.label}}
+                                        {{edit_form.birthday(class="form-control mb-2 rounded border")}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                
+                                    <div class="col-xs-6">
+                                        {{edit_form.nationality.label}}
+                                        {{edit_form.nationality(class="form-control mb-2 rounded border")}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                
+                                    <div class="col-xs-6">
+                                        {{edit_form.bio.label}}
+                                        {{edit_form.bio(class="form-control mb-2 rounded border")}}
                                     </div>
                                 </div>
                                 <div class="form-group">

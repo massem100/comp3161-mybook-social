@@ -51,7 +51,12 @@ class EditProfileForm(FlaskForm):
     gender = SelectField('Gender', choices=[('Male', 'Male'), ('Female', 'Female')], validators=[DataRequired('Select a Gender')])
     password = PasswordField('Password', validators=[DataRequired("Please enter a password.")])
     confirmPassword = PasswordField('Repeat Password', validators=[DataRequired()])
+    nationality = StringField('Nationality', validators=[])
+    bio = TextAreaField('Bio', validators=[])
     birthday = DateField('Date of Birth', format='%m/%d/%Y', validators=[DataRequired("Please enter your date of birth")])
+    email = EmailField('Email', validators=[])
+    phone_num = StringField('Phone Number', validators=[])
 
 class CommentForm(FlaskForm): 
+    post_id = StringField('Post Number', validators=[DataRequired('Copy the post Number')])
     comment = TextAreaField('Comment', validators=[DataRequired(' Comment Field cannot be empty')])

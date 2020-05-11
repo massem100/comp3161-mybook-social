@@ -74,3 +74,23 @@ class Comment(UserMixin):
         return '<Comment "{}" "Post{}" "User {}" >'.format(self.comment_id, self.post_id, self.userid)
 
 
+class Friend(UserMixin):
+    def __init__(self, fid, friend_owner, friend_id, friend_type, friend_username, friend_f_name, friend_l_name, photo):
+       self.fid = fid
+       self.friend_owner = friend_owner
+       self.friend_id = friend_id
+       self.friend_type = friend_type
+       self.friend_username = friend_username 
+       self.friend_f_name= friend_f_name
+       self.friend_l_name = friend_l_name
+       self.photo = photo
+
+
+    def get_id(self):
+        try:
+            return unicode(self. comment_id)  # python 2 support
+        except NameError:
+            return str(self.comment_id)  # python 3 support
+
+    def __repr__(self):
+        return '<Friend "{}" "{}" >'.format(self.friend_id, self.friend_username)

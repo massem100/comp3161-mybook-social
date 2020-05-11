@@ -9,7 +9,7 @@
    <!-- This is the search bar to search the database for any user matching the name typed. -->
    <!-- If the user is already a friend with one of the results, the buttton to add Friend should change to show a tick and 'Friend Already' -->
     <!-- <input class = "d-flex align-self-center friends-search border rounded mb-2"type= "text" placeholder="Search for friends">  -->
-    <form action = "{{url_for('friends')}}" method ='POST'>
+    <form action = "" method ='POST'>
         {{form.csrf_token}}
         <div class="searchContainer">
             <i class="fa fa-search searchIcon"></i>
@@ -31,11 +31,18 @@
              <p class = "text-center text-secondary"> No Searches made yet</p>
              {% for user in users%}
 
-        <div> 
-                {{user.id}}
-                {{user.username}}
-                {{user.gender}}
-        </div>
+                <div class = "d-flex flex-column"> 
+                    
+                        <div class = "m-2"> 
+                           <p> {{user.f_name}}  {{user.l_name}}</p>
+                            <p> @{{user.username}}</p>
+                        </div>
+                       <div class = "m-2">
+                            
+                       </div>
+                        
+
+                </div>
         {% endfor %}
     </div>
 
@@ -63,9 +70,14 @@
         
             </div>
             <div class="card-body">
-                <p>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique reiciendis
-                </p>
+                {% for school_friend in s_friends %}
+              <div> 
+                    
+                    <img  class = "profile-image " src = "{{url_for('static', filename = 'uploads/' + school_friend.photo)}}"> 
+                    {{school_friend.friend_username}}
+                    {{school_friend.friend_f_name}}
+              </div>
+            {% endfor %}
         
             </div>
         

@@ -185,15 +185,37 @@ $(document).ready(function () {
         }
     });    
    
-    $('#commentbtn').on('click', function (e) {
-        e.preventDefault();
-        // console.log('PRINTING')
+    let posts = document.getElementsByClassName("anch");
+
+    let btns = document.getElementsByClassName("commentbtn");
+    // console.log(post_id);
+    let index = document.getElementById("index");
+
+    
+   
+    $('.commentbtn').on('click', function (e) {
+        let index = document.getElementById("index");       
+        console.log(index.textContent);
+
+
+        // console.log(post_id);
+        // for (var i = 0, l = posts.length; i < l; i++) {
+        //     if (posts[i].id == btns[i].id ){
+        //         let post_id = posts[i].id;
+        //         console.log(post_id);
+        //         // console.log(btns[i].id);
+                
+        //         e.preventDefault();    
+        //   }
+
+                
+        //}
         let self = this;
-        let uploadForm = document.getElementById('uploadForm');
-        let form_data = new FormData(uploadForm);
+        let CommentForm = document.getElementById('CommentForm');
+        let form_data = new FormData(CommentForm);
         fetch("/dashboard/<post_id>/comments", {
             method: 'POST',
-            body: form_data,
+            body: post_id,
             headers: {
                 'X-CSRFToken': token
             },
@@ -212,7 +234,9 @@ $(document).ready(function () {
             .catch(function (error) {
                 console.log(error);
             });
-    
-        
+
+
     });
+        
+        
 });
