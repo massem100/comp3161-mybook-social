@@ -80,8 +80,10 @@
                     
                     
                         </div>
-                        <div>
-                            <button href = "{{url_for('friends')}}"type = "submit" class = "btn d-flex btn-primary float-right mr-5 mt-0 mb-3 "> See all Friends </button>
+                        <div class = "">
+                            <form action ="{{url_for('friends')}}" method = 'GET' >
+                            <button class = "form-control input-sm btn btn-primary text-white " type ='submit'> See all Friends </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -104,25 +106,109 @@
                                 </div>
                                 
                             </div>
-                            <div>
-                                <form class="form-group " action methods='POST' enctype="multipart/form-data">
-                                    {{ form.csrf_token}}
-                                    <div class="d-flex flex-row justify-content-end ">
-                                       {{ form.photo(class ="mr-1 ml-2 mb-1, id='customFile' ") }}
-                                       
-                                
-                                                                           
-                                    </div>
-                                   
-                                    <div class="btn-group">
-                                        <button class="form-control input-sm btn btn-primary disabled" id="#btnSubmit" type="submit"
-                                            class="btn btn-primary text-white">Upload Photo</button>
-                                    </div>         
-                                    
-                            
-                                </form>
-                            
+                            <div class="btn-group">
+                                <button  class="form-control input-sm btn btn-primary text-white"  data-toggle="modal" data-target="#exampleModalLong">See All Photos</button>
                             </div>
+                            <!-- Modal -->
+                            <div class="modal fade  " id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body ">
+                                            <div class = "">
+                                                <form class="form-group d-flex flex-row" action methods='POST' enctype="multipart/form-data">
+                                                    {{ form.csrf_token}}
+                                                    <div class = "d-flex flex-row">
+                                                        <div class="d-flex flex-row justify-content-end ">
+                                                            {{ form.photo(class ="mr-1 ml-2 mb-1, id='customFile' ") }}                                       
+                                                                                        
+                                                        </div>                                                
+                                                        <div class="btn-group">
+                                                            <button class="form-control input-sm btn btn-primary text-white" type="submit">Upload Photo</button>
+                                                        </div>
+
+
+                                                    </div>
+                                            
+                                                </form>
+                                            
+                                            </div>
+
+                                            <div> 
+                                                <h4> Your Photos </h4>
+                                                <div class="row">
+                                                    <div class="">
+                                                
+                                                        <div id="mdb-lightbox-ui"></div>
+                                                
+                                                        <div class="mdb-lightbox d-flex flex-row flex-wrap">
+                                                            
+                                                
+                                                            
+
+                                                            <figure class="col-md-4">
+                                                                <a href="https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(152).jpg" data-size="1600x1067">
+                                                                    <img alt="picture" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(152).jpg"
+                                                                        class="img-fluid" />
+                                                                </a>
+                                                            </figure>
+                                                            <figure class="col-md-4">
+                                                                <a href="https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(152).jpg" data-size="1600x1067">
+                                                                    <img alt="picture" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(152).jpg"
+                                                                        class="img-fluid" />
+                                                                </a>
+                                                            </figure>
+                                                            <figure class="col-md-4">
+                                                                <a href="https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(152).jpg" data-size="1600x1067">
+                                                                    <img alt="picture" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(152).jpg"
+                                                                        class="img-fluid" />
+                                                                </a>
+                                                            </figure>
+                                                            <figure class="col-md-4">
+                                                                <a href="https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(152).jpg" data-size="1600x1067">
+                                                                    <img alt="picture" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(152).jpg"
+                                                                        class="img-fluid" />
+                                                                </a>
+                                                            </figure>
+                                                
+                                                            <figure class="col-md-4">
+                                                                <a href="https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(42).jpg" data-size="1600x1067">
+                                                                    <img alt="picture" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(42).jpg"
+                                                                        class="img-fluid" />
+                                                                </a>
+                                                            </figure>
+                                                
+                                                            <figure class="col-md-4">
+                                                                <a href="https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(151).jpg" data-size="1600x1067">
+                                                                    <img alt="picture" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(151).jpg"
+                                                                        class="img-fluid" />
+                                                                </a>
+                                                            </figure>
+                                                
+                                                
+                                                          
+                                                        </div>
+                                                
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                                  
                         </div>
                     </div>
@@ -160,7 +246,7 @@
                                                         <p id="characterLeft" class=" ">You have reached the limit</p>
                                                     </span>
                                                     <div class="btn-group d-flex justify-content-end">
-                                                        <button id="#btnSubmit" type="submit" class="btn btn-primary text-white">Post</button>
+                                                        <button  type="submit" class="btn btn-primary text-white">Post</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -184,7 +270,7 @@
                                                             </span>
                                                         </div>
                                                         <div class="btn-group d-flex justify-content-end">
-                                                            <button id="#btnSubmit" type="submit" class="btn btn-primary text-white">Post</button>
+                                                            <button  type="submit" class="btn btn-primary text-white">Post</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -309,35 +395,29 @@
             <!-- Edit Profile Form -->
             <div>
 
-        <div class="container bootstrap snippet">
-            <div class="row">
-                <div class="col-sm-10">
-                    <h1>User name</h1>
-                </div>
-                <div class="col-sm-2"><a href="/users" class="pull-right"></a></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <!--left col-->
-
-
-                    <div class="text-center">
-                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail"
-                            alt="avatar">
-                        <h6>Upload a different photo...</h6>
-                        <input type="file" class="text-center center-block file-upload">
-                    </div>
-                    </hr><br>
-
-
-                </div>
-                <!--/col-3-->
-                <div class="col-sm-6">
-                    
-                    <div class="tab-content">
+        <div class="container  snippet w-100">
+                        
+                    <div class="tab-content col-md-6 d-flex justify-content-center">
                         <div class="tab-pane active" id="home">
                             <form class="form" action="##" method="post" id="">
                                 {{ edit_form.csrf_token }}
+                                <div class="">
+                                    <div class="">
+                                        <!--left col-->
+                                
+                                
+                                        <div class="text-center">
+                                            <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail"
+                                                alt="avatar">
+                                            <h6>Upload a different photo...</h6>
+                                            
+                                           
+                                            {{edit_form.profile_pic(class="text-center center-block file-upload")}}
+                                        </div>
+                                        </hr><br>
+                                
+                                
+                                    </div>
                                 <div class="form-group">
 
                                     <div class="col-xs-6">

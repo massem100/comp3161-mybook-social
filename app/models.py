@@ -66,7 +66,7 @@ class Comment(UserMixin):
     
     def get_id(self):
         try:
-            return unicode(self. comment_id)  # python 2 support
+            return unicode(self.comment_id)  # python 2 support
         except NameError:
             return str(self.comment_id)  # python 3 support
 
@@ -88,9 +88,29 @@ class Friend(UserMixin):
 
     def get_id(self):
         try:
-            return unicode(self. comment_id)  # python 2 support
+            return unicode(self.fid)  # python 2 support
         except NameError:
-            return str(self.comment_id)  # python 3 support
+            return str(self.fid)  # python 3 support
 
     def __repr__(self):
         return '<Friend "{}" "{}" >'.format(self.friend_id, self.friend_username)
+
+class Photo(UserMixin):
+
+
+    def __int__(self, photo_id, userid, photo_desc, photo_filename, date_added):
+        self.photo_id = photo_id 
+        self.userid = userid 
+        self.photo_desc = photo_desc
+        self.photo_filename = photo_filename
+        self.date_added = date_added
+
+
+    def get_id(self):
+        try:
+            return unicode(self.photo_id)  # python 2 support
+        except NameError:
+            return str(self.photo_id)  # python 3 support
+
+    def __repr__(self):
+        return '<Photo "{}">'.format(self.photo_id)

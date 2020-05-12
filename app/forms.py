@@ -29,12 +29,13 @@ class GroupForm(FlaskForm):
 
 class PhotoForm(FlaskForm):
     photo = FileField('photo', validators=[FileRequired('No photo was submitted.'), FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
+    photo_desc = StringField('Photo Description', validators=[])
 
 class textForm(FlaskForm):
     text_post = TextAreaField('Text Post', validators=[DataRequired('Post content missing')])
 
 class ImageForm(FlaskForm):
-    photo = FileField('Upload Image', validators=[FileRequired(), FileAllowed(['jpg', 'png'], 'Images only!')])
+    photo = FileField('Upload Image', validators=[FileRequired(), FileAllowed(['jpg', 'jpeg','png'], 'Images only!')])
     image_desc = TextAreaField('Caption', validators=[])
 
 class SearchFriends(FlaskForm):
@@ -56,6 +57,7 @@ class EditProfileForm(FlaskForm):
     birthday = DateField('Date of Birth', format='%m/%d/%Y', validators=[DataRequired("Please enter your date of birth")])
     email = EmailField('Email', validators=[])
     phone_num = StringField('Phone Number', validators=[])
+    profile_pic = FileField('Profile Picture', validators=[FileRequired(), FileAllowed(['jpg','jpeg', 'png'], 'Images only!')])
 
 class CommentForm(FlaskForm): 
     post_id = StringField('Post Number', validators=[DataRequired('Copy the post Number')])
