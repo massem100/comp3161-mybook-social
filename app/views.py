@@ -18,17 +18,17 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from operator import attrgetter, itemgetter
 
-
-
-@app.route('/dashboard', methods = ['POST', 'GET'])
+posts = []
+@app.route('/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard():
+    
 
     text_form = textForm()
     image_form = ImageForm()
     comment_form = CommentForm()
     
-    posts = []
+   
     if request.method == 'GET': 
 
         cur = mysql.connection.cursor()
@@ -66,12 +66,16 @@ def dashboard():
             caption = i[6]
     
             posts.append(Post(post_id, userid, username, post_date, post_time, " ", image_filename, caption))
-        sorted_by_time_date= sorted(posts, key= lambda i: ( i.post_date, i.post_time ), reverse =True)
+        
+        
+        
+        posts.sort(key= lambda i: ( i.post_date, i.post_time ), reverse =True)
+        
 
         # ---------------------------------------------------------------------------------
               
 
-        return render_template('dashboard.html', text_form=text_form, image_form=image_form, posts=sorted_by_time_date, comment_form = comment_form)
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form, posts=posts, comment_form = comment_form)
 
     if request.method == 'POST':
         # # postNumber = request.args.get('post_id', post_id)
@@ -132,9 +136,9 @@ def text():
             flash('Text Uploaded', 'success')
             return  redirect(url_for('dashboard'))
         flash('Form not submitted, check submission', 'info')
-        return render_template('dashboard.html', text_form=text_form, image_form=image_form, comment_form = comment_form)
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form, comment_form=comment_form, posts=posts)
     else: 
-        return render_template('dashboard.html', text_form=text_form, image_form=image_form, comment_form=comment_form)
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form, comment_form=comment_form, posts=posts)
 
 
 
@@ -227,6 +231,7 @@ def userprofile():
 
     profile_posts = []
     photos = []
+    allphotos =[]
     if request.method == 'GET':
 
         username =current_user.username
@@ -274,12 +279,12 @@ def userprofile():
         sorted_by_time_date = sorted(profile_posts, key=lambda i: (i.post_date, i.post_time), reverse=True)
         # ----------------------------------------------------------------------------------------
         
-        # Section to select Photos 
+        # Section to select Profile Photos 
         userid = current_user.id
         cur = mysql.connection.cursor()
-        cur.execute("""SELECT * FROM photo WHERE userid = '{}'  limit 2""".format(userid))
+        cur.execute("""SELECT * FROM photo WHERE userid = '{}' ORDER BY RAND() limit 4""".format(userid))
         photo_results = cur.fetchall()
-        print(photo_results)
+        # print(photo_results)
 
         for i in  photo_results: 
             photo_id = i[0]
@@ -290,8 +295,26 @@ def userprofile():
 
             photos.append(Photo(photo_id, userid, photo_desc, photo_filename, date_added))
 
+        
+        cur = mysql.connection.cursor()
+        cur.execute(
+            """SELECT * FROM photo WHERE userid = '{}'  """.format(userid))
+        all_photo_results = cur.fetchall()
+        # print(photo_results)
+
+        for i in all_photo_results:
+            photo_id = i[0]
+            userid = i[1]
+            photo_desc = i[2]
+            photo_filename = i[3]
+            date_added = i[4]
+
+            allphotos.append(Photo(photo_id, userid, photo_desc, photo_filename, date_added))
+
+        
+
         return render_template('user_profile.html', form=form, text_form=text_form, image_form=image_form, 
-                                edit_form=edit_form, posts=sorted_by_time_date, photos = photos)
+                                edit_form=edit_form, posts=sorted_by_time_date, photos = photos, allphotos = allphotos)
 
     # Handle Adding Photos to profile
     if request.method == 'POST':
@@ -352,6 +375,9 @@ def profile_imagepost():
     comment_form = CommentForm()
     photo_form = PhotoForm()
     text_form = textForm()
+    edit_form = EditProfileForm()
+
+
     
     if request.method == 'POST':
         
@@ -384,10 +410,31 @@ def profile_imagepost():
 @login_required 
 def editprofile(): 
 
+    image_form = ImageForm()
+    comment_form = CommentForm()
+    photo_form = PhotoForm()
+    text_form = textForm()
+    edit_form = EditProfileForm
 
+    if request.method == 'POST': 
 
+        f_name = edit_form.f_name.data
+        l_name = edit_form.l_name.data 
+        username = edit_form.username.data 
+        gender = edit_form.gender.data 
+        password = edit_form.password.data 
+        confirmPassword = edit_form.confirmPassword.data 
+        nationality = edit_form.nationality.data 
+        bio = edit_form.bio.data 
+        email = edit_form.email.data
+        phone_num = edit_form.phone_num.data 
+        profile_pic = edit_form.profile_pic.data
 
-    return 'x'
+        cur = mysql.connection.cursor()
+        cur.execute(""" """)
+
+        return redirect(url_for('userprofile'))
+    return render_template('user_profile.html', image_form = image_form, comment_form = comment_form, photo_form = photo_form, text_form = text_form, edit_form = edit_form)
 
 @app.route('/a_group', methods = ['GET', 'POST'])
 @login_required
@@ -397,7 +444,7 @@ def a_group():
     image_form = ImageForm()
     
    
-    return render_template('groups.html',form = form, text_form = text_form, image_form = image_form)
+    return render_template('a_group.html',form = form, text_form = text_form, image_form = image_form)
     
     
 @app.route('/groups', methods = ['GET', 'POST'])
@@ -543,16 +590,14 @@ def login():
             gender = user[0][4]
             dob = user[0][5]
             user_password_hash = user[0][6]
-        # print(username, user_password_hash)
+        
         
         
             if user is not None and check_password_hash(user_password_hash, password):
                 remember_me = False
-                # print ('pass here')
-                
+                                
                 login_user(User(id,username_,f_name, l_name, gender, dob, user_password_hash))
                 
-                # print('reaching here')
                 return redirect(url_for('dashboard'))
             else: 
                 flash('Password not a match', 'danger')

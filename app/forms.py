@@ -29,10 +29,10 @@ class GroupForm(FlaskForm):
 
 class PhotoForm(FlaskForm):
     photo = FileField('photo', validators=[FileRequired('No photo was submitted.'), FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
-    photo_desc = StringField('Photo Description', validators=[])
+    photo_desc = TextAreaField('Photo Description', validators=[])
 
 class textForm(FlaskForm):
-    text_post = TextAreaField('Text Post', validators=[DataRequired('Post content missing')])
+    text_post = TextAreaField('Text Post', validators=[DataRequired('Post content missing'), Length(max=140)])
 
 class ImageForm(FlaskForm):
     photo = FileField('Upload Image', validators=[FileRequired(), FileAllowed(['jpg', 'jpeg','png'], 'Images only!')])
