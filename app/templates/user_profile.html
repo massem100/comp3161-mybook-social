@@ -39,25 +39,25 @@
                 <!-- container to hold friends and photo cards -->
                 <div>
                    
-                    <div class="card h-25 m-2"> 
+                    <div class="card h-30 m-2"> 
                         <!-- Profile Details of User  -->
-                        <div class = "card-header bg-primary text-white"> 
+                        <div class = "card-header bg-primary p-2 text-white"> 
                             <h4>User Details</h4> 
 
                         </div>
-                        <div class="d-flex flex-column p-2 ml-1 w-75  text-light-grey justify-content-center">
-                            <h5 class="text-dark font-md bold ml-2 font-weight-bold"> Tracy Daniels</h5>
+                        <div class="d-flex flex-column p-2 ml-2 w-75  mb-2text-light-grey justify-content-center">
+                            <h5 class="text-dark font-md bold  font-weight-bold"> {{current_user.f_name  + current_user.l_name}}</h5>
                             <p>
                                 <img id="icon" src="{{url_for('static', filename ='uploads/email.png')}}" />
                                 <span class="bold ml-1 ">Janedoe@exmaple.com </span>
                             </p>
                             <p>
-                                <img id="icon" src="{{url_for('static', filename ='uploads/pin.png')}}" />
-                                <span class="bold ml-1 "> add location </span>
+                                <img id="icon" src="{{url_for('static', filename ='uploads/signs.png')}}" />
+                                <span class="bold ml-1 ">  Gender: {{current_user.gender}} </span>
                             </p>
                             <p>
                                 <img id="icon" src="{{url_for('static', filename ='uploads/calendar.png')}}" />
-                                <span class="bold ml-1 "> add date created </span>
+                                <span class="bold ml-1 "> Date of Birth: {{current_user.date_of_birth}} </span>
                             </p>
                         </div>
                     </div>
@@ -88,23 +88,21 @@
                     </div>
                 </div>
                 <!-- Photo Div  -->
+                
                     <div class = "d-flex flex-column "> 
                         
                         <div class = "card d-flex flex-column m-2 "> 
                             <div class = "card-header bg-primary text-white"> 
                                 <h4 class = "font-weight-bold" > Photos </h4>
                             </div>
-                            <div class = "card-body  d-flex flex-row justify-content-center"> 
-                                
-                                <div class = "d-flex flex-column">
-                                    <img class="profile-image m-2 rounded" src="/static/uploads/blue_lagoon.jpg">
-                                    <img class="profile-image m-2 rounded" src="/static/uploads/beach.jpg">
-                                </div>
-                                <div  class = "d-flex flex-column">
-                                    <img class="profile-image m-2 rounded" src="/static/uploads/blue_lagoon.jpg">
-                                    <img class="profile-image m-2 rounded" src="/static/uploads/beach.jpg">
+                            <div class = "card-body  d-flex flex-row justify-content-center "> 
+                            {% for photo in photos %}
+                                <div class = "d-flex flex-row flex-wrap ">
+                                    <img class="profile-image m-2 rounded" src="{{url_for('static', filename = 'uploads/' +  photo.photo_filename)}}">
                                 </div>
                                 
+                                
+                                {% endfor %}
                             </div>
                             <div class="btn-group">
                                 <button  class="form-control input-sm btn btn-primary text-white"  data-toggle="modal" data-target="#exampleModalLong">See All Photos</button>
@@ -115,18 +113,20 @@
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Your Photo</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body ">
                                             <div class = "">
-                                                <form class="form-group d-flex flex-row" action methods='POST' enctype="multipart/form-data">
+                                                <form class="form-group d-flex flex-row" action method='POST' enctype="multipart/form-data">
                                                     {{ form.csrf_token}}
-                                                    <div class = "d-flex flex-row">
-                                                        <div class="d-flex flex-row justify-content-end ">
-                                                            {{ form.photo(class ="mr-1 ml-2 mb-1, id='customFile' ") }}                                       
+                                                    <div class = "d-flex flex-row ">
+                                                        <div class="d-flex flex-column ">
+                                                            {{ form.photo(class ="mr-1 ml-2 mb-1, id='customFile' ") }}        
+                                                            {{form.photo_desc.label}}  
+                                                            {{form.photo_desc}}                             
                                                                                         
                                                         </div>                                                
                                                         <div class="btn-group">
@@ -144,57 +144,24 @@
                                                 <h4> Your Photos </h4>
                                                 <div class="row">
                                                     <div class="">
+                                                        {% for photo in photos %}
+                                                        <div id="mdb-lightbox-ui">
                                                 
-                                                        <div id="mdb-lightbox-ui"></div>
-                                                
-                                                        <div class="mdb-lightbox d-flex flex-row flex-wrap">
+                                                        <div class="mdb-lightbox  ">                                                        
+                                        
+                                                            <figure class="col-md-5 d-flex flex-row ">
+                                                               
+                                                                    <img alt="{{photo.photo_desc}}" data-size="1600x1067" src="{{url_for('static', filename = 'uploads/' + photo.photo_filename)}}"
+                                                                        class="img-fluid" />
+                                                                
+                                                            </figure>
                                                             
-                                                
-                                                            
-
-                                                            <figure class="col-md-4">
-                                                                <a href="https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(152).jpg" data-size="1600x1067">
-                                                                    <img alt="picture" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(152).jpg"
-                                                                        class="img-fluid" />
-                                                                </a>
-                                                            </figure>
-                                                            <figure class="col-md-4">
-                                                                <a href="https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(152).jpg" data-size="1600x1067">
-                                                                    <img alt="picture" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(152).jpg"
-                                                                        class="img-fluid" />
-                                                                </a>
-                                                            </figure>
-                                                            <figure class="col-md-4">
-                                                                <a href="https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(152).jpg" data-size="1600x1067">
-                                                                    <img alt="picture" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(152).jpg"
-                                                                        class="img-fluid" />
-                                                                </a>
-                                                            </figure>
-                                                            <figure class="col-md-4">
-                                                                <a href="https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(152).jpg" data-size="1600x1067">
-                                                                    <img alt="picture" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(152).jpg"
-                                                                        class="img-fluid" />
-                                                                </a>
-                                                            </figure>
-                                                
-                                                            <figure class="col-md-4">
-                                                                <a href="https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(42).jpg" data-size="1600x1067">
-                                                                    <img alt="picture" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(42).jpg"
-                                                                        class="img-fluid" />
-                                                                </a>
-                                                            </figure>
-                                                
-                                                            <figure class="col-md-4">
-                                                                <a href="https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(151).jpg" data-size="1600x1067">
-                                                                    <img alt="picture" src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(151).jpg"
-                                                                        class="img-fluid" />
-                                                                </a>
-                                                            </figure>
                                                 
                                                 
                                                           
                                                         </div>
-                                                
+                                                        </div>
+                                                        {% endfor %}
                                                     </div>
                                                 </div>
 
@@ -213,13 +180,12 @@
                         </div>
                     </div>
                 </div>
-
                     <div class = "d-flex flex-column m-2 w-100"> 
                         <!-- add Create - Post card -->
                         <div class = "w-100">
                                 <!--- \\\\\\\Post-->
                                 
-                                <div class = "d-flex card m-3 p-2 w-90">
+                                <div class = "d-flex card  p-2 w-90">
 
                                 <div class="card-header">
                                     <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
@@ -300,7 +266,7 @@
                                                 </div>
                                                 <div class="ml-2">
                                                     <div class="h5 m-0">{{post.username}}</div>
-                                                    <div class="h7 text-muted">Miracles Lee Cross</div>
+                                                    <div class="h7 text-muted">{{current_user.f_name  + current_user.l_name}}</div>
                                                 </div>
                                             </div>
                                             <div>
@@ -309,27 +275,19 @@
                                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <i class="fa fa-ellipsis-h"></i>
                                                     </button>
-                                                   
                                                 </div>
                                             </div>
-                            
-                                        </div>
-                            
+                                         </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> 10 min ago</div>
                                                     
                                         <div>
                 
-                                            
-                                            
                                             {% if post.image_filename == "" %}
                                                 <div class="">
-                                                    
-                                                    
-                                                    <p> {{post.text_message}}</p>
-                                                    
-                                                   
+                                                     <p> {{post.text_message}}</p>
+                                                  
                                                 </div>
                                             {%else %}
                                               <div>
@@ -348,12 +306,9 @@
                                         
                                         <!-- add comment icon here -->
                                         <a href="" class="card-link d-flex justify-content-end " data-toggle="modal" data-target="#exampleModalCenter"><i
-                                                class="fa fa-comment"> </i> Comment</a>
+                                                class="fa fa-comment  m-1"> </i> Comment</a>
                                         
-                                        <!-- <button type="button" class="btn btn-primary justify-content-end" data-toggle="modal" data-target="#exampleModalCenter">
-                                                                    <i class = "fa fa-comment">  </i> Comment
-                                                                </button> -->
-                                        
+                                                                                
                                         <!-- Modal -->
                                         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
                                             aria-hidden="true">
@@ -395,120 +350,177 @@
             <!-- Edit Profile Form -->
             <div>
 
-        <div class="container  snippet w-100">
-                        
-                    <div class="tab-content col-md-6 d-flex justify-content-center">
-                        <div class="tab-pane active" id="home">
-                            <form class="form" action="##" method="post" id="">
-                                {{ edit_form.csrf_token }}
-                                <div class="">
-                                    <div class="">
-                                        <!--left col-->
+        <div class="d-flex justify-content-center w-100">
+                            
+                    <div class="container">
+                        <div class="row flex-lg-nowrap">
+                            <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
                                 
-                                
-                                        <div class="text-center">
-                                            <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail"
-                                                alt="avatar">
-                                            <h6>Upload a different photo...</h6>
-                                            
-                                           
-                                            {{edit_form.profile_pic(class="text-center center-block file-upload")}}
+                            </div>
+                    
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="e-profile">
+                                                    <div class="row">
+                                                        <div class="col-12 col-sm-auto mb-3">
+                                                            <div class="mx-auto" style="width: 140px;">
+                                                                <div class="d-flex justify-content-center align-items-center rounded"
+                                                                    style="height: 140px; background-color: rgb(233, 236, 239);">
+                                                                    <span
+                                                                        style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                                            <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                                                <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{current_user.f_name + current_user.l_name}}</h4>
+                                                                <p class="mb-0">{{current_user.username}}</p>
+                                                                <div class="mt-2">
+                                                                    {{edit_form.profile_pic(class="text-center center-block file-upload")}}
+                                                                    <button class="btn btn-primary" type="button">
+                                                                        <i class="fa fa-fw fa-camera"></i>
+                                                                        <span>Change Photo</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="text-center text-sm-right">
+                                                                <div class="text-muted"><small>Joined 09 Dec 2017</small></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="nav nav-tabs">
+                                                        <li class="nav-item"><a href="" class="active nav-link">Settings</a></li>
+                                                    </ul>
+                                                    <div class="tab-content pt-3">
+                                                        <div class="tab-pane active">
+                                                            <form class="form" novalidate="" action method = 'POST' enctype = "multipart/form-data">
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <div class="row">
+
+                                                                            <div class="col">
+                                                                                <div class="form-group">
+                                                                                    {{edit_form.f_name.label}}
+                                                                                    {{edit_form.f_name(class = "form-control  mb-2 rounded border", placeholder = "first name",title="Enter your first name if any.")}}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col">
+                                                                                <div class="form-group">
+                                                                                    {{edit_form.l_name.label}}
+                                                                                    {{edit_form.l_name(class = "form-control  mb-2 rounded border", placeholder = "last name", title="Enter your last name if any.")}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <div class="form-group">
+                                                                                    {{edit_form.username.label}}
+                                                                                    {{edit_form.username(class="form-control mb-2 rounded border")}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <div class="form-group">
+                                                                                    {{edit_form.gender.label}}
+                                                                                    {{edit_form.gender(class="form-control mb-2 rounded border")}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <div class="form-group">
+                                                                                    {{edit_form.birthday.label}}
+                                                                                    {{edit_form.birthday(class="form-control mb-2 rounded border")}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <div class="form-group">
+                                                                                    {{edit_form.email.label}}
+                                                                                    {{edit_form.email(class="form-control mb-2 rounded border")}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <div class="form-group">
+                                                                                    {{edit_form.phone_num.label}}
+                                                                                    {{edit_form.phone_num(class="form-control mb-2 rounded border")}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <div class="form-group">
+                                                                                    {{edit_form.nationality.label}}
+                                                                                    {{edit_form.nationality(class="form-control mb-2 rounded border")}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col mb-3">
+                                                                                <div class="form-group">
+                                                                                    {{edit_form.bio.label}}
+                                                                                    {{edit_form.bio(class="form-control mb-2 rounded border")}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="row">
+                                                                            <div class="col">
+                                                                                <div class="form-group m-2">
+                                                                                    {{edit_form.password.label}}
+                                                                                    {{edit_form.password(class = "form-control mb-2 rounded border ")}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col">
+                                                                                <div class="form-group m-2">
+                                                                                    {{edit_form.confirmPassword.label}}
+                                                                                    {{edit_form.confirmPassword(class = "form-control mb-2 rounded border ")}}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col d-flex justify-content-end">
+                                                                        <button class="btn btn-primary" type="submit">Save Changes</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </hr><br>
-                                
-                                
-                                    </div>
-                                <div class="form-group">
-
-                                    <div class="col-xs-6">
-                                        {{edit_form.f_name.label}}
-                                        {{edit_form.f_name(class = "form-control  mb-2 rounded border", placeholder = "first name",title="Enter your first name if any.")}}
+                        
                                         
+                                            
+                                        </div>
                                     </div>
+                        
                                 </div>
-                                <div class="form-group">
-
-                                    <div class="col-xs-6">
-                                        {{edit_form.l_name.label}}
-                                        {{edit_form.l_name(class = "form-control  mb-2 rounded border", placeholder = "last name", title="Enter your last name if any.")}}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                
-                                    <div class="col-xs-6">
-                                        {{edit_form.gender.label}}
-                                        {{edit_form.gender(class="form-control mb-2 rounded border")}}
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-
-                                    <div class="col-xs-6">
-                                        {{edit_form.phone_num.label}}
-                                        {{edit_form.phone_num(class = "form-control mb-2 rounded border")}}
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-
-                                    <div class="col-xs-6">
-                                        {{edit_form.email.label}}                    
-                                        {{edit_form.email(class="form-control mb-2 rounded border")}}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                
-                                    <div class="col-xs-6">
-                                        {{edit_form.birthday.label}}
-                                        {{edit_form.birthday(class="form-control mb-2 rounded border")}}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                
-                                    <div class="col-xs-6">
-                                        {{edit_form.nationality.label}}
-                                        {{edit_form.nationality(class="form-control mb-2 rounded border")}}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                
-                                    <div class="col-xs-6">
-                                        {{edit_form.bio.label}}
-                                        {{edit_form.bio(class="form-control mb-2 rounded border")}}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-
-                                    <div class="col-xs-6">
-                                        {{edit_form.password.label}}
-                                        {{edit_form.password(class = "form-control mb-2 rounded border ")}}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-
-                                    <div class="col-xs-6">
-                                        {{edit_form.confirmPassword.label}}
-                                        {{edit_form.confirmPassword(class = "form-control  mb-2 rounded border")}}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-xs-12">
-                                        <br>
-
-                                        <button class="btn btn-lg btn-success" id="#btnSubmit" type="submit"><i
-                                                class="glyphicon glyphicon-ok-sign"></i> Save</button>
-                                        <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i>
-                                            Reset</button>
-                                    </div>
-                                </div>
-                            </form>
+                            </div>
+                        </div>
+                        <!-- Last of New Edit  -->
                     </div>
-        </div> 
-        </div>
-        </div>
-    </div>
+                </div> 
+                </div>
+            </div>
     </div>
 </div>
-    
+</div>
+
 
 {% endblock %}

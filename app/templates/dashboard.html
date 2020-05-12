@@ -4,6 +4,7 @@
 
  {% include 'header.html' %}
 <div class="bg-light w-100">
+    <div class = "d-flex flex-row"> 
 
     <div class="d-flex flex-column justify-content-center m-2 w-100">
         {% include 'flash_messages.html' %}
@@ -131,7 +132,7 @@
                     </div>
                     <div class="card-footer ">
                         <p>#{{post.post_id}}</p>
-                        <a href= "" class="card-link d-flex justify-content-end commentbtn" id = "{{post.post_id}}" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-comment"> </i> Comment</a>
+                        <a href= "" class="card-link d-flex justify-content-end commentbtn" id = "{{post.post_id}}" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-comment m-1"> </i> Comment</a>
                         
                         <!-- <button type="button" class="btn btn-primary justify-content-end" data-toggle="modal" data-target="#exampleModalCenter">
                             <i class = "fa fa-comment">  </i> Comment
@@ -181,36 +182,38 @@
     <!-- Posts div end here-->
     
     
-    <!-- Cards on right - start below -->
-    <!-- <div class = "d-flex flex-column">
-        <div> 
-            <div class="card  m-3">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                    <a href="#" class="card-link">Card link</a>
-                    <a href="#" class="card-link">Another link</a>
-                </div>
+    
+</div>
+<!-- Cards on right - start below -->
+<div class="d-flex flex-column">
+    <div>
+        <div class="card  m-3">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
             </div>
+        </div>
 
-        </div>
-        <div>
-            <div class="card  m-3">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                    <a href="#" class="card-link">Card link</a>
-                    <a href="#" class="card-link">Another link</a>
-                </div>
+    </div>
+    <div>
+        <div class="card  m-3">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
             </div>
-        
         </div>
-    </div> -->
-    <!-- Cards on right- end -->
+
+    </div>
+</div>
+<!-- Cards on right- end -->
 </div>
 </div>
 {% endblock %}

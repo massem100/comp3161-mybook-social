@@ -20,30 +20,35 @@
     </form>
     <hr>
     <!-- This container holds the results from the search, if statement should be added if no results are there, add 'No user found' text -->
-    <div class = "d-flex flex-column bg-light border  rounded m-2 h-50"> 
-        <h5 class = "font-weight-bold m-2 text-primary"> SEARCH RESULTS MATCHING </h5>
+    <div class = "d-flex flex-column bg-light border  rounded m-2 h-70"> 
+        <h5 class = "font-weight-bold m-2  text-primary"> SEARCH RESULTS MATCHING </h5>
         <!-- <img id="profile-photo" src="/static/uploads/krys.png"> -->
-        <div>
-            <button id= "friendsbtn" class="btn btn-primary rounded"> Add Friend </button>
-        </div>
+        
         <!-- Return results of search inside div -->
 
              <p class = "text-center text-secondary"> No Searches made yet</p>
-             {% for user in users%}
+            
 
-                <div class = "d-flex flex-column"> 
-                    
-                        <div class = "m-2"> 
-                           <p> {{user.f_name}}  {{user.l_name}}</p>
-                            <p> @{{user.username}}</p>
-                        </div>
-                       <div class = "m-2">
+                <div class = "d-flex flex-column m-4"> 
+                    {% for user in users%}
+                        <ul class="list-group border rounded bg-light">
                             
-                       </div>
+                            <div class="list-group-item  d-flex flex-row">
+                                <div>
+                                    {{user.f_name + user.l_name}}
+                                    <p> @{{user.username}}</p>
+                                </div>
+                                <div class = "  ml-auto">
+                                    <button id="friendsbtn" class="btn btn-primary rounded"> Add Friend </button>
+                                </div>
+                                
+                            </div>
+                            
+                        </ul>
+                        {% endfor %}
                         
-
                 </div>
-        {% endfor %}
+        
     </div>
 
     <!-- This lists out the current user friends in the different categories -->
@@ -70,14 +75,20 @@
         
             </div>
             <div class="card-body">
-                {% for school_friend in s_friends %}
+               
               <div> 
-                    
-                    <img  class = "profile-image " src = "{{url_for('static', filename = 'uploads/' + school_friend.photo)}}"> 
-                    {{school_friend.friend_username}}
-                    {{school_friend.friend_f_name}}
+                        
+                    <ul class="list-group bg-light">
+                        {% for school_friend in s_friends %}
+                        <li class="list-group-item active bg-white">
+                        <img class="profile-image" src="{{url_for('static', filename = 'uploads/' + school_friend.photo)}}">
+                        {{school_friend.friend_username}}
+                        {{school_friend.friend_f_name}}
+                    </li>
+                    {% endfor %}
+                    </ul>
               </div>
-            {% endfor %}
+            
         
             </div>
         

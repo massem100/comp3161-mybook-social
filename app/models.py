@@ -46,14 +46,7 @@ class Post(UserMixin):
     def __repr__(self):
         return '<Post "{}">'.format(self.post_id)
 
-        """
-        comment_id int(11) not null unique AUTO_INCREMENT,
-        post_id int(10) not null,
-        userid int(10) not null,
-        comment_Content varchar(250) not null,
-        time_posted time not null,
-        date_posted date not null,
-        """
+        
 class Comment(UserMixin):
 
     def __init__(self, comment_id,post_id, userid, comment_Content, time_posted, date_posted):
@@ -75,6 +68,7 @@ class Comment(UserMixin):
 
 
 class Friend(UserMixin):
+
     def __init__(self, fid, friend_owner, friend_id, friend_type, friend_username, friend_f_name, friend_l_name, photo):
        self.fid = fid
        self.friend_owner = friend_owner
@@ -93,14 +87,14 @@ class Friend(UserMixin):
             return str(self.fid)  # python 3 support
 
     def __repr__(self):
+
         return '<Friend "{}" "{}" >'.format(self.friend_id, self.friend_username)
 
 class Photo(UserMixin):
 
-
-    def __int__(self, photo_id, userid, photo_desc, photo_filename, date_added):
-        self.photo_id = photo_id 
-        self.userid = userid 
+    def __init__(self, photo_id, userid, photo_desc, photo_filename, date_added):
+        self.photo_id =photo_id
+        self.userid = userid
         self.photo_desc = photo_desc
         self.photo_filename = photo_filename
         self.date_added = date_added
@@ -113,4 +107,9 @@ class Photo(UserMixin):
             return str(self.photo_id)  # python 3 support
 
     def __repr__(self):
-        return '<Photo "{}">'.format(self.photo_id)
+        return '<Photo "{}" "User {}" >'.format(self.photo_id,  self.userid)
+
+
+
+
+   
