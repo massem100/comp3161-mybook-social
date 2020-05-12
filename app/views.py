@@ -7,7 +7,7 @@ This file creates your application.
 import os
 from datetime import date, time, datetime
 from app import app, login_manager, mysql
-from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, textForm, ImageForm, SearchFriends, SearchGroups, EditProfileForm, CommentForm
+from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, GroupForm, textForm, ImageForm, SearchFriends, SearchGroups, EditProfileForm, CommentForm
 from app.models import User, Post, Comment, Friend, Photo
 from flask_mysqldb import MySQL
 from flask_cors import CORS
@@ -181,9 +181,9 @@ def image():
     else: 
         return render_template('dashboard.html', text_form = text_form, image_form = image_form, comment_form = comment_form)
 
-@app.route('/dashboard/post', methods = ['POST'])
+@app.route('/dashboard/post/<post_id>', methods = ['POST'])
 @login_required
-def single_post():
+def single_post(post_id):
 
     image_form = ImageForm()
     comment_form = CommentForm()
@@ -436,26 +436,31 @@ def editprofile():
         return redirect(url_for('userprofile'))
     return render_template('user_profile.html', image_form = image_form, comment_form = comment_form, photo_form = photo_form, text_form = text_form, edit_form = edit_form)
 
-@app.route('/a_group', methods = ['GET', 'POST'])
+@app.route('/a_group/<group_id>', methods = ['GET', 'POST'])
 @login_required
-def a_group():
-    form = PhotoForm()
-    text_form = textForm()
-    image_form = ImageForm()
+def a_group(group_id):
     
-   
-    return render_template('a_group.html',form = form, text_form = text_form, image_form = image_form)
+    
+  
+    return render_template('a_group.html')
     
     
 @app.route('/groups', methods = ['GET', 'POST'])
 @login_required
 def groups():
-    form = PhotoForm()
-    text_form = textForm()
-    image_form = ImageForm()
-    
-   
-    return render_template('groups.html',form = form, text_form = text_form, image_form = image_form)
+    group_form = GroupForm()
+
+    if request.method == 'POST': 
+
+        group_name = group_form.group_name.data 
+        group_type = group_form.group_type.data
+        group_desc = group_form.desc.data
+
+        cur = mysql.connection.cursor()
+        # cur.execute(""" """)
+
+        return 'x'  
+    return render_template('groups.html', group_form = group_form)
     
 
 # Route to host form to search group

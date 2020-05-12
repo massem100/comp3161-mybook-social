@@ -25,6 +25,7 @@ class SignupForm(FlaskForm):
 
 class GroupForm(FlaskForm):
     group_name = StringField('Group Name', validators=[DataRequired('Group must have a name')])
+    group_type = SelectField('Group Type', choices=[('Public', 'Public'), ('Private', 'Private')], validators=[DataRequired('Group type must be added')])
     desc = TextAreaField('Group Description', validators=[Length( max =150)])
 
 class PhotoForm(FlaskForm):

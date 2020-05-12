@@ -109,6 +109,8 @@ class Photo(UserMixin):
     def __repr__(self):
         return '<Photo "{}" "User {}" >'.format(self.photo_id,  self.userid)
 
+# class Group(UserMixin):
+
 
 
 
