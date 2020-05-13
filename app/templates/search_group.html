@@ -5,9 +5,12 @@
 <!-- This is to prevent rewriting code, header.html and all its elements will be included on each page  -->
 {% include 'header.html' %}
 
-<div class = "ml-1 mt-2 d-flex w-100 justify-content-center"> 
+    
+<div class = "ml-1 mt-2 d-flex flex-column w-100 justify-content-center"> 
+   
     <!-- Form to search for Groups starts -->
     <div class = "d-flex flex-column col-lg-11 m-2 p-3">
+        {% include 'flash_messages.html' %}
         <div>
             <form action method='POST' class = "">
                 <div class="searchContainer">
@@ -52,6 +55,7 @@
     
 
 </div>
+
 
 
 {%  endblock %}

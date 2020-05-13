@@ -1,23 +1,63 @@
-if request.method =='POST':
-        if text_form.validate_on_submit() and text_form.text_post.data:
-
-            worded_post = text_form.text_post.data 
-            -- # use statements below with implemented functions to format the time before storing on the database
-            userid = current_user.id
-            post_date = format_date_joined(datetime.now())
-            post_time = format_time_joined(datetime.now())
-
-
-           
-            cur = mysql.connection.cursor()
-            cur.execute(""" INSERT INTO post (post_id, userid, post_date, post_time) 
-                        VALUES (NULL, "{}", "{}", "{}") """.format(userid,post_date,post_time))
-            
-            cur.execute(""" INSERT INTO text_post (text_id, post_id, text_message) 
-                    VALUES (NULL, (SELECT max(post_id) FROM post WHERE userid = '{}'), "{}") """.format(userid, worded_post))
-         
-            mysql.connection.commit()
-            cur.close()
-            
-            flash('Text Uploaded', 'success')
-            return render_template('dashboard.html', text_form = text_form, image_form = image_form)
+CREATE DEFINER = `root` @`localhost` PROCEDURE `profile_`(
+  kvg_id int(10),
+  INS_userid int(10),
+  kvdate_added date
+) BEGIN DECLARE lcount INT;
+SELECT
+  count(1) INTO lcount
+FROM userprofile
+WHERE
+  userId = INS_userid
+  AND g_id = kvg_id;
+IF lcount = 0 THEN
+INSERT INTO userprofile(g_id, userId, date_added)
+VALUES
+  (kvg_id, INS_userid, kvdate_added);
+  ELSE
+UPDATE userprofile
+SET
+  g_id = kvg_id,
+  userId = INS_userid,
+  date_added = kvdate_added
+WHERE
+  userId = INS_userid
+  AND g_id = kvg_id;
+END IF;
+END $$ CREATE DEFINER = `root` @`localhost` PROCEDURE `update_profile`(
+  INS_userid int(10),
+  INS_photo varchar(100),
+  INS_nationality,
+  INS_bio,
+  kvdate_added date
+) BEGIN DECLARE lcount INT;
+SELECT
+  count(1) INTO lcount
+FROM userprofile
+WHERE
+  userId = INS_userid IF lcount = 0 THEN
+INSERT INTO userprofile(
+    profile_id,
+    userid,
+    profile_photo,
+    nationality,
+    user_bio
+  )
+VALUES
+  (
+    NULL,
+    INS_userid,
+    INS_photo,
+    INS_bio,
+    INS_nationality
+  );
+  ELSE
+UPDATE userprofile
+SET
+  g_id = kvg_id,
+  userId = INS_userid,
+  date_added = kvdate_added
+WHERE
+  userId = INS_userid
+  AND g_id = kvg_id;
+END IF;
+END $$

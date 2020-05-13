@@ -5,7 +5,7 @@
 
 {% include 'header.html' %}
 <diV class = "w-100 bg-light">
-<div class="page ">
+<div class="w-50 m-2">
     {% include 'flash_messages.html' %}
     <div class = " m-4 "> 
         <div class = "card m-4"> 
@@ -16,6 +16,7 @@
                 <div class = "d-flex flex-column">
                     <h4> Create a group to connect with your friends!</h4>
                     <form class = "form-group" action method = 'POST'>
+                        {{group_form.csrf_token}}
                         <div class = "input-group input-group-lg d-flex flex-column mb-2">
 
                             <p>{{group_form.group_name.label}}</p>

@@ -92,7 +92,7 @@ CREATE TABLE friend(
     friend_type varchar(9),
     primary key(fid),
     foreign key(friend_id) references user(userid) on update cascade on delete cascade,
-    foreign key(friend_ownwer) references user(userid) on update cascade on delete cascade
+    foreign key(friend_owner) references user(userid) on update cascade on delete cascade
 );
 
 CREATE TABLE comment(

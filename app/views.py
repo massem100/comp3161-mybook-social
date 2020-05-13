@@ -51,6 +51,7 @@ def dashboard():
                  image_post JOIN user ON post.post_id = image_post.post_id and post.userid = user.userid; """)
         image_posts = cur.fetchall()
 
+        userid = current_user.id
         cur = mysql.connection.cursor()
         cur.execute(
             """ SELECT username FROM user WHERE userid = '{}' """.format(userid))
@@ -430,8 +431,8 @@ def editprofile():
         phone_num = edit_form.phone_num.data 
         profile_pic = edit_form.profile_pic.data
 
-        cur = mysql.connection.cursor()
-        cur.execute(""" """)
+        # cur = mysql.connection.cursor()
+        # cur.execute(""" """)
 
         return redirect(url_for('userprofile'))
     return render_template('user_profile.html', image_form = image_form, comment_form = comment_form, photo_form = photo_form, text_form = text_form, edit_form = edit_form)
@@ -452,14 +453,21 @@ def groups():
 
     if request.method == 'POST': 
 
+        admin_id = current_user.id
         group_name = group_form.group_name.data 
         group_type = group_form.group_type.data
         group_desc = group_form.desc.data
+        date_created= format_date_joined(datetime.now())
 
         cur = mysql.connection.cursor()
-        # cur.execute(""" """)
+        cur.execute(""" INSERT INTO friend_group (group_id, admin_id, groupname, date_created, grouptype, group_description) 
+        VALUES (NULL, "{}", "{}", "{}","{}","{}")""".format(admin_id, group_name,date_created,group_type, group_desc))
 
-        return 'x'  
+        mysql.connection.commit()
+       
+
+        flash('Group created successfully', 'success')
+        return redirect(url_for('searchgroup')) 
     return render_template('groups.html', group_form = group_form)
     
 
@@ -477,7 +485,7 @@ def searchgroup():
 # Route to display the active group 
 
 @app.route('/friends', methods = ['POST', 'GET'])
-@login_required
+
 def friends():
     s_friends = []
     sf_form = SearchFriends()
@@ -639,7 +647,6 @@ def signup():
             (NULL, %s, %s, %s, %s, %s, %s)''',(username, first_name, last_name, gender, date_of_birth, user_password))
 
             mysql.connection.commit()
-            cur.close()
             
 
             flash('Congratulations, you are now a registered user!', 'success')
@@ -671,7 +678,7 @@ def load_user(id):
         result = User(id, username_, f_name, l_name, gender, dob, user_password_hash)
 
         return result
-      
+  
 @login_manager.unauthorized_handler
 def unauthorized():
     """Redirect unauthorized users to Login page."""
