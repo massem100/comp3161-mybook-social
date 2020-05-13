@@ -3,53 +3,49 @@
 
 {% block main %}
 
-<div>
+<div class= "m-5">
 
-    <div class="d-flex align-self-center">
+    <div class="d-flex flex-column align-items-center ">
+        {% include 'flash_messages.html' %}
 
-
-        <div class="enable-shadows  justify-content-center  col-md-5 m-5 bg-light rounded border p-4 shadow-lg">
+        <div class="col-md-4 m-5 rounded border p-4 shadow-lg">
+            
             <div class="wrap-login100  d-flex flex-column align-self-center">
                 <div class="mb-5">
                     <h2 class="text-center font-weight-bold"> Welcome to MyBook </h2>
 
                 </div>
+            <div class="login-form center-block">
+               
+                <form action="{{ url_for('login') }}" method="POST">
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        {{ form.username.label }}
+                        {{ form.username(class='form-control rounded border', placeholder="Eg. Jane Doe") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password.label }}
+                        {{ form.password(class='form-control rounded border') }}
 
-                <div>
-<<<<<<< HEAD
-                    <form action = "" class="form-group ml-4" method="POST">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-=======
-                    <form class="form-group ml-4">
->>>>>>> parent of 89f900f... Changes made
-                        <div class="form-group ">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control " placeholder="johndoe@example.com">
-                            
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control " id="exampleInputPassword1">
-                        </div>
-
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-theme w-75 text-white font-weight-bold"
-                                @click="ShowDashboard">Login</button>
-                        </div>
-
-
+                    </div>
+                    <div>
+                        
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
+            </div>
                         <div class="text-center p-t-115 mt-4">
                             <span class="txt1">
                                 Don’t have an account?
                             </span>
 
-                            <a>Signup</a>
+                            <a href = "{{url_for('signup')}}">Signup</a>
 
                             <div>
 
                                 
                             </div>
-
+                            
                         </div>
                     </form>
                 </div>

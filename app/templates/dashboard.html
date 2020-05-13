@@ -1,179 +1,226 @@
 {% extends "base.html" %}
 
 {% block main %}
-<div id="app">
-    <main>
-        <div class="">
-            <!-- component matched by the route will render here -->
-        <div>
-            <div class="page">
-                <!-- Main Navbar-->
-                <header class="header ">
-                    <nav class="navbar bg-theme">
-                        <!-- Search Box-->
-                        <div class="search-box">
-                            <button class="dismiss"><i class="icon-close"></i></button>
-                            <form id="searchForm" action="#" role="search">
-                                <input type="search" placeholder="What are you looking for..." class="form-control">
+
+ {% include 'header.html' %}
+<div class="bg-light w-100">
+    <div class = "d-flex flex-row"> 
+
+    <div class="d-flex flex-column justify-content-center m-2 w-100">
+        {% include 'flash_messages.html' %}
+<!-- Create post card start -->
+        <div class = "d-flex justify-content-center card m-3 p-2 w-80">
+
+            <div class = "card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link " id="posts-tab" data-toggle="tab" href="#pposts" role="tab" aria-controls="posts"
+                                aria-selected="true"> Create a post </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false"
+                                href="#pimages">Upload an image</a>
+                        </li>
+                    </ul>
+
+            </div>
+            <div class="card-body">
+                <div class="tab-content " id="myTabContent">
+                    <div class="tab-pane fade show active" id="pposts" role="tabpanel" aria-labelledby="posts-tab" aria-selected="true">
+                        <div class="form-group">
+                            <form action = " {{url_for('text')}}" method = 'POST' enctype="multipart/form-data"> 
+                            {{ text_form.csrf_token }}
+                                {{text_form.text_post(class="form-control ", id="message" , rows="3", placeholder="What are you thinking?")}}
+                                    <span class="help-block d-flex justify-content-end">
+                                    <p id="characterLeft" class=" ">You have reached the limit</p>
+                                </span>
+                                <div class="btn-group d-flex justify-content-end">
+                                    <button id="#btnSubmit" type="submit" class="btn btn-primary text-white">Post</button>
+                                </div>
                             </form>
                         </div>
-                        <div class="container-fluid">
-                            <div class="navbar-holder d-flex align-items-center justify-content-between">
-                                <!-- Navbar Header-->
-                                <div class="navbar-header">
-                                    <!-- Navbar Brand --><a href="index.html" class="navbar-brand d-none d-sm-inline-block">
-                                        <div class="brand-text d-none d-lg-inline-block">
-                                            <span>MyBook</span><strong>Dashboard</strong></div>
-                                        <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div>
-                                    </a>
-                                    <!-- Toggle Button--><a id="toggle-btn" href="#"
-                                        class="menu-btn active"><span></span><span></span><span></span></a>
-                                </div>
-                                <!-- Navbar Menu -->
-                                <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
-                                    <!-- Search-->
-                                    <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i
-                                                class="icon-search"></i></a></li>
-                                    <!-- Notifications-->
-                                    <li class="nav-item dropdown"> <a id="notifications" rel="nofollow" data-target="#" href="#"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            class="nav-link"><i class="fa fa-bell-o"></i><span
-                                                class="badge bg-red badge-corner">12</span></a>
-                                        <ul aria-labelledby="notifications" class="dropdown-menu">
-                                            <li><a rel="nofollow" href="#" class="dropdown-item">
-                                                    <div class="notification">
-                                                        <div class="notification-content"><i
-                                                                class="fa fa-envelope bg-green"></i>You have 6 new messages
-                                                        </div>
-                                                        <div class="notification-time"><small>4 minutes ago</small></div>
-                                                    </div>
-                                                </a></li>
-                                            <li><a rel="nofollow" href="#" class="dropdown-item">
-                                                    <div class="notification">
-                                                        <div class="notification-content"><i
-                                                                class="fa fa-twitter bg-blue"></i>You have 2 followers</div>
-                                                        <div class="notification-time"><small>4 minutes ago</small></div>
-                                                    </div>
-                                                </a></li>
-                                            <li><a rel="nofollow" href="#" class="dropdown-item">
-                                                    <div class="notification">
-                                                        <div class="notification-content"><i
-                                                                class="fa fa-upload bg-orange"></i>Server Rebooted</div>
-                                                        <div class="notification-time"><small>4 minutes ago</small></div>
-                                                    </div>
-                                                </a></li>
-                                            <li><a rel="nofollow" href="#" class="dropdown-item">
-                                                    <div class="notification">
-                                                        <div class="notification-content"><i
-                                                                class="fa fa-twitter bg-blue"></i>You have 2 followers</div>
-                                                        <div class="notification-time"><small>10 minutes ago</small></div>
-                                                    </div>
-                                                </a></li>
-                                            <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center">
-                                                    <strong>view all notifications </strong></a></li>
-                                        </ul>
-                                    </li>
-                                    <!-- Messages                        -->
-                                    <li class="nav-item dropdown"> <a id="messages" rel="nofollow" data-target="#" href="#"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            class="nav-link"><i class="fa fa-envelope-o"></i><span
-                                                class="badge bg-orange badge-corner">10</span></a>
-                                        <ul aria-labelledby="notifications" class="dropdown-menu">
-                                            <li><a rel="nofollow" href="#" class="dropdown-item d-flex">
-                                                    <div class="msg-profile"> <img src="img/avatar-1.jpg" alt="..."
-                                                            class="img-fluid rounded-circle"></div>
-                                                    <div class="msg-body">
-                                                        <h3 class="h5">Jason Doe</h3><span>Sent You Message</span>
-                                                    </div>
-                                                </a></li>
-                                            <li><a rel="nofollow" href="#" class="dropdown-item d-flex">
-                                                    <div class="msg-profile"> <img src="img/avatar-2.jpg" alt="..."
-                                                            class="img-fluid rounded-circle"></div>
-                                                    <div class="msg-body">
-                                                        <h3 class="h5">Frank Williams</h3><span>Sent You Message</span>
-                                                    </div>
-                                                </a></li>
-                                            <li><a rel="nofollow" href="#" class="dropdown-item d-flex">
-                                                    <div class="msg-profile"> <img src="img/avatar-3.jpg" alt="..."
-                                                            class="img-fluid rounded-circle"></div>
-                                                    <div class="msg-body">
-                                                        <h3 class="h5">Ashley Wood</h3><span>Sent You Message</span>
-                                                    </div>
-                                                </a></li>
-                                            <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center">
-                                                    <strong>Read all messages </strong></a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item"><a href="login.html" class="nav-link logout"> <span
-                                                class="d-none d-sm-inline">Settings <img class="icon"
-                                                    src="/static/uploads/settings.png"></span><i class="fa fa-sign-out"></i></a>
-                                    </li>
-                                    <!-- Logout    -->
-                                    <li class="nav-item"><a href="login.html" class="nav-link logout"> <span
-                                                class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"><img
-                                                    class="icon" src="/static/uploads/logout.png"></i></a></li>
-                                </ul>
+                    
+                    </div>
+                    <div class="tab-pane fade " id="pimages" role="tabpanel" aria-labelledby="images-tab" aria-selected="false">
+                        <div class="form-group">
+
+                            <div class="custom-file">
+                                <form action = "{{url_for('image')}}" class = "form-group"  method= 'POST' enctype="multipart/form-data"> 
+                                    {{ image_form.csrf_token }}
+                                    {{image_form.photo.label(class = "mr-2")}}
+                                    
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            {{image_form.photo(class="custom-file-input" , id="inputGroupFile02" )}}
+                                            <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                                        </div> 
+                                    </div>
+                                    <div>
+                                        {{image_form.image_desc.label}}
+                                        {{image_form.image_desc(class = "form-control " , id="caption")}}
+                                        <span class="help-block d-flex justify-content-end">
+                                            <p id="characterRemaining" class=" ">You have reached the limit</p>
+                                        </span>
+                                    </div>
+                                    <div class="btn-group d-flex justify-content-end">
+                                        <button id="btnSubmit" type="submit" class="btn btn-primary text-white">Post</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </nav>
-                </header>
-                <div class="page-content d-flex align-items-stretch">
-                    <!-- Side Navbar -->
-                    <nav class="side-navbar">
-                        <!-- Sidebar Header-->
-                        <div class="sidebar-header d-flex align-items-center">
-        
-                            <!-- ADD PHOTO- CONNECT DATABASE to get info-->
-                            <!-- <div class="avatar"><img src="" alt="..." class="img-fluid rounded-circle"></div> -->
-                            <div class="title">
-                                <h1 class="h4"> Username</h1>
-        
-                            </div>
-                        </div>
-                        <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
-                        <ul class="list-unstyled">
-                            <li class="active"><a href="/dashboard"> <i class="icon-home"></i>Home </a></li>
-                            <li>
-                                <a href="/userprofile"> <i><img class="icon" src="/static/uploads/user.png"></i>My
-                                    Profile </a>
-                            </li>
-                            <li><a href="/groups.html"> <i><img class="icon" src="/static/uploads/group.png"> </i>My Groups </a>
-                            </li>
-                            <li><a href="/friends.html"> <i><img class="icon" src="/static/uploads/friends.png"> </i>My Friends</a>
-                            </li>
-                            <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">Example dropdown
-                                </a>
-                                <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                                    <li><a href="#">Page</a></li>
-                                    <li><a href="#">Page</a></li>
-                                    <li><a href="#">Page</a></li>
-                                </ul>
-                            </li>
-        
-                        </ul>
-        
-                    </nav>
-                    <div class="content-inner">
-                        <!-- Page Header-->
-                        <div class="d-flex flex-column col-lg-9">
-                            <div>
-                                <create-post> </create-post>
-                            </div>
-        
-                            <div>
-                                <post> </post>
-                                <post> </post>
-                            </div>
-                        </div>
-        
-        
+                        <div class="py-4"></div>
                     </div>
                 </div>
+            
+                </div>
+            
+            
 
-
+        
         </div>
-    </main>
+        <!-- Create post end-->
 
-    <app-footer></app-footer>
+        <!-- Posts div start below -->
+        {% for post in posts %}
+        <div >
+            <div class="">
+                <div class="card m-3 w-80 anch" id = "">
+               
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="mr-2">
+                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                </div>
+                                <div class="ml-2">
+                                    <div class="h5 m-0">{{post.username}}</div>
+                                    <!-- <div class="h7 text-muted">Miracles Lee Cross</div> -->
+                                </div>
+                            </div>
+                            <div>
+                                <div class="dropdown">
+                                    <button class="btn btn-link" type="button" id="gedf-drop1"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-h"></i>
+                                    </button>
+                                   
+                                </div>
+                            </div>
+                        </div>
+            
+                    </div>
+                    <!-- Use JS to format time to look a certain way  -->
+                    <div class="card-body">
+                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{post.post_date}}  {{post.post_time}}</div>
+                                    
+                        <div>
+                            {% if post.image_filename == "" %}
+                                <div class="">
+                                    
+                                    <p> {{post.text_message}}</p>                                   
+                                   
+                                </div>
+                            {% else %}
+                              <div>
+                                <img class="post-img" onerror="this.style.display='none'" src="{{url_for('static', filename = 'uploads/' + post.image_filename)}}">
+                                <p> {{post.caption}}</p>
+                                <p> 
+                                    {{post.text_message}}
+                                    
+                                </p>
+                                  
+                              </div>
+                             {% endif %}
+                        </div>
+                        
+                    </div>
+                    <div class="card-footer ">
+                        <p>#{{post.post_id}}</p>
+                        <a href= "" class="card-link d-flex justify-content-end commentbtn" id = "{{post.post_id}}" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-comment m-1"> </i> Comment</a>
+                        
+                        <!-- <button type="button" class="btn btn-primary justify-content-end" data-toggle="modal" data-target="#exampleModalCenter">
+                            <i class = "fa fa-comment">  </i> Comment
+                        </button> -->
+                     
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle"> Comment Section</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        
+                                        <form action ="{{url_for('single_post', post_id = post.post_id)}}" method = 'POST' class = "" id = "CommentForm"> 
+                                            {{comment_form.csrf_token}}
+
+                                            <div class = "d-flex flex-column m-2"> 
+                                                <div>
+                                                    {{comment_form.post_id.label}}
+                                                    {{comment_form.post_id()}}
+                                                </div>
+                                               <div>
+                                                   {{comment_form.comment.label}}
+                                                   {{comment_form.comment}}
+                                               </div>
+                                               
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </form>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            
+            </div>
+            </div>
+{% endfor %}
+    <!-- Posts div end here-->
+    
+    
+    
+</div>
+<!-- Cards on right - start below
+<div class="d-flex flex-column">
+    <div>
+        <div class="card  m-3">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+
+    </div>
+    <div>
+        <div class="card  m-3">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+
+    </div>
+</div> -->
+<!-- Cards on right- end -->
+</div>
 </div>
 {% endblock %}

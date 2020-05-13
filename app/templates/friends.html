@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+<!-- Flask inheritance, allows each child component to be linked with any styling or script tags needed etc -->
+
+{% block main %}
+<!-- This is to prevent rewriting code, header.html and all its elements will be included on each page  -->
+{% include 'header.html' %}
+
+<div class="d-flex flex-column justify-content-center m-4  w-100 ">
+   <!-- This is the search bar to search the database for any user matching the name typed. -->
+   <!-- If the user is already a friend with one of the results, the buttton to add Friend should change to show a tick and 'Friend Already' -->
+    <!-- <input class = "d-flex align-self-center friends-search border rounded mb-2"type= "text" placeholder="Search for friends">  -->
+    <form action = "" method ='POST'>
+        {{form.csrf_token}}
+        <div class="searchContainer">
+            <i class="fa fa-search searchIcon"></i>
+            {{form.friends_search(class="searchBox", placeholder="Search for friends")}}
+        
+            <input type="submit" value="Search" class="searchButton">
+        </div>
+    </form>
+    <hr>
+    <!-- This container holds the results from the search, if statement should be added if no results are there, add 'No user found' text -->
+    <div class = "d-flex flex-column bg-light border  rounded m-2 h-70"> 
+        <h5 class = "font-weight-bold m-2  text-primary"> SEARCH RESULTS MATCHING </h5>
+        <!-- <img id="profile-photo" src="/static/uploads/krys.png"> -->
+        
+        <!-- Return results of search inside div -->
+
+             <p class = "text-center text-secondary"> No Searches made yet</p>
+            
+
+                <div class = "d-flex flex-column m-4"> 
+                    {% for user in users%}
+                        <ul class="list-group border rounded bg-light">
+                            
+                            <div class="list-group-item  d-flex flex-row">
+                                <div>
+                                    {{user.f_name + user.l_name}}
+                                    <p> @{{user.username}}</p>
+                                </div>
+                                <div class = "  ml-auto">
+                                    <button id="friendsbtn" class="btn btn-primary rounded"> Add Friend </button>
+                                </div>
+                                
+                            </div>
+                            
+                        </ul>
+                        {% endfor %}
+                        
+                </div>
+        
+    </div>
+
+    <!-- This lists out the current user friends in the different categories -->
+    <div class= "d-flex flex-column">
+        
+        <!-- Container to list the friends in the relatives category -->
+        <div class = "card ml-2 mb-2 mt-4 mr-2"> 
+            <div class = "card-header bg-primary text-white font-weight-bold"> 
+                <i class="fas fa-heart"></i> Relatives
+
+            </div>
+            <div class = "card-body"> 
+                <p> 
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique reiciendis 
+                </p>
+
+            </div>
+
+        </div>
+        <!-- Container to list the friends in the school category -->
+        <div class="card ml-2 mb-2 mt-4 mr-2">
+            <div class="card-header bg-primary text-white font-weight-bold">
+                <i class="fas fa-school"></i> School
+        
+            </div>
+            <div class="card-body">
+               
+              <div> 
+                        
+                    <ul class="list-group bg-light">
+                        {% for school_friend in s_friends %}
+                        <li class="list-group-item active bg-white">
+                        <img class="profile-image" src="{{url_for('static', filename = 'uploads/' + school_friend.photo)}}">
+                        {{school_friend.friend_username}}
+                        {{school_friend.friend_f_name}}
+                    </li>
+                    {% endfor %}
+                    </ul>
+              </div>
+            
+        
+            </div>
+        
+        </div>
+        <!-- Container to list the friends in the work category -->
+        <div class="card ml-2 mb-2 mt-4 mr-2">
+            <div class="card-header bg-primary text-white font-weight-bold">
+                <i class="fas fa-briefcase"></i> Work
+        
+            </div>
+            <div class="card-body">
+                <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique reiciendis
+                </p>
+        
+            </div>
+        
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

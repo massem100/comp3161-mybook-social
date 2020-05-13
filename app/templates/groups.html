@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+
+{% include 'header.html' %}
+<diV class = "w-100 bg-light">
+<div class="w-50 m-2">
+    {% include 'flash_messages.html' %}
+    <div class = " m-4 "> 
+        <div class = "card m-4"> 
+            <div class = "card-header bg-primary text-white"> 
+                <h4>Create group</h4> 
+            </div>
+            <div class = "card-body">
+                <div class = "d-flex flex-column">
+                    <h4> Create a group to connect with your friends!</h4>
+                    <form class = "form-group" action method = 'POST'>
+                        {{group_form.csrf_token}}
+                        <div class = "input-group input-group-lg d-flex flex-column mb-2">
+
+                            <p>{{group_form.group_name.label}}</p>
+                            <div>
+                                {{group_form.group_name(class = "border")}}
+
+                            </div>
+                        </div>
+                        <div class = "d-flex flex-column mb-2">
+                            <div class="">
+                                {{group_form.group_type.label}}
+                            </div>
+                        <div class="input-group  mb-2">
+                                
+                                <div class="input-group-prepend">
+
+                                    
+                                    <button class="btn btn-outline-secondary" type="button">Group Type</button>
+                                </div>
+                                <div> 
+                                    {{group_form.group_type(class = "custom-select")}}
+                                </div>
+                            
+                        </div>
+                        <div></div>
+                        <div class="d-flex flex-column">
+                        
+                            <p>{{group_form.desc.label}}</p>
+                            <div>
+                                {{group_form.desc( class = " border")}}
+                        
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Create Group</button>
+                        </div> 
+                        
+                    
+                </form>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+           
+
+
+
+
+
+
+</div>
+</diV>
+{% endblock %}

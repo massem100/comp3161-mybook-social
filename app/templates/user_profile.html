@@ -3,215 +3,555 @@
 
 {% block main %}
 
-<div class="page">
-    <!-- Main Navbar-->
-    <header class="header ">
-        <nav class="navbar bg-theme">
-            <!-- Search Box-->
-            <div class="search-box">
-                <button class="dismiss"><i class="icon-close"></i></button>
-                <form id="searchForm" action="#" role="search">
-                    <input type="search" placeholder="What are you looking for..." class="form-control">
-                </form>
+    {% include 'header.html' %}
+<div class = "d-flex flex-column bg-light w-100">
+    
+    <div class="  m-3">
+        {% include 'flash_messages.html' %}
+        <!-- Card with Profile photo and username -->
+        <div class = "d-flex flex-column card  justify-content-center rounded " >
+                    <!--   Profile image for user profile   -->
+        {% for p_detail in p_details%}
+            <div class = "d-flex justify-content-center" id ="bg-profile-image">
+                <img id="profile-photo" src="{{url_for ('static', filename = 'uploads/' + p_detail.profile_photo )}}">
             </div>
-            <div class="container-fluid">
-                <div class="navbar-holder d-flex align-items-center justify-content-between">
-                    <!-- Navbar Header-->
-                    <div class="navbar-header">
-                        <!-- Navbar Brand --><a href="index.html" class="navbar-brand d-none d-sm-inline-block">
-                            <div class="brand-text d-none d-lg-inline-block">
-                                <span>MyBook</span><strong>Dashboard</strong></div>
-                            <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div>
-                        </a>
-                        <!-- Toggle Button--><a id="toggle-btn" href="#"
-                            class="menu-btn active"><span></span><span></span><span></span></a>
-                    </div>
-                    <!-- Navbar Menu -->
-                    <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
-                        <!-- Search-->
-                        <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i
-                                    class="icon-search"></i></a></li>
-                        <!-- Notifications-->
-                        <li class="nav-item dropdown"> <a id="notifications" rel="nofollow" data-target="#" href="#"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i
-                                    class="fa fa-bell-o"></i><span class="badge bg-red badge-corner">12</span></a>
-                            <ul aria-labelledby="notifications" class="dropdown-menu">
-                                <li><a rel="nofollow" href="#" class="dropdown-item">
-                                        <div class="notification">
-                                            <div class="notification-content"><i class="fa fa-envelope bg-green"></i>You
-                                                have 6 new messages
-                                            </div>
-                                            <div class="notification-time"><small>4 minutes ago</small></div>
-                                        </div>
-                                    </a></li>
-                                <li><a rel="nofollow" href="#" class="dropdown-item">
-                                        <div class="notification">
-                                            <div class="notification-content"><i class="fa fa-twitter bg-blue"></i>You
-                                                have 2 followers</div>
-                                            <div class="notification-time"><small>4 minutes ago</small></div>
-                                        </div>
-                                    </a></li>
-                                <li><a rel="nofollow" href="#" class="dropdown-item">
-                                        <div class="notification">
-                                            <div class="notification-content"><i
-                                                    class="fa fa-upload bg-orange"></i>Server Rebooted</div>
-                                            <div class="notification-time"><small>4 minutes ago</small></div>
-                                        </div>
-                                    </a></li>
-                                <li><a rel="nofollow" href="#" class="dropdown-item">
-                                        <div class="notification">
-                                            <div class="notification-content"><i class="fa fa-twitter bg-blue"></i>You
-                                                have 2 followers</div>
-                                            <div class="notification-time"><small>10 minutes ago</small></div>
-                                        </div>
-                                    </a></li>
-                                <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center">
-                                        <strong>view all notifications </strong></a></li>
-                            </ul>
-                        </li>
-                        <!-- Messages                        -->
-                        <li class="nav-item dropdown"> <a id="messages" rel="nofollow" data-target="#" href="#"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i
-                                    class="fa fa-envelope-o"></i><span
-                                    class="badge bg-orange badge-corner">10</span></a>
-                            <ul aria-labelledby="notifications" class="dropdown-menu">
-                                <li><a rel="nofollow" href="#" class="dropdown-item d-flex">
-                                        <div class="msg-profile"> <img src="img/avatar-1.jpg" alt="..."
-                                                class="img-fluid rounded-circle"></div>
-                                        <div class="msg-body">
-                                            <h3 class="h5">Jason Doe</h3><span>Sent You Message</span>
-                                        </div>
-                                    </a></li>
-                                <li><a rel="nofollow" href="#" class="dropdown-item d-flex">
-                                        <div class="msg-profile"> <img src="img/avatar-2.jpg" alt="..."
-                                                class="img-fluid rounded-circle"></div>
-                                        <div class="msg-body">
-                                            <h3 class="h5">Frank Williams</h3><span>Sent You Message</span>
-                                        </div>
-                                    </a></li>
-                                <li><a rel="nofollow" href="#" class="dropdown-item d-flex">
-                                        <div class="msg-profile"> <img src="img/avatar-3.jpg" alt="..."
-                                                class="img-fluid rounded-circle"></div>
-                                        <div class="msg-body">
-                                            <h3 class="h5">Ashley Wood</h3><span>Sent You Message</span>
-                                        </div>
-                                    </a></li>
-                                <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center">
-                                        <strong>Read all messages </strong></a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a href="login.html" class="nav-link logout"> <span
-                                    class="d-none d-sm-inline">Settings <img class="icon"
-                                        src="/static/uploads/settings.png"></span><i class="fa fa-sign-out"></i></a>
-                        </li>
-                        <!-- Logout    -->
-                        <li class="nav-item"><a href="login.html" class="nav-link logout"> <span
-                                    class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"><img class="icon"
-                                        src="/static/uploads/logout.png"></i></a></li>
-                    </ul>
-                </div>
+            
+           <div class ="">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs d-flex justify-content-start" id="myTab" role="tablist">
+                    
+                    <li class="nav-item">
+                        <a class="nav-link active" id="posts-tab" data-toggle="tab" role="tab" aria-controls="posts"
+                            aria-selected="true" href="#posts">Profile Feed</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="edit-tab" data-toggle="tab" href="#editprofile" role="tab" aria-controls="edits"
+                            aria-selected="false">Edit Profile</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </header>
-    <div class="page-content d-flex align-items-stretch">
-        <!-- Side Navbar -->
-        <nav class="side-navbar">
-            <!-- Sidebar Header-->
-            <div class="sidebar-header d-flex align-items-center">
-
-                <!-- ADD PHOTO- CONNECT DATABASE to get info-->
-                <!-- <div class="avatar"><img src="" alt="..." class="img-fluid rounded-circle"></div> -->
-                <div class="title">
-                    <h1 class="h4"> Username</h1>
-
-                </div>
-            </div>
-            <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
-            <ul class="list-unstyled">
-                <li class="active"><a href="/dashboard"> <i class="icon-home"></i>Home </a></li>
-                <li>
-                    <a href="/userprofile"> <i><img class="icon" src="/static/uploads/user.png"></i>My
-                        Profile </a>
-                </li>
-                <li><a href="/groups.html"> <i><img class="icon" src="/static/uploads/group.png"> </i>My Groups </a>
-                </li>
-                <li><a href="/friends.html"> <i><img class="icon" src="/static/uploads/friends.png"> </i>My Friends</a>
-                </li>
-                <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">Example dropdown
-                    </a>
-                    <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                        <li><a href="#">Page</a></li>
-                    </ul>
-                </li>
-
-            </ul>
-
-        </nav>
-        <div class="content-inner">
-            <!-- Page Header-->
-            <div class="d-flex flex-column col-lg-9">
-                
-                <div class="col-lg gedf-main">
-                
-                
-                    <div class="card gedf-card">
-                        <div class="card-header">
-                            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab"
-                                        aria-controls="posts" aria-selected="true">Make
-                                        a publication</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images"
-                                        aria-selected="false" href="#images">Images</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="card-body">
-                            <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
-                                    <div class="form-group">
-                                        <label class="sr-only" for="message">post</label>
-                                        <textarea class="form-control" id="message" rows="3"
-                                            placeholder="What are you thinking?"></textarea>
-                                    </div>
-                
-                                </div>
-                                <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
-                                    <div class="form-group">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="customFile">
-                                            <label class="custom-file-label" for="customFile">Upload image</label>
-                                        </div>
-                                    </div>
-                                    <div class="py-4"></div>
-                                </div>
-                            </div>
-                
-                            <div class="btn-toolbar justify-content-between">
-                                <div class="btn-group">
-                                    <button type="submit" class="btn btn-theme text-white">share</button>
-                                </div>
-                
-                            </div>
-                
-                
-                        </div>
-                    </div>
-                </div>
-                </div>
-
-               
-            </div>
-
-
+           </div>
         </div>
+        {% endfor %}
+        <div class="tab-content" id="myTabContent">
+            
+        <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+        <div class = "d-flex flex-row"> 
+            <div class = "d-flex flex-column ">
+                <!-- container to hold friends and photo cards -->
+                <div>
+                   
+                    <div class="card h-30 m-2"> 
+                        <!-- Profile Details of User  -->
+                        <div class = "card-header bg-primary p-2 text-white"> 
+                            <h4>User Details</h4> 
+
+                        </div>
+                        <div class="d-flex flex-column p-2 ml-2 w-75  mb-2text-light-grey justify-content-center">
+                            <h5 class="text-dark font-md bold  font-weight-bold"> {{current_user.f_name  + current_user.l_name}}</h5>
+                            <p>
+                                <img id="icon" src="{{url_for('static', filename ='uploads/email.png')}}" />
+                                <span class="bold ml-1 ">Janedoe@exmaple.com </span>
+                            </p>
+                            <p>
+                                <img id="icon" src="{{url_for('static', filename ='uploads/signs.png')}}" />
+                                <span class="bold ml-1 ">  Gender: {{current_user.gender}} </span>
+                            </p>
+                            <p>
+                                <img id="icon" src="{{url_for('static', filename ='uploads/calendar.png')}}" />
+                                <span class="bold ml-1 "> Date of Birth: {{current_user.date_of_birth}} </span>
+                            </p>
+                            
+                        </div>
+                    </div>
+                <!-- add friends card -->
+                    <div class="card d-flex flex-column m-2 ">
+                        <div class="card-header bg-primary text-white ">
+                            <h4 class=" font-weight-bold"> Friends </h4>
+                        </div>
+                        <div class="card-body  d-flex flex-row justify-content-center">
+                    
+                            <div class="d-flex flex-column">
+                                <img class="profile-image m-3 rounded" src="/static/uploads/blue_lagoon.jpg">
+                                <img class="profile-image m-3 rounded" src="/static/uploads/beach.jpg">
+                            </div>
+                            <div class="d-flex flex-column">
+                                <img class="profile-image m-3 mb-1 rounded" src="/static/uploads/blue_lagoon.jpg">
+                                <img class="profile-image m-3 mb-1 rounded" src="/static/uploads/beach.jpg">
+                            </div>
+                        
+                    
+                    
+                        </div>
+                        <div class = "">
+                            <form action ="{{url_for('friends')}}" method = 'GET' >
+                            <button class = "form-control input-sm btn btn-primary text-white " type ='submit'> See all Friends </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Photo Div  -->
+                
+                    <div class = "d-flex flex-column "> 
+                        
+                        <div class = "card d-flex flex-column m-2 "> 
+                            <div class = "card-header bg-primary text-white"> 
+                                <h4 class = "font-weight-bold" > Photos </h4>
+                            </div>
+                            <div class = "card-body d-flex flex-row justify-content-center " > 
+                                <div class = "w-100" id = "container">
+                            {% for photo in photos %}
+                                <div class = "grid">
+                                    <img class="profile-image m-2 rounded" src="{{url_for('static', filename = 'uploads/' +  photo.photo_filename)}}">
+                                </div>
+                                
+                                
+                                {% endfor %}
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button  class="form-control input-sm btn btn-primary text-white"  data-toggle="modal" data-target="#exampleModalLong">See All Photos</button>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal overflow-auto fade  " id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Your Photo</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body ">
+                                            <div class = "">
+                                                <form class="form-group d-flex flex-row " action method='POST' enctype="multipart/form-data">
+                                                    {{ form.csrf_token}}
+                                                    <div class = "d-flex flex-column">
+                                                        <div class="d-flex flex-column ">
+                                                                
+                                                            {{form.photo_desc.label}}  
+                                                                                       
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">Upload</span>
+                                                                </div>
+                                                                <div class="custom-file">
+                                                            
+                                                                    {{ form.photo(class ="custom-file-input") }}
+                                                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>    
+                                                        {{form.photo_desc}}
+                                                        <div class="btn-group mt-2 mb-2">
+                                                            <button class="form-control input-sm btn btn-primary text-white" type="submit">Upload Photo</button>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    
+                                            
+                                                </form>
+                                            
+                                            </div>
+
+                                            <div> 
+                                                <h4> Your Photos </h4>
+                                                <div class="">
+                                                    <div class="">
+                                                        
+                                                        <div id="mdb-lightbox-ui bg-light">
+                                                
+                                                        <div class="mdb-lightbox w-100   " id = "container">                                                        
+                                                            {% for photo in allphotos %}
+                                                            <div class=" grid">
+                                                               
+                                                                    <img alt="{{photo.photo_desc}}" src="{{url_for('static', filename = 'uploads/' + photo.photo_filename)}}"
+                                                                        class="img-fluid d-flex flex-wrap profile-image rounded border" />
+                                                                
+                                                            </div>
+                                                            
+                                                            {% endfor %}
+                                                
+                                                          
+                                                        </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                                 
+                        </div>
+                    </div>
+                </div>
+                    <div class = "d-flex flex-column m-2 w-100"> 
+                        <!-- add Create - Post card -->
+                        <div class = "w-100">
+                                <!--- \\\\\\\Post-->
+                                
+                                <div class = "d-flex card  p-2 w-90">
+
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link " id="posts-tab" data-toggle="tab" href="#pposts" role="tab" aria-controls="posts"
+                                                aria-selected="true"> Create a post </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images"
+                                                aria-selected="false" href="#pimages">Upload an image</a>
+                                        </li>
+                                    </ul>
+                                
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content " id="myTabContent">
+                                        <div class="tab-pane fade show active" id="pposts" role="tabpanel" aria-labelledby="posts-tab"
+                                            aria-selected="true">
+                                            <div class="form-group">
+                                                <form action=" {{url_for('profile_textpost')}}" method='POST' enctype="multipart/form-data">
+                                                    {{ text_form.csrf_token }}
+                                                    {{text_form.text_post(class="form-control ", id="message" , rows="3", placeholder="What are you thinking?")}}
+                                                    <span class="help-block d-flex justify-content-end">
+                                                        <p id="characterLeft" class=" ">You have reached the limit</p>
+                                                    </span>
+                                                    <div class="btn-group d-flex justify-content-end">
+                                                        <button  type="submit" class="btn btn-primary text-white">Post</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                
+                                        </div>
+                                        <div class="tab-pane fade " id="pimages" role="tabpanel" aria-labelledby="images-tab" aria-selected="false">
+                                            <div class="form-group">
+                                
+                                                <div class="custom-file">
+                                                    <form action="{{url_for('profile_imagepost')}}" class="form-group" method='POST' enctype="multipart/form-data">
+                                                        {{ image_form.csrf_token }}
+                                                        {{image_form.photo.label(class = "mr-2")}}
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">Upload</span>
+                                                            </div>
+                                                            <div class="custom-file">
+                                                                
+                                                                {{image_form.photo(class="custom-file-input", id="customFile")}}
+                                                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            {{image_form.image_desc.label}}
+                                                            {{image_form.image_desc(class = "form-control " , id="caption")}}
+                                                            <span class="help-block d-flex justify-content-end">
+                                                                <p id="characterRemaining" class=" ">You have reached the limit</p>
+                                                            </span>
+                                                        </div>
+                                                        <div class="btn-group d-flex justify-content-end">
+                                                            <button  type="submit" class="btn btn-primary text-white">Post</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="py-4"></div>
+                                        </div>
+                                    </div>
+                                
+                                </div>
+                                
+                                
+                                
+                                
+                                </div>
+                                <!-- create posts ends here -->
+                        {% for post in posts %}        
+                        <div id = "">
+                            <!-- add posts -->
+                            
+                        <div class="">
+                                <div class="card m-2  w-80">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="mr-2">
+                                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                                </div>
+                                                <div class="ml-2">
+                                                    <div class="h5 m-0">{{post.username}}</div>
+                                                    <div class="h7 text-muted">{{current_user.f_name  + current_user.l_name}}</div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-link" type="button" id="gedf-drop1"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-h"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                         </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> 10 min ago</div>
+                                                    
+                                        <div>
+                
+                                            {% if post.image_filename == "" %}
+                                                <div class="">
+                                                     <p> {{post.text_message}}</p>
+                                                  
+                                                </div>
+                                            {%else %}
+                                              <div>
+                                                <img class="post-img" onerror="this.style.display='none'" src="{{url_for('static', filename = 'uploads/' + post.image_filename)}}">
+                                                <p> {{post.caption}}</p>
+                                                <p> 
+                                                    {{post.text_message}}
+                                                </p>
+                                                  
+                                              </div>
+                                             {% endif %}
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="card-footer">
+                                        
+                                        <!-- add comment icon here -->
+                                        <a href="" class="card-link d-flex justify-content-end " data-toggle="modal" data-target="#exampleModalCenter"><i
+                                                class="fa fa-comment  m-1"> </i> Comment</a>
+                                        
+                                                                                
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle"> Comment Section</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>
+                                                            Add comment form
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                </div>
+                            
+                            </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                        
+            </div>
+        </div>
+            
+        <div class="tab-pane fade" id="editprofile" role="tabpanel" aria-labelledby="edit-tab">
+            <!-- Edit Profile Form -->
+            <div>
+
+        <div class="d-flex justify-content-center w-100">
+                            
+        <div class="container">
+            <div class="row flex-lg-nowrap ">
+                <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
+                    
+                </div>
+        
+                <div class="col">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="e-profile">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-auto mb-3">
+                                                <div class="mx-auto" style="width: 140px;">
+                                                    <div class="d-flex justify-content-center align-items-center rounded"
+                                                        style="height: 140px; background-color: rgb(233, 236, 239);">
+                                                        <span
+                                                            style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                                <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                                    <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{current_user.f_name + " " +current_user.l_name}}</h4>
+                                                    <p class="mb-0">{{current_user.username}}</p>
+                                                    <div class="mt-2">
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">Upload</span>
+                                                            </div>
+                                                            <div class="custom-file">
+                                                                {{edit_form.profile_pic(class="custom-file-input")}}
+                                                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                                            </div>
+                                                        </div>
+                                                       
+                                                        <button class="btn btn-primary" type="button">
+                                                            <i class="fa fa-fw fa-camera"></i>
+                                                            <span>Change Photo</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="text-center text-sm-right">
+                                                    <div class="text-muted"><small>Joined 09 Dec 2017</small></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ul class="nav nav-tabs">
+                                            <li class="nav-item"><a href="" class="active nav-link">Settings</a></li>
+                                        </ul>
+                                        <div class="tab-content pt-3">
+                                            <div class="tab-pane active">
+                                                <form class="form" novalidate="" action method = 'POST' enctype = "multipart/form-data">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="row">
+
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        {{edit_form.f_name.label}}
+                                                                        {{edit_form.f_name(class = "form-control  mb-2 rounded border", placeholder = "first name",title="Enter your first name if any.")}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        {{edit_form.l_name.label}}
+                                                                        {{edit_form.l_name(class = "form-control  mb-2 rounded border", placeholder = "last name", title="Enter your last name if any.")}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        {{edit_form.username.label}}
+                                                                        {{edit_form.username(class="form-control mb-2 rounded border")}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        {{edit_form.gender.label}}
+                                                                        {{edit_form.gender(class="form-control mb-2 rounded border")}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        {{edit_form.birthday.label}}
+                                                                        {{edit_form.birthday(class="form-control mb-2 rounded border")}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        {{edit_form.email.label}}
+                                                                        {{edit_form.email(class="form-control mb-2 rounded border")}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        {{edit_form.phone_num.label}}
+                                                                        {{edit_form.phone_num(class="form-control mb-2 rounded border")}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        {{edit_form.nationality.label}}
+                                                                        {{edit_form.nationality(class="form-control mb-2 rounded border")}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col mb-3">
+                                                                    <div class="form-group">
+                                                                        {{edit_form.bio.label}}
+                                                                        {{edit_form.bio(class="form-control mb-2 rounded border")}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group m-2">
+                                                                        {{edit_form.password.label}}
+                                                                        {{edit_form.password(class = "form-control mb-2 rounded border ")}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group m-2">
+                                                                        {{edit_form.confirmPassword.label}}
+                                                                        {{edit_form.confirmPassword(class = "form-control mb-2 rounded border ")}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col d-flex justify-content-end">
+                                                            <button class="btn btn-primary" type="submit">Save Changes</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            
+                                
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>
+            </div>
+            <!-- Last of New Edit  -->
+        </div>
+    </div> 
     </div>
-
-
 </div>
+</div>
+</div>
+</div>
+
 
 {% endblock %}

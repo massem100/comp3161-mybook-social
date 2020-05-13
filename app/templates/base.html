@@ -8,13 +8,15 @@
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <meta name="description" content="">
   <meta name="author" content="">
-
-  <title>INFO3180 Lab 7</title>
+  
+  <link rel="shortcut icon" type="image/icon" href="/static/uploads/Mlogo.png">
+  <title>MyBook Social</title>
 
   <!-- Bootstrap -->
   <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-
+  <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   {% block css %} {% endblock%}
 </head>
 
@@ -27,34 +29,14 @@
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
     crossorigin="anonymous"></script>
+
   <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/vue.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/vue-router.js') }}"></script>
+ 
+   <!-- <script src="{{ url_for('static', filename='js/jquery-ui.js')}}"></script> -->
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
   <script>const token = "{{ csrf_token() }}";</script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
   {% block js %} {% endblock%}
 </body>
 
-<<<<<<< HEAD
-=======
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
-    {% block css %} {% endblock%}
-  </head>
-  <body>
-    <div id="main">
-        {% block main %}{% endblock %}
-    </div>
-    
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/vue.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/vue-router.js') }}"></script>
-    <script>const token = "{{ csrf_token() }}";</script>
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-    {% block js %} {% endblock%}
-  </body>
->>>>>>> parent of 89f900f... Changes made
 </html>
