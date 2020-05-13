@@ -15,9 +15,11 @@ def dummy_data(x,headers):
               #for statement use to populate the the csv file by x amount into a list
               #to represent data that would be in reach row 
               p=('profile.png')
+              count=0
               for i in range(0,x):
+                  count=count+1
                   writer.writerow({
-                      'userid':fake.random_int(min=1, max=500000),
+                      'userid':count,
                       'username':fake.profile()['username'],
                       'f_name':fake.first_name(),
                       'l_name':fake.last_name(),

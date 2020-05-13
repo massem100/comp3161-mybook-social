@@ -1,9 +1,17 @@
 
-load data local infile '/Users/Masse/Desktop/f/comp3161-mybook-social/userTable.csv' into table user fields terminated by ',' 
-lines terminated by '\n' ignore 1 rows(userid,username,f_name,l_name,gender,date_of_birth,user_password);
+load data local infile '/Users/Tonnika/Documents/GitHub/comp3161-mybook-social/
 
-load data local infile '/Users/Tonnika/Documents/GitHub/comp3161-mybook-social/userInfoTable.csv' into table user_info fields terminated by ',' 
+userTable.csv' into table user fields terminated by ',' 
+lines terminated by '\n' ignore 1 rows(userid,username,f_name,l_name,gender,
+date_of_birth,user_password);
+
+load data local infile '/Users/Tonnika/Documents/GitHub/comp3161-
+mybook-social/userInfoTable.csv' into table user_info fields 
+terminated by ',' 
 lines terminated by '\n' ignore 1 rows(userid,email,phone_num);
 
-load data local infile '/Users/Masse/Desktop/f/comp3161-mybook-social/profileTable.csv' into table userprofile fields terminated by ',' 
-lines terminated by '\r\n' ignore 1 rows(profile_id,userid,profile_photo,nationality,user_bio);
+load data local infile '/Users/Tonnika/Documents/GitHub/comp3161-mybook-social/profileTable.csv' into table userprofile fields terminated by ',' 
+lines terminated by '\n' ignore 1 rows(profile_id,userid,profile_photo,nationality,user_bio);
+
+
+

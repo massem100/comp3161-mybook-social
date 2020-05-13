@@ -15,10 +15,12 @@ def dummy_data(x,headers):
               #for statement use to populate the the csv file by x amount into a list
               #to represent data that would be in reach row 
               p=('profile.png')
+              count=0
               for i in range(0,x):
+                  count=count+1
                   writer.writerow({
-                      'profile_id':fake.random_int(min=1, max=500000),
-                      'userid':fake.random_int(min=1, max=500000),
+                      'profile_id':count,
+                      'userid':count,
                       'profile_photo':p,
                       'nationality':fake.country(),
                       'user_bio':fake.text(max_nb_chars=20)
@@ -29,4 +31,5 @@ if __name__ == '__main__':
     dummy_data(500000,headers)
     elapsed=time() - start
     print('created csv file time: {}'.format(elapsed))
+   
    
