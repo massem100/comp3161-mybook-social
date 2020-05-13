@@ -6,7 +6,7 @@ import datetime
 from time import time
 
 fake = Faker()
-  
+
 # this function creates the dummy data for the csv file Raw_data
 def dummy_data(x,headers):
     with open('userInfoTable.csv','wt') as csvFile:
@@ -15,9 +15,12 @@ def dummy_data(x,headers):
               #for statement use to populate the the csv file by x amount into a list
               #to represent data that would be in reach row 
               p=('profile.png')
+              count=0
               for i in range(0,x):
+                  count=count+1
                   writer.writerow({
-                      'userid':fake.random_int(min=1, max=500000),
+                      #'userid':fake.random_int(min=1, max=500000),
+                      'userid':count,
                       'email':fake.free_email(),
                       'phone_num':fake.numerify('###-###-####')
               })
