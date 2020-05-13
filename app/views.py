@@ -8,7 +8,7 @@ import os
 from datetime import date, time, datetime
 from app import app, login_manager, mysql
 from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, GroupForm, textForm, ImageForm, SearchFriends, SearchGroups, EditProfileForm, CommentForm
-from app.models import User, Post, Comment, Friend, Photo
+from app.models import User, Post, Comment, Friend, Photo, Profile
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -17,7 +17,11 @@ from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from operator import attrgetter, itemgetter
+from flask_admin import BaseView, expose
 
+
+
+    
 posts = []
 @app.route('/dashboard', methods=['POST', 'GET'])
 @login_required
@@ -35,6 +39,7 @@ def dashboard():
         cur.execute(""" select post.post_id, post.userid,post_date, post_time,
          user.username, text_message from post JOIN text_post JOIN user ON post.post_id = text_post.post_id and post.userid = user.userid; """)
         text_posts = cur.fetchall()
+        cur.close()
 
         for i in text_posts: 
             post_id = i[0]
@@ -46,17 +51,21 @@ def dashboard():
             
             posts.append(Post(post_id, userid,username, post_date, post_time, text_message, " ", " "))
 
+        
+        cur = mysql.connection.cursor()
+        cur.execute(""" SELECT username FROM user WHERE userid = "{}" """.format(current_user.id))
+        username = cur.fetchall()
+        cur.close()
+
+
         cur = mysql.connection.cursor()
         cur.execute(""" select post.post_id, post.userid,post_date, post_time, user.username, image_filename,caption from post JOIN
                  image_post JOIN user ON post.post_id = image_post.post_id and post.userid = user.userid; """)
         image_posts = cur.fetchall()
 
-        userid = current_user.id
-        cur = mysql.connection.cursor()
-        cur.execute(
-            """ SELECT username FROM user WHERE userid = '{}' """.format(userid))
-        username = cur.fetchall()
+        cur.close()
 
+        
         for i in image_posts: 
             post_id = i[0]
             userid = i[1]
@@ -210,6 +219,7 @@ def single_post(post_id):
             post = cur.fetchall()
             # print(post)
             mysql.connection.commit()
+            cur.close()
 
             flash("Comment posted!", 'success')
             return redirect(url_for('dashboard'))
@@ -233,6 +243,7 @@ def userprofile():
     profile_posts = []
     photos = []
     allphotos =[]
+    p_details =[]
     if request.method == 'GET':
 
         username =current_user.username
@@ -242,6 +253,7 @@ def userprofile():
          user.username, text_message from post JOIN text_post JOIN user ON post.post_id = text_post.post_id and post.userid = user.userid) as result
          WHERE username = '{}' """.format(username))
         text_posts = cur.fetchall()
+        cur.close()
 
        
         for i in text_posts:
@@ -258,12 +270,14 @@ def userprofile():
         cur.execute(""" select * from (select post.post_id, post.userid,post_date, post_time, user.username, image_filename,caption from post JOIN
                  image_post JOIN user ON post.post_id = image_post.post_id and post.userid = user.userid) as result WHERE username = '{}' """.format(username))
         image_posts = cur.fetchall()
+        cur.close()
 
         cur = mysql.connection.cursor()
         cur.execute(
-            """ SELECT username FROM user WHERE userid = '{}' """.format(userid))
+            """ SELECT username FROM user WHERE userid = '{}' """.format(current_user.id))
         username = cur.fetchall()
-
+        cur.close()
+        
         for i in image_posts:
             post_id = i[0]
             userid = i[1]
@@ -280,10 +294,10 @@ def userprofile():
         sorted_by_time_date = sorted(profile_posts, key=lambda i: (i.post_date, i.post_time), reverse=True)
         # ----------------------------------------------------------------------------------------
         
-        # Section to select Profile Photos 
-        userid = current_user.id
+        # Section to select Photos 
+        
         cur = mysql.connection.cursor()
-        cur.execute("""SELECT * FROM photo WHERE userid = '{}' ORDER BY RAND() limit 4""".format(userid))
+        cur.execute("""SELECT * FROM photo WHERE userid = '{}' ORDER BY RAND() limit 4""".format(current_user.id))
         photo_results = cur.fetchall()
         # print(photo_results)
 
@@ -299,7 +313,7 @@ def userprofile():
         
         cur = mysql.connection.cursor()
         cur.execute(
-            """SELECT * FROM photo WHERE userid = '{}'  """.format(userid))
+            """SELECT * FROM photo WHERE userid = '{}'  """.format(current_user.id))
         all_photo_results = cur.fetchall()
         # print(photo_results)
 
@@ -312,10 +326,28 @@ def userprofile():
 
             allphotos.append(Photo(photo_id, userid, photo_desc, photo_filename, date_added))
 
-        
+        user = current_user.id
+        cur = mysql.connection.cursor()
+        cur.execute(""" SELECT * FROM userprofile WHERE userid = '{}' """.format(user))
+        profile_details = cur.fetchall()
+        cur.close()
+        # print(profile_details)
+
+        for i in profile_details:
+            p_id = i[0]
+            u_id = i[1]
+            photo = i[2]
+            nationality =i[3]
+            bio =i[4]
+
+            p_details.append(Profile(p_id, u_id, photo,nationality, bio))
+
+        # print(p_details)
+
+
 
         return render_template('user_profile.html', form=form, text_form=text_form, image_form=image_form, 
-                                edit_form=edit_form, posts=sorted_by_time_date, photos = photos, allphotos = allphotos)
+                                edit_form=edit_form, posts=sorted_by_time_date, photos = photos, allphotos = allphotos, p_details = p_details)
 
     # Handle Adding Photos to profile
     if request.method == 'POST':
@@ -431,8 +463,11 @@ def editprofile():
         phone_num = edit_form.phone_num.data 
         profile_pic = edit_form.profile_pic.data
 
-        # cur = mysql.connection.cursor()
-        # cur.execute(""" """)
+        lu = current_user.id
+        cur = mysql.connection.cursor()
+        cur.execute(""" call update_profile(@'{}',@'{}', @'{}', @'{}' """.format(lu, profile_pic, nationality, bio))
+
+        
 
         return redirect(url_for('userprofile'))
     return render_template('user_profile.html', image_form = image_form, comment_form = comment_form, photo_form = photo_form, text_form = text_form, edit_form = edit_form)
@@ -640,12 +675,16 @@ def signup():
             date_of_birth = form.birthday.data
             user_password = generate_password_hash(form.password.data)
             confirm_password = check_password_hash(user_password, form.password.data)
+            
            
             
             cur = mysql.connection.cursor()            
             cur.execute('''INSERT INTO user (userid,username, f_name, l_name, gender, date_of_birth, user_password) VALUES 
             (NULL, %s, %s, %s, %s, %s, %s)''',(username, first_name, last_name, gender, date_of_birth, user_password))
 
+            cur.execute(""" INSERT INTO userprofile (profile_id, userid, profile_photo, nationality, user_bio) VALUES 
+            (NULL, (SELECT userid FROM user WHERE username = '{}'), 'profile.png', " ", " ")""". format(username))
+           
             mysql.connection.commit()
             
 

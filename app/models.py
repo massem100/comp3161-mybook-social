@@ -1,6 +1,9 @@
 from flask_login import UserMixin
 from flask_login._compat import unicode
-from app import app, login_manager, mysql
+from app import app, login_manager, mysql, admin
+
+
+
 
 
 class User(UserMixin):
@@ -23,6 +26,8 @@ class User(UserMixin):
 
     def __repr__(self):
         return '<User "{}">'.format(self.username)
+
+
 
 
 class Post(UserMixin): 
@@ -110,7 +115,23 @@ class Photo(UserMixin):
         return '<Photo "{}" "User {}" >'.format(self.photo_id,  self.userid)
 
 # class Group(UserMixin):
+class Profile(UserMixin):
 
+    def __init__(self, profile_id, userid, profile_photo, nationality, user_bio):
+        self.profile_id = profile_id
+        self.userid = userid
+        self.profile_photo = profile_photo
+        self.nationality = nationality
+        self.user_bio = user_bio
+
+    def get_id(self):
+        try:
+            return unicode(self.profile_id)  # python 2 support
+        except NameError:
+            return str(self.profile_id)  # python 3 support
+
+    def __repr__(self):
+        return '<Profile "{}" "User {}" >'.format(self.profile_id,  self.userid)
 
 
 

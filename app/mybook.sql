@@ -3,30 +3,39 @@
  Database for MyBook Application
  
  */
- 
 DROP DATABASE IF EXISTS mybook;
+
 CREATE DATABASE mybook;
+
 use mybook;
-
-
 
 -- Add DROP TABLE IF EXISTS statements
 -- Prevents duplicating tables. 
 DROP TABLE IF EXISTS user;
+
 DROP TABLE IF EXISTS user_info;
+
 DROP TABLE IF EXISTS userprofile;
+
 DROP TABLE IF EXISTS post;
+
 DROP TABLE IF EXISTS text_post;
+
 DROP TABLE IF EXISTS image_post;
+
 DROP TABLE IF EXISTS comment;
+
 DROP TABLE IF EXISTS friend_group;
+
 DROP TABLE IF EXISTS group_editor;
+
 DROP TABLE IF EXISTS group_member;
+
 DROP TABLE IF EXISTS group_post;
+
 DROP TABLE IF EXISTS friend;
+
 DROP TABLE IF EXISTS photo;
-
-
 
 /* derived from entities */
 CREATE TABLE user(
@@ -42,7 +51,7 @@ CREATE TABLE user(
 
 CREATE TABLE user_info(
     userid int(10) not null unique,
-    email varchar(50) ,
+    email varchar(50),
     phone_num varchar(25),
     primary key(userid),
     foreign key(userid) references user(userid) on update cascade on delete cascade
@@ -51,7 +60,7 @@ CREATE TABLE user_info(
 CREATE table userprofile(
     profile_id int(10) not null unique AUTO_INCREMENT,
     userid int(10) not null unique,
-    profile_photo varchar(100) ,
+    profile_photo varchar(100),
     nationality varchar(25),
     user_bio varchar(150),
     primary key(profile_id),
@@ -119,12 +128,12 @@ CREATE TABLE friend_group (
 );
 
 CREATE TABLE group_member(
-  group_id int(10) not null,
-  userid int(10) not null,
-  date_created date not null,
-  primary key (group_id),
-  foreign key(userid) references user(userid) on update cascade on delete cascade,
-  foreign key(group_id) references friend_group(group_id) on update cascade on delete cascade
+    group_id int(10) not null,
+    userid int(10) not null,
+    date_created date not null,
+    primary key (group_id),
+    foreign key(userid) references user(userid) on update cascade on delete cascade,
+    foreign key(group_id) references friend_group(group_id) on update cascade on delete cascade
 );
 
 CREATE TABLE group_editor (
@@ -138,18 +147,17 @@ CREATE TABLE group_editor (
 
 CREATE TABLE group_post(
     group_postid int(10) not null unique AUTO_INCREMENT,
-    group_id int(10) not null, 
-    userid int(10) not null, 
-    gp_heading varchar(25) not null, 
+    group_id int(10) not null,
+    userid int(10) not null,
+    gp_heading varchar(25) not null,
     post_type varchar(10) not null,
     image_filename varchar(50),
     text_content varchar(250),
     date_created date not null,
-    time_created time not null, 
-    primary key (group_postid), 
+    time_created time not null,
+    primary key (group_postid),
     foreign key(userid) references user(userid) on update cascade on delete cascade,
     foreign key(group_id) references friend_group(group_id) on update cascade on delete cascade
-    
 );
 
 CREATE TABLE photo (
@@ -161,3 +169,106 @@ CREATE TABLE photo (
     primary key(photo_id),
     foreign key(userid) references user(userid) on update cascade on delete cascade
 );
+
+-- Stored Procedure to Update Profile
+DELIMITER / / CREATE PROCEDURE `update_profile`(
+    INS_userid int(10),
+    INS_photo varchar(100),
+    INS_nationality varchar(25),
+    INS_bio varchar(150)
+) BEGIN DECLARE Icount INT;
+
+SELECT
+    count(1) INTO Icount
+FROM
+    userprofile
+WHERE
+    userId = INS_userid;
+
+IF Icount = 0 THEN
+INSERT INTO
+    userprofile(
+        profile_id,
+        userid,
+        profile_photo,
+        nationality,
+        user_bio
+    )
+VALUES
+    (
+        NULL,
+        INS_userid,
+        INS_photo,
+        INS_nationality,
+        INS_bio
+    );
+
+ELSE
+UPDATE
+    userprofile
+SET
+    userid = INS_userid,
+    profile_photo = INS_photo,
+    nationality = INS_nationality,
+    user_bio = INS_bio
+WHERE
+    userid = INS_userid;
+
+END IF;
+
+END / / DELIMITER;
+
+DELIMITER / / CREATE PROCEDURE `select_group_members`() BEGIN
+SELECT
+    group_id,
+    userid,
+    date_created
+FROM
+    group_member;
+
+END / / DELIMITER;
+
+-- Stored Procedure to Update Group Members
+CREATE DEFINER = `root` @`localhost` PROCEDURE `group_members_upd`(
+    group_id int(10),
+    userid int(10),
+    date_added date
+) BEGIN DECLARE lcount INT;
+
+SELECT
+    count(1) INTO lcount
+FROM
+    group_members
+WHERE
+    userid = group_id
+    AND group_id = group_id;
+
+IF lcount = 0 THEN
+INSERT INTO
+    group_member(group_id, userid, date_added)
+VALUES
+    (group_id, userId, date_added);
+
+ELSE
+UPDATE
+    group_member
+SET
+    group_id = group_id,
+    userid = group_id,
+    date_added = date_added
+WHERE
+    userid = group_id
+    AND group_id = group_id;
+
+END IF;
+
+END / / DELIMITER;
+
+-- Stored Procedure to delete a post
+DELIMITER / / CREATE PROCEDURE `post_del`(pkpostId int(10)) BEGIN
+DELETE FROM
+    post
+WHERE
+    postId = pkpostId;
+
+END / / DELIMITER;

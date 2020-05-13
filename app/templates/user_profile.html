@@ -11,8 +11,9 @@
         <!-- Card with Profile photo and username -->
         <div class = "d-flex flex-column card  justify-content-center rounded " >
                     <!--   Profile image for user profile   -->
+        {% for p_detail in p_details%}
             <div class = "d-flex justify-content-center" id ="bg-profile-image">
-                <img id="profile-photo" src="{{url_for ('static', filename = 'uploads/' + 'krys.png' )}}">
+                <img id="profile-photo" src="{{url_for ('static', filename = 'uploads/' + p_detail.profile_photo )}}">
             </div>
             
            <div class ="">
@@ -31,6 +32,7 @@
             </div>
            </div>
         </div>
+        {% endfor %}
         <div class="tab-content" id="myTabContent">
             
         <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
@@ -59,6 +61,7 @@
                                 <img id="icon" src="{{url_for('static', filename ='uploads/calendar.png')}}" />
                                 <span class="bold ml-1 "> Date of Birth: {{current_user.date_of_birth}} </span>
                             </p>
+                            
                         </div>
                     </div>
                 <!-- add friends card -->

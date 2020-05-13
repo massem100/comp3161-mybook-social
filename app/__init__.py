@@ -2,7 +2,10 @@ from flask import Flask
 from flask_wtf.csrf import CSRFProtect 
 from flask_mysqldb import MySQL
 from flask_login import LoginManager
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
+from flask_admin import Admin
+
+
 
 
 # Folder to store images etc to be used in the app, only filename will be stored in the database.
@@ -22,6 +25,11 @@ app.config['MYSQL_DB'] = 'mybook'
 
 # Initializing the SQL connection to our app.
 mysql = MySQL(app)
+
+admin = Admin(app)
+
+
+
 
 # Flask-Login login manager
 login_manager = LoginManager()
