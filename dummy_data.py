@@ -9,12 +9,11 @@ fake = Faker()
   
 # this function creates the dummy data for the csv file Raw_data
 def dummy_data(x,headers):
-    with open('userTable.csv','wt') as csvFile:
+    with open('userT.csv','wt') as csvFile:
               writer = csv.DictWriter(csvFile,fieldnames=headers)
               writer.writeheader()
               #for statement use to populate the the csv file by x amount into a list
               #to represent data that would be in reach row 
-              p=('profile.png')
               count=0
               for i in range(0,x):
                   count=count+1
@@ -29,8 +28,7 @@ def dummy_data(x,headers):
               })
 if __name__ == '__main__':
     start=time()
-    headers = ["userid", "username", "f_name","l_name", "gender", 
-               "date_of_birth", "user_password"]
+    headers = ["userid", "username", "f_name","l_name", "gender","date_of_birth", "user_password"]
     dummy_data(500000,headers)
     elapsed=time() - start
     print('created csv file time: {}'.format(elapsed))
