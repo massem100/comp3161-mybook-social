@@ -8,7 +8,7 @@ from app import app, login_manager, mysql, admin
 
 class User(UserMixin):
             
-    def __init__(self, id, username, f_name, l_name, gender, date_of_birth, password):
+    def __init__(self, id, username, f_name, l_name, gender, date_of_birth, password, photo):
         self.id= id
         self.f_name = f_name
         self.username = username
@@ -16,6 +16,7 @@ class User(UserMixin):
         self.gender = gender
         self.date_of_birth = date_of_birth
         self.password = password
+        self.photo = photo
         
 
     def get_id(self):
@@ -32,7 +33,7 @@ class User(UserMixin):
 
 class Post(UserMixin): 
 
-    def __init__(self, post_id, userid,username, post_date, post_time, text_message, image_filename, caption):
+    def __init__(self, post_id, userid,username, post_date, post_time, text_message, image_filename, caption,photo):
         self.post_id = post_id
         self.userid = userid
         self.username =username
@@ -41,6 +42,7 @@ class Post(UserMixin):
         self.text_message = text_message
         self.image_filename = image_filename
         self.caption = caption
+        self.photo = photo
         
     def get_id(self):
         try:

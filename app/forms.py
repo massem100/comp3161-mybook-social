@@ -58,8 +58,12 @@ class EditProfileForm(FlaskForm):
     birthday = DateField('Date of Birth', format='%m/%d/%Y', validators=[DataRequired("Please enter your date of birth")])
     email = EmailField('Email', validators=[])
     phone_num = StringField('Phone Number', validators=[])
+    
+class CommentForm(FlaskForm): 
+    post_id = StringField('Post Number', validators=[])
+    comment = TextAreaField('Comment', validators=[DataRequired(' Comment Field cannot be empty')])
+
+class updatePhoto(FlaskForm):
     profile_pic = FileField('Profile Picture', validators=[FileRequired(), FileAllowed(['jpg','jpeg', 'png'], 'Images only!')])
 
-class CommentForm(FlaskForm): 
-    post_id = StringField('Post Number', validators=[DataRequired('Copy the post Number')])
-    comment = TextAreaField('Comment', validators=[DataRequired(' Comment Field cannot be empty')])
+

@@ -215,7 +215,7 @@ $(document).ready(function () {
         let form_data = new FormData(CommentForm);
         fetch("/dashboard/<post_id>/comments", {
             method: 'POST',
-            body: post_id,
+            body: form_data,
             headers: {
                 'X-CSRFToken': token
             },
@@ -237,11 +237,17 @@ $(document).ready(function () {
 
 
     });
-    $(function () {
-        $("#mdb-lightbox-ui").load("mdb-addons/mdb-lightbox-ui.html");
-    });
+    // $(function () {
+    //     $("#mdb-lightbox-ui").load("mdb-addons/mdb-lightbox-ui.html");
+    // });
 
     $('#inputGroupFile02').on('change', function () {
+        //get the file name
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
+    $('#inputGroupFile01').on('change', function () {
         //get the file name
         var fileName = $(this).val();
         //replace the "Choose a file" label

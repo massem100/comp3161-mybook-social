@@ -5,9 +5,9 @@
 
     {% include 'header.html' %}
 <div class = "d-flex flex-column bg-light w-100">
-    
+    {% include 'flash_messages.html' %}
     <div class="  m-3">
-        {% include 'flash_messages.html' %}
+       
         <!-- Card with Profile photo and username -->
         <div class = "d-flex flex-column card  justify-content-center rounded " >
                     <!--   Profile image for user profile   -->
@@ -284,7 +284,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="mr-2">
-                                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                                    <img class="rounded-circle" width="45" src="{{url_for('static', filename ='uploads/' + post.photo)}}" alt="">
                                                 </div>
                                                 <div class="ml-2">
                                                     <div class="h5 m-0">{{post.username}}</div>
@@ -405,17 +405,18 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">Upload</span>
                                                             </div>
-                                                            <div class="custom-file">
-                                                                {{edit_form.profile_pic(class="custom-file-input")}}
-                                                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                                                            </div>
-                                                        </div>
-                                                       
-                                                        <button class="btn btn-primary" type="button">
-                                                            <i class="fa fa-fw fa-camera"></i>
-                                                            <span>Change Photo</span>
-                                                        </button>
-                                                    </div>
+                                                            <form class="form" novalidate="" action = "{{url_for('editprofile')}}" method = 'POST' enctype = "multipart/form-data">
+                                                                <div class="custom-file">
+                                                                    {{update_photo.csrf_token}}
+                                                                    {{update_photo.profile_pic(class="custom-file-input" , id = "inputGroupFile01")}}
+                                                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                                                </div>
+                                                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-camera"></i>
+                                                                    <span>Change Photo</span>
+                                                                    </button>
+                                                                </form>
+                                                          </div>
+                                                    </div>  
                                                 </div>
                                                 <div class="text-center text-sm-right">
                                                     <div class="text-muted"><small>Joined 09 Dec 2017</small></div>
@@ -427,7 +428,8 @@
                                         </ul>
                                         <div class="tab-content pt-3">
                                             <div class="tab-pane active">
-                                                <form class="form" novalidate="" action method = 'POST' enctype = "multipart/form-data">
+                                                <form class="form" novalidate="" action = "{{url_for('editprofile')}}" method = 'POST' enctype = "multipart/form-data">
+                                                    {{edit_form.csrf_token}}
                                                     <div class="row">
                                                         <div class="col">
                                                             <div class="row">

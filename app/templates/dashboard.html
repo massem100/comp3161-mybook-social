@@ -28,7 +28,7 @@
                 <div class="tab-content " id="myTabContent">
                     <div class="tab-pane fade show active" id="pposts" role="tabpanel" aria-labelledby="posts-tab" aria-selected="true">
                         <div class="form-group">
-                            <form action = " {{url_for('text')}}" method = 'POST' enctype="multipart/form-data"> 
+                            <form action method = 'POST' enctype="multipart/form-data"> 
                             {{ text_form.csrf_token }}
                                 {{text_form.text_post(class="form-control ", id="message" , rows="3", placeholder="What are you thinking?")}}
                                     <span class="help-block d-flex justify-content-end">
@@ -45,7 +45,7 @@
                         <div class="form-group">
 
                             <div class="custom-file">
-                                <form action = "{{url_for('image')}}" class = "form-group"  method= 'POST' enctype="multipart/form-data"> 
+                                <form action class = "form-group"  method= 'POST' enctype="multipart/form-data"> 
                                     {{ image_form.csrf_token }}
                                     {{image_form.photo.label(class = "mr-2")}}
                                     
@@ -93,7 +93,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="mr-2">
-                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                    <img class="rounded-circle" width="45" src="{{url_for('static', filename ='uploads/' + post.photo)}}" alt="">
                                 </div>
                                 <div class="ml-2">
                                     <div class="h5 m-0">{{post.username}}</div>
@@ -139,7 +139,7 @@
                     </div>
                     <div class="card-footer ">
                         <p>#{{post.post_id}}</p>
-                        <a href= "" class="card-link d-flex justify-content-end commentbtn" id = "{{post.post_id}}" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-comment m-1"> </i> Comment</a>
+                        <a href= "" class="card-link d-flex justify-content-end commentbtn" id = "{{post.post_id}}" data-toggle="dropdown" data-target="#exampleModalCenter"><i class="fa fa-comment m-1"> </i> Comment</a>
                         
                         <!-- <button type="button" class="btn btn-primary justify-content-end" data-toggle="modal" data-target="#exampleModalCenter">
                             <i class = "fa fa-comment">  </i> Comment
@@ -163,6 +163,7 @@
 
                                             <div class = "d-flex flex-column m-2"> 
                                                 <div>
+                                                    <p>#{{post.post_id}}</p>
                                                     {{comment_form.post_id.label}}
                                                     {{comment_form.post_id()}}
                                                 </div>
