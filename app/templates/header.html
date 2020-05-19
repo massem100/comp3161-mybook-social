@@ -56,7 +56,12 @@
             <ul class="list-unstyled">
                 <li class="active"><a href="{{url_for('dashboard')}}"><img class= "home-icon"src = "/static/uploads/home.png"><i class="icon-home"></i>Dashboard </a></li>
                 <li><a href="{{url_for('userprofile')}}"><img class="home-icon" src="/static/uploads/user.png"><i class="icon-grid"></i>My Profile </a></li>
-                <li><a href="{{url_for('friends')}}"> <img class="home-icon" src="/static/uploads/friend.png"><i class="fa fa-bar-chart"></i>Find Friends</a></li>
+                <li><a href="#friendsdropdown" aria-expanded="false" data-toggle="collapse"> <img class="home-icon" src="/static/uploads/friend.png"><i class="fa fa-bar-chart"></i>Find Friends</a>
+                        <ul id="friendsdropdown" class="collapse list-unstyled ">
+                            <li><a href="{{url_for('friends')}}"> My Friends</a></li>
+                            <li><a href="{{url_for('searchfriends')}}">Search Friends</a></li>
+                        </ul>
+                </li>
                 <li><a href="#groupsdropdown" class="" aria-expanded="false" data-toggle="collapse" ><img class="home-icon" src="/static/uploads/group.png"><i></i>Groups</a>
                         <ul id="groupsdropdown" class="collapse list-unstyled ">
                             <li><a href="{{url_for('groups')}}">Create group</a></li>

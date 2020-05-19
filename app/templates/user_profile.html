@@ -51,7 +51,7 @@
                             <h5 class="text-dark font-md bold  font-weight-bold"> {{current_user.f_name  + current_user.l_name}}</h5>
                             <p>
                                 <img id="icon" src="{{url_for('static', filename ='uploads/email.png')}}" />
-                                <span class="bold ml-1 ">Janedoe@exmaple.com </span>
+                                <span class="bold ml-1 ">Email: </span>
                             </p>
                             <p>
                                 <img id="icon" src="{{url_for('static', filename ='uploads/signs.png')}}" />
@@ -70,26 +70,29 @@
                             <h4 class=" font-weight-bold"> Friends </h4>
                         </div>
                         <div class="card-body  d-flex flex-row justify-content-center">
-                    
-                            <div class="d-flex flex-column">
-                                <img class="profile-image m-3 rounded" src="/static/uploads/blue_lagoon.jpg">
-                                <img class="profile-image m-3 rounded" src="/static/uploads/beach.jpg">
-                            </div>
-                            <div class="d-flex flex-column">
-                                <img class="profile-image m-3 mb-1 rounded" src="/static/uploads/blue_lagoon.jpg">
-                                <img class="profile-image m-3 mb-1 rounded" src="/static/uploads/beach.jpg">
-                            </div>
+                         <div class="w-100" id="container">
+                            {% for friend in friends_preview %}
+                            <div class="grid">
+                                
+                                <img class="profile-image m-2 rounded"
+                                    src="{{url_for('static', filename = 'uploads/' +  friend.photo)}}">
+                                    <p class="text-center m-0"> {{friend.friend_username}}</p> 
+                            </div> 
+                            {% endfor %}
+                    </div>
                         
-                    
-                    
+                        
                         </div>
-                        <div class = "">
-                            <form action ="{{url_for('friends')}}" method = 'GET' >
-                            <button class = "form-control input-sm btn btn-primary text-white " type ='submit'> See all Friends </button>
+                        <div class="">
+                            <form action = "{{url_for('friends')}}" method = 'GET'>
+                                <button class="form-control input-sm btn btn-primary text-white type= "submit" "> See all Friends
+                                </button>
                             </form>
                         </div>
+                        </div>
+                        
                     </div>
-                </div>
+                
                 <!-- Photo Div  -->
                 
                     <div class = "d-flex flex-column "> 
@@ -405,11 +408,11 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">Upload</span>
                                                             </div>
-                                                            <form class="form" novalidate="" action = "{{url_for('editprofile')}}" method = 'POST' enctype = "multipart/form-data">
-                                                                <div class="custom-file">
+                                                            <form class="form"  action = "{{url_for('editprofile')}}" method = 'POST' enctype = "multipart/form-data">
+                                                                <div class="">
                                                                     {{update_photo.csrf_token}}
-                                                                    {{update_photo.profile_pic(class="custom-file-input" , id = "inputGroupFile01")}}
-                                                                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                                                    {{update_photo.profile_pic()}}
+                                                                    
                                                                 </div>
                                                                     <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-camera"></i>
                                                                     <span>Change Photo</span>

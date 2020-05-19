@@ -177,6 +177,11 @@ def single_post(post_id):
     comment_form = CommentForm()
     text_form = textForm()
     # print(post_id)
+    cur = mysql.connection.cursor() 
+    cur.execute(""" SELECT * from post WHERE post_id = '{}' """.format(post_id))
+    current_post = cur.fetchall()
+    print(current_post)
+
     if request.method == 'POST': 
         
         # print(postNumber)
@@ -187,13 +192,13 @@ def single_post(post_id):
         userid = current_user.id
         date_posted = format_date_joined(datetime.now())
         time_posted = format_time_joined(datetime.now())
-       
+        cpost_id = current_post[0][0]
 
         # INSERT INTO comment values (1, 4, 1, "Great Post",'14:22', DATE '2015-12-17');
         if comment_form.validate_on_submit():
             cur = mysql.connection.cursor()
             cur.execute(""" INSERT INTO comment (comment_id, post_id, userid, comment_Content, time_posted, date_posted)
-                    VALUES (NULL, (SELECT post_id FROM post WHERE post_id = "{}"), "{}", "{}", "{}", "{}") """.format(post_id, userid, comment, time_posted, date_posted))
+                    VALUES (NULL, (SELECT post_id FROM post WHERE post_id = "{}"), "{}", "{}", "{}", "{}") """.format(cpost_id, userid, comment, time_posted, date_posted))
             post = cur.fetchall()
             # print(post)
             mysql.connection.commit()
@@ -203,9 +208,9 @@ def single_post(post_id):
             return redirect(url_for('dashboard'))
 
         flash('File not submitted, ensure fields are filled out', 'info')
-        return render_template('dashboard.html', text_form=text_form, image_form=image_form, comment_form=comment_form)
+        return render_template('dashboard.html', text_form=text_form, current_post = current_post, image_form=image_form, comment_form=comment_form)
     else:   
-        return render_template('dashboard.html', text_form=text_form, image_form=image_form, comment_form=comment_form)
+        return render_template('dashboard.html', text_form=text_form, current_post = current_post, image_form=image_form, comment_form=comment_form)
 
         
     
@@ -223,6 +228,7 @@ def userprofile():
     photos = []
     allphotos =[]
     p_details =[]
+    friends_preview = []
     if request.method == 'GET':
 
         username =current_user.username
@@ -324,11 +330,28 @@ def userprofile():
 
             p_details.append(Profile(p_id, u_id, photo,nationality, bio))
 
-        # print(p_details)
+        cur = mysql.connection.cursor()
+        cur.execute("""SELECT DISTINCT fid, friend_owner, friend_id, friend_type, username as friend_username, f_name as friend_f_name,
+                         l_name as friend_last_name, profile_photo FROM friend JOIN user JOIN userprofile ON friend.friend_id = user.userid
+                         and userprofile.userid = friend.friend_id and friend_owner = '{}' ORDER BY RAND() limit 4""".format(current_user.id))
+        friend_results = cur.fetchall()
+        # print(photo_results)
+
+        for i in friend_results:
+            fid = i[0]
+            friend_owner = i[1]
+            friend_id = i[2]
+            friend_type = i[3]
+            friend_username = i[4]
+            friend_f_name = i[5]
+            friend_l_name = i[6]
+            photo = i[7]
+
+            
+            friends_preview.append(Friend(fid, friend_owner, friend_id, friend_type, friend_username, friend_f_name, friend_l_name, photo))
 
 
-
-        return render_template('user_profile.html', form=photo_form, text_form=text_form, image_form=image_form, 
+        return render_template('user_profile.html', form=photo_form, text_form=text_form, friends_preview = friends_preview,image_form=image_form, 
                                 edit_form=edit_form, posts=sorted_by_time_date, update_photo = update_photo, photos = photos, allphotos = allphotos, p_details = p_details)
 
     # Handle Adding Photos to profile
@@ -438,21 +461,17 @@ def editprofile():
 
             photo = update_photo.profile_pic.data
 
-            photo_filename = secure_filename(photo.filename)
-            print(photo_filename)
-            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photo_filename))
-
-            if photo != " ":
-
-                cur = mysql.connection.cursor() 
-                cur.execute(""" UPDATE userprofile SET profile_photo = '{}' WHERE userid = '{}' """.format(photo_filename, current_user.id) )
-
-                flash('Profile Picture changed!', 'success')
-                return redirect(url_for('userprofile'))
-            else: 
-
-                flash('No photo uploaded, try again','info')
-
+            filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            print(str(filename))
+            id_user =int(current_user.id)
+            cur = mysql.connection.cursor() 
+            cur.execute(""" UPDATE userprofile SET profile_photo = '{}' WHERE userid = '{}' """.format(str(filename), id_user))
+            mysql.connection.commit()
+            flash('Profile Picture changed!', 'success')
+            return redirect(url_for('userprofile'))
+        else: 
+            flash('picture not uploaded', 'danger')
         if edit_form.validate_on_submit():
             f_name = edit_form.f_name.data
             l_name = edit_form.l_name.data 
@@ -518,14 +537,16 @@ def groups():
     
 
 # Route to host form to search group
-@app.route('/searchgroup', methods = ['GET'])
+@app.route('/searchgroup', methods = ['GET', 'POST'])
 @login_required
 def searchgroup(): 
     groupform = SearchGroups()
-    # cur = mysql.connection.cursor()
-    # cur.execute('SELECT * FROM customer WHERE customer_id ="CUS-00001" ')
-    # customer = cur.fetchall()
-    # cur.close()
+    if request.method == 'GET':
+
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM friend_group WHERE customer_id ="CUS-00001" ')
+        customer = cur.fetchall()
+        cur.close()
     return render_template('search_group.html', form= groupform)
 
 # Route to display the active group 
@@ -534,52 +555,21 @@ def searchgroup():
 @login_required
 def friends():
     s_friends = []
-    sf_form = SearchFriends()
-    if request.method == 'POST':
-        if sf_form.validate_on_submit(): 
-            search_result = sf_form.friends_search.data
-
-            if search_result == '':
-                
-                cur= mysql.connection.cursor()
-                cur.execute(""" SELECT * from user """)
-                all_users = cur.fetchall()
-               
-                users = []
-                for i in all_users: 
-                   userid = i[0]
-                   username = i[1]
-                   f_name = i[2]
-                   l_name = i[3]
-                   gender = i[4]
-                   dob = i[5]
-                   user_password = i[6]
-
-                   users.append(User(userid,username, f_name, l_name, gender, dob, user_password))
-                
-                return render_template('friends.html', form=sf_form, users=users, s_friends=s_friends)
-                    
-
-        return render_template('friends.html', form= sf_form, users = users,  s_friends = s_friends)
+    r_friends = []
+    w_friends = []
+    sf_form = SearchFriends()                 
 
     if request.method == 'GET':
         # School Friends Below 
-        # ---------------------------------------------
+        # ------------------------------------------------------------
         
         logged_in_user = current_user.id
-        # print(friend_owner)
-        # SELECT * from friend WHERE friend_owner = 2 and friend_type = "school"
         cur = mysql.connection.cursor()
-        cur.execute(""" SELECT fid, friend_id, friend_owner, friend_type  from friend WHERE friend_owner = '{}'  and friend_type ='school'"""
-        .format(logged_in_user))
-        school_friends = cur.fetchall()
-        # print(school_friends)
-
-        # fid. friend_in, friend_owner and friend_type
         cur.execute(""" SELECT fid, friend_owner, friend_id, friend_type, username as friend_username, f_name as friend_f_name,
                          l_name as friend_last_name, profile_photo FROM friend JOIN user JOIN userprofile ON friend.friend_id = user.userid
-                         and userprofile.userid = friend.friend_id and friend_type = "school" ORDER BY friend_f_name asc;""")
+                         and userprofile.userid = friend.friend_id and friend_type = "school" and friend_owner = '{}'ORDER BY friend_f_name asc;""".format(current_user.id))
         school_friend_info= cur.fetchall()
+        cur.close()
         
         for i in school_friend_info: 
             fid= i[0]
@@ -595,28 +585,99 @@ def friends():
 
         # Relatives Category Selected Below 
         # ----------------------------------------------------------------
-        # relatives =[]
-        # cur = mysql.connection.cursor()
-        # cur.execute(""" SELECT fid, friend_owner, friend_id, friend_type, username as friend_username, f_name as friend_f_name,
-        #  l_name as friend_last_name, profile_photo FROM friend JOIN user JOIN userprofile ON friend.friend_id = user.userid 
-        #  and userprofile.userid = friend.friend_id  and friend_type = "relatives" ORDER BY friend_f_name asc;""")
-        # relatives= cur.fetchall()
-        # print(school_friends)
-        # for i in school_friends:
-        #     fid = i[0]
-        #     friend_owner = i[1]
-        #     friend_id = i[2]
-        #     friend_type = i[3]
-        #     friend_username = i[4]
-        #     friend_f_name = i[5]
-        #     friend_l_name = i[6]
-        #     photo = i[7]
+        cur = mysql.connection.cursor()
+        cur.execute(""" SELECT fid, friend_owner, friend_id, friend_type, username as friend_username, f_name as friend_f_name,
+                         l_name as friend_last_name, profile_photo FROM friend JOIN user JOIN userprofile ON friend.friend_id = user.userid
+                         and userprofile.userid = friend.friend_id and friend_type = "relative" and friend_owner = '{}' ORDER BY friend_f_name asc;""".format(current_user.id))
+        relatives_friend_info = cur.fetchall()
+        cur.close()
 
-        #     s_friends.append(Friend(fid, friend_owner, friend_id, friend_type,
-                                    # friend_username, friend_f_name, friend_l_name, photo))
+        for i in relatives_friend_info:
+            fid = i[0]
+            friend_id = i[2]
+            friend_type = i[3]
+            friend_username = i[4]
+            friend_f_name = i[5]
+            friend_l_name = i[6]
+            photo = i[7]
+            r_friends.append(Friend(fid, logged_in_user, friend_id, friend_type,
+                                    friend_username, friend_f_name, friend_l_name, photo))
 
-        # print(s_friends)
-    return render_template('friends.html', form = sf_form, s_friends = s_friends)
+        # Work Category Selected Below
+        # ----------------------------------------------------------------
+        cur = mysql.connection.cursor()
+        cur.execute(""" SELECT fid, friend_owner, friend_id, friend_type, username as friend_username, f_name as friend_f_name,
+                         l_name as friend_last_name, profile_photo FROM friend JOIN user JOIN userprofile ON friend.friend_id = user.userid
+                         and userprofile.userid = friend.friend_id and friend_type = "work" and friend_owner = '{}' ORDER BY friend_f_name asc;""".format(current_user.id))
+        relatives_friend_info = cur.fetchall()
+
+        for i in relatives_friend_info:
+            fid = i[0]
+            friend_id = i[2]
+            friend_type = i[3]
+            friend_username = i[4]
+            friend_f_name = i[5]
+            friend_l_name = i[6]
+            photo = i[7]
+            w_friends.append(Friend(fid, logged_in_user, friend_id, friend_type, friend_username, friend_f_name, friend_l_name, photo))
+
+        
+        
+    return render_template('friends.html', form = sf_form, s_friends = s_friends, r_friends  = r_friends, w_friends = w_friends)
+    
+@app.route("/friends/search", methods = ['POST','GET'])
+def searchfriends(): 
+    sf_form = SearchFriends()
+    users = []
+    if request.method == "POST":
+        if sf_form.validate_on_submit():
+            search_result = sf_form.friends_search.data
+
+            if search_result == '':
+
+                cur = mysql.connection.cursor()
+                cur.execute(""" select user.userid, username, f_name, l_name,user_password, gender, date_of_birth, profile_id,
+                     profile_photo from user, userprofile as up WHERE user.userid = up.userid; """)
+                all_users = cur.fetchall()
+                cur.close()
+
+                
+                for i in all_users:
+                   userid = i[0]
+                   username = i[1]
+                   f_name = i[2]
+                   l_name = i[3]
+                   user_password = i[4]
+                   gender = i[5]
+                   dob = i[6]
+                   profile_photo = i[7]
+                   users.append(User(userid, username, f_name, l_name,
+                                     gender, dob, user_password, profile_photo))
+                # return render_template('search_friends.html', form=sf_form, users=users)
+            else: 
+                cur = mysql.connection.cursor()
+                cur.execute("""  select user.userid, username, f_name, l_name, gender, user_password, date_of_birth, profile_id,
+                    profile_photo from user, userprofile as up WHERE user.userid = up.userid and username LIKE '%{}%';""".format(search_result))
+                selected_few = cur.fetchall()
+
+                for i in selected_few:
+                    userid = i[0]
+                    username = i[1]
+                    f_name = i[2]
+                    l_name = i[3]
+                    user_password = i[4]
+                    gender = i[5]
+                    dob = i[6]
+                    profile_photo = i[7]
+                    users.append(User(userid, username, f_name, l_name,
+                                        gender, dob, user_password, profile_photo))
+           
+
+                # return render_template('search_friends.html', form = sf_form, users = users )
+        return render_template('search_friends.html', form=sf_form, users=users)
+    else: 
+        return render_template('search_friends.html', form = sf_form)
+
 
 @app.route('/')
 @app.route('/login', methods=['POST', 'GET'])

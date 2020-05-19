@@ -138,59 +138,40 @@
                         
                     </div>
                     <div class="card-footer ">
-                        <p>#{{post.post_id}}</p>
-                        <a href= "" class="card-link d-flex justify-content-end commentbtn" id = "{{post.post_id}}" data-toggle="dropdown" data-target="#exampleModalCenter"><i class="fa fa-comment m-1"> </i> Comment</a>
+                        <p>Post Number:{{post.post_id}}</p>
+                        <button class="btn d-flex ml-auto " type="button" aria-expanded="false"><i class="fa fa-comment m-1">
+                            </i> Show Comment</button>
+                        <button class="btn d-flex ml-auto "  id = "{{post.post_id}}" data-toggle="collapse" 
+                        data-target=".multi-collapse" type="button" aria-expanded="false" ><i class="fa fa-comment m-1"> 
+                        </i> Add Comment</button>
+                        <div class="collapse multi-collapse " class="collapseComments">
+                            <div class = "card">
+                            <form action="{{url_for('single_post', post_id = post.post_id)}}" method='POST' class="" id="CommentForm">
+                                {{comment_form.csrf_token}}
                         
-                        <!-- <button type="button" class="btn btn-primary justify-content-end" data-toggle="modal" data-target="#exampleModalCenter">
-                            <i class = "fa fa-comment">  </i> Comment
-                        </button> -->
-                     
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle"> Comment Section</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                                <div class="d-flex flex-column m-2">
+                                    <div>
+                                        {{comment_form.post_id.label}}
+                                        {{comment_form.post_id}}
                                     </div>
-                                    <div class="modal-body">
-                                        
-                                        <form action ="{{url_for('single_post', post_id = post.post_id)}}" method = 'POST' class = "" id = "CommentForm"> 
-                                            {{comment_form.csrf_token}}
-
-                                            <div class = "d-flex flex-column m-2"> 
-                                                <div>
-                                                    <p>#{{post.post_id}}</p>
-                                                    {{comment_form.post_id.label}}
-                                                    {{comment_form.post_id()}}
-                                                </div>
-                                               <div>
-                                                   {{comment_form.comment.label}}
-                                                   {{comment_form.comment}}
-                                               </div>
-                                               
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Save changes</button>
-                                        </form>
+                                    <div>
+                                        {{comment_form.comment.label}}
+                                        {{comment_form.comment}}
                                     </div>
-                                    
+                        
                                 </div>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
                             </div>
                         </div>
+                   
+                    </div> 
+                       </div>
                     </div>
-
+                    
                 </div>
-            
-            </div>
-            </div>
 {% endfor %}
-    <!-- Posts div end here-->
-    
-    
-    
+    <!-- Posts div end here--> 
 </div>
 <!-- Cards on right - start below
 <div class="d-flex flex-column">
