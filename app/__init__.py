@@ -1,9 +1,10 @@
-from flask import Flask
+from flask import Flask, url_for
 from flask_wtf.csrf import CSRFProtect 
 from flask_mysqldb import MySQL
-from flask_login import LoginManager
+from flask_login import LoginManager,current_user
 from werkzeug.security import check_password_hash
-from flask_admin import Admin
+# from flask_admin import Admin, BaseView, expose
+
 
 
 
@@ -26,8 +27,15 @@ app.config['MYSQL_DB'] = 'mybook'
 # Initializing the SQL connection to our app.
 mysql = MySQL(app)
 
-admin = Admin(app)
+#Flask-Admin 
+# class MyView(BaseView):
+#     @expose('/')
+#     def index(self):
+#         self.extra_js = [url_for("static", filename="js/whatever.js")]
+#         return self.render('admin.html')
 
+#     def is_accessible(self):
+#         return current_user.is_authenticated and current_user.username == 'admin'
 
 
 

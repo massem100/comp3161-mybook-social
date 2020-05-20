@@ -1,6 +1,6 @@
 from flask_login import UserMixin
 from flask_login._compat import unicode
-from app import app, login_manager, mysql, admin
+from app import app, login_manager, mysql
 
 
 

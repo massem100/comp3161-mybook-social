@@ -212,6 +212,7 @@ $(document).ready(function () {
         //}
         let self = this;
         let CommentForm = document.getElementById('CommentForm');
+        console.log(CommentForm);
         let form_data = new FormData(CommentForm);
         fetch("/dashboard/<post_id>/comments", {
             method: 'POST',
@@ -253,5 +254,7 @@ $(document).ready(function () {
     //     //replace the "Choose a file" label
     //     $(this).next('.custom-file-label').html(fileName);
     // })
+   
+   
         
 });

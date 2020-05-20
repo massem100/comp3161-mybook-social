@@ -6,7 +6,7 @@
 {% include 'header.html' %}
 
 
-<div id ="app" class = "ml-1 mt-2 d-flex flex-column w-100 justify-content-center"> 
+<div  class = "ml-1 mt-2 d-flex flex-column w-100 justify-content-center"> 
    
     <!-- Form to search for Groups starts -->
     <div class = "d-flex flex-column col-lg-11 m-2 p-3">
@@ -58,9 +58,16 @@
                 <div class="card-header bg-primary text-white">
                     <h5> Your Active Groups</h5>
                 </div>
+                {% for group in a_groups %}
+                
+                <div class = "m-2">
+                
+                    <a>{{group.groupname}}</a>
+                </div>
+                {% endfor %}
             </div>
             <!-- User's Current Groups here -->
-
+            
         </div>
         
     </div>

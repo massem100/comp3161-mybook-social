@@ -67,3 +67,7 @@ class updatePhoto(FlaskForm):
     profile_pic = FileField('Profile Picture', validators=[FileRequired(), FileAllowed(['jpg','jpeg', 'png'], 'Images only!')])
 
 
+class addFriend(FlaskForm):
+    friend_id = StringField('Friend ID', validators=[])
+    friend_type = SelectField('Friend Type', choices=[(
+        'Relative', 'Relative'), ('School', 'School'), ('Work', 'Work')], validators=[DataRequired('Select a friend type')])

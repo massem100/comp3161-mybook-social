@@ -7,7 +7,7 @@ This file creates your application.
 import os
 from datetime import date, time, datetime
 from app import app, login_manager, mysql
-from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, GroupForm, textForm, ImageForm, SearchFriends, SearchGroups, EditProfileForm, CommentForm, updatePhoto
+from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, GroupForm, textForm, ImageForm, SearchFriends, SearchGroups, EditProfileForm, CommentForm, updatePhoto, addFriend
 from app.models import User, Post, Comment, Friend, Photo, Profile, Group
 from flask_mysqldb import MySQL
 from flask_cors import CORS
@@ -17,11 +17,14 @@ from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from operator import attrgetter, itemgetter
-from flask_admin import BaseView, expose
 
 
+@app.route('/admin')
+def admin_interface(): 
 
-    
+    return render_template('admin.html')
+
+
 
 @app.route('/dashboard', methods=['POST', 'GET'])
 @login_required
@@ -161,14 +164,7 @@ def dashboard():
         
         return render_template('dashboard.html', text_form=text_form, image_form=image_form, comment_form=comment_form, posts = posts)
    
-        
-    
-# @app.route('dashboard/comments')
-# def comment(): 
-#     comment_form = CommentForm() 
-#     if request.method == 'POST' and comment_form.validate_on_submit(): 
-
-
+ 
 @app.route('/dashboard/post/<post_id>/comments', methods = ['POST'])
 @login_required
 def single_post(post_id):
@@ -211,9 +207,7 @@ def single_post(post_id):
         return render_template('dashboard.html', text_form=text_form, current_post = current_post, image_form=image_form, comment_form=comment_form)
     else:   
         return render_template('dashboard.html', text_form=text_form, current_post = current_post, image_form=image_form, comment_form=comment_form)
-
-        
-    
+ 
 
 @app.route('/userprofile', methods = ['POST','GET'])
 @login_required
@@ -470,8 +464,7 @@ def editprofile():
             mysql.connection.commit()
             flash('Profile Picture changed!', 'success')
             return redirect(url_for('userprofile'))
-        else: 
-            flash('picture not uploaded', 'danger')
+        
         if edit_form.validate_on_submit():
             f_name = edit_form.f_name.data
             l_name = edit_form.l_name.data 
@@ -481,25 +474,24 @@ def editprofile():
             confirmPassword = edit_form.confirmPassword.data 
             nationality = edit_form.nationality.data 
             bio = edit_form.bio.data 
-            email = edit_form.email.data
+            email_ = edit_form.email.data
             phone_num = edit_form.phone_num.data 
             # profile_pic = edit_form.profile_pic.data
             dob = edit_form.birthday.data
             
             
             cur = mysql.connection.cursor()
-            cur.execute(""" CALL update_profile("{}", "{}", "{}", "{}"); """.format(current_user.id, nationality, bio))
-            cur.close() 
-
+            cur.execute(""" CALL update_profile( "{}", "{}", "{}"); """.format(current_user.id, nationality, bio))
+            
             # cur= mysql.connection.cursor() 
-            cur.execute(""" CALL update_user("{}", "{}", "{}", "{}", "{}", "{}", "{}"); """.format(current_user.id, f_name,l_name, gender, dob, password))
-
-            cur.execute(""" CALL update_user_info("{}","{}","{}");  """.format(current_user.id, email, phone_num))
+            cur.execute(""" CALL update_user("{}", "{}", "{}", "{}", "{}", "{}", "{}"); """.format(current_user.id, username_,f_name,l_name, gender, dob, password))
+            ld = current_user.id
+            cur.execute(""" CALL update_user_info("{}","{}","{}");  """.format(ld, email_, phone_num))
 
             mysql.connection.commit() 
             cur.close()
             flash(' Profile Edited!', 'success')
-            # return redirect(url_for('userprofile'))
+            return redirect(url_for('userprofile'))
     return render_template('user_profile.html', form = photo_form, image_form = image_form, comment_form = comment_form, update_photo = update_photo,photo_form = photo_form, text_form = text_form, edit_form = edit_form)
 
 @app.route('/a_group/<group_id>', methods = ['GET', 'POST'])
@@ -542,6 +534,25 @@ def groups():
 def searchgroup(): 
     groupform = SearchGroups()
     groups = []
+    a_groups = []
+    if request.method == "GET": 
+
+
+        cur= mysql.connection.cursor()
+        cur.execute(""" SELECT * from friend_group where admin_id in (SELECT userid from group_member)""")
+        active_groups = cur.fetchall()
+        
+        for i in active_groups: 
+            group_id = i[0]
+            admin_id= i[1]
+            groupname= i[2]
+            date_created = i[3]
+            group_type = i[4]
+            group_description= i[5]
+            
+            a_groups.append(Group(group_id, admin_id, groupname, date_created, group_type, group_description))
+        
+
     if request.method == "POST":
         if groupform.validate_on_submit():
             search_result = groupform.group_search.data
@@ -578,11 +589,12 @@ def searchgroup():
                     
                     groups.append(Group(group_id, admin_id, groupname, date_created, group_type, group_description))
 
-        return render_template('search_group.html', form=groupform, groups = groups)
+        return render_template('search_group.html', form=groupform, groups = groups, a_groups = a_groups)
     else:
-        return render_template('search_group.html', form=groupform)
+        return render_template('search_group.html', form=groupform, groups=groups, a_groups=a_groups)
+            
 
-# Route to display the active group 
+
 
 @app.route('/friends', methods = ['POST', 'GET'])
 @login_required
@@ -653,16 +665,28 @@ def friends():
             friend_l_name = i[6]
             photo = i[7]
             w_friends.append(Friend(fid, logged_in_user, friend_id, friend_type, friend_username, friend_f_name, friend_l_name, photo))
-
-        
-        
+    
     return render_template('friends.html', form = sf_form, s_friends = s_friends, r_friends  = r_friends, w_friends = w_friends)
     
+
+
 @app.route("/friends/search", methods = ['POST','GET'])
 def searchfriends(): 
     sf_form = SearchFriends()
+    addfriend = addFriend()
     users = []
     if request.method == "POST":
+        if addfriend.validate_on_submit():
+            friend_id = addfriend.friend_id.data
+            friend_type = addfriend.friend_type.data
+            
+            cur = mysql.connection.cursor()
+            cur.execute(""" INSERT INTO friend (fid, friend_owner,friend_id, friend_type) values  (NULL, '{}','{}', '{}' )""".format(current_user.id, friend_id,friend_type))
+            
+            mysql.connection.commit()
+            flash('Friend added', 'success')
+            return redirect(url_for('friends'))
+            
         if sf_form.validate_on_submit():
             search_result = sf_form.friends_search.data
 
@@ -707,9 +731,9 @@ def searchfriends():
            
 
                 # return render_template('search_friends.html', form = sf_form, users = users )
-        return render_template('search_friends.html', form=sf_form, users=users)
+        return render_template('search_friends.html', form=sf_form, addfriend = addfriend, users=users)
     else: 
-        return render_template('search_friends.html', form = sf_form)
+        return render_template('search_friends.html', form = sf_form, addfriend = addfriend)
 
 
 @app.route('/')
