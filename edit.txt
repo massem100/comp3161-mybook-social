@@ -1,0 +1,6 @@
+
+alter table user add primary key(userid);
+alter table user_info add primary key(userid);
+alter table user_info add foreign key (userid) references user(userid) on update cascade on delete cascade;
+alter table userprofile add primary key(profile_id);
+alter table userprofile ass foreign key (userid) references user(userid) on update cascade on delete cascade;
