@@ -34,8 +34,10 @@
  
    <!-- <script src="{{ url_for('static', filename='js/jquery-ui.js')}}"></script> -->
   <script src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/vue.js') }}"></script>
   <script>const token = "{{ csrf_token() }}";</script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   {% block js %} {% endblock%}
 </body>
 

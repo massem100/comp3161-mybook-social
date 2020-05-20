@@ -5,17 +5,18 @@
 <!-- This is to prevent rewriting code, header.html and all its elements will be included on each page  -->
 {% include 'header.html' %}
 
-    
-<div class = "ml-1 mt-2 d-flex flex-column w-100 justify-content-center"> 
+
+<div id ="app" class = "ml-1 mt-2 d-flex flex-column w-100 justify-content-center"> 
    
     <!-- Form to search for Groups starts -->
     <div class = "d-flex flex-column col-lg-11 m-2 p-3">
         {% include 'flash_messages.html' %}
         <div>
-            <form action method='POST' class = "">
+            <form action  method='POST' class = "">
+                {{form.csrf_token}}
                 <div class="searchContainer">
                     <i class="fa fa-search searchIcon"></i>
-                    {{form.group_search(class="searchBox", placeholder="Search for Groups")}}
+                    {{form.group_search(class="searchBox", placeholder="Search by Group name")}}
 
                     <input type="submit" value="Search" class="searchButton">
                 </div>
@@ -28,16 +29,27 @@
             <!-- Inner Div - Results -->
            <!-- This container holds the results from the search, if statement should be added if no results are there, add 'No user found' text -->
             <div class="d-flex flex-column bg-light border col-lg-8 rounded ml-0 mt-3 mr-2">
-                <h5 class="font-weight-bold m-2 text-primary "> Search Results for Group</h5>
-                <img id="profile-photo" src="/static/uploads/krys.png">
-                <div>
-                    <button id="friendsbtn" class="btn btn-primary rounded"> Add Friend </button>
+                <h5 class="font-weight-bold m-2 text-primary "> Search Results for Groups</h5>
                 
-                </div>
                 <!-- Return results of search inside div -->
-            
+                <group-result></group-result>
                 <p class="text-center text-secondary"> No Searches made yet</p>
+                {% for group in groups%}
+                <ul class="list-group border rounded bg-light">
                 
+                    <div class="list-group-item  d-flex flex-row">
+                        <div>
+                            
+                            <p> {{group.groupname}}</p>
+                        </div>
+                        <div class="  ml-auto">
+                            <button id="friendsbtn" class="btn btn-primary rounded"> Join Group</button>
+                        </div>
+                
+                    </div>
+                
+                </ul>
+                {% endfor %}
             </div>
             
 

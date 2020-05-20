@@ -8,7 +8,7 @@ import os
 from datetime import date, time, datetime
 from app import app, login_manager, mysql
 from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, GroupForm, textForm, ImageForm, SearchFriends, SearchGroups, EditProfileForm, CommentForm, updatePhoto
-from app.models import User, Post, Comment, Friend, Photo, Profile
+from app.models import User, Post, Comment, Friend, Photo, Profile, Group
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -541,13 +541,46 @@ def groups():
 @login_required
 def searchgroup(): 
     groupform = SearchGroups()
-    if request.method == 'GET':
+    groups = []
+    if request.method == "POST":
+        if groupform.validate_on_submit():
+            search_result = groupform.group_search.data
 
-        cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM friend_group WHERE customer_id ="CUS-00001" ')
-        customer = cur.fetchall()
-        cur.close()
-    return render_template('search_group.html', form= groupform)
+            if search_result == '':
+
+                cur = mysql.connection.cursor()
+                cur.execute(""" SELECT * FROM friend_group; """)
+                all_groups = cur.fetchall()
+                cur.close()
+
+                for i in all_groups:
+                   group_id = i[0]
+                   admin_id= i[1]
+                   groupname= i[2]
+                   date_created = i[3]
+                   group_type = i[4]
+                   group_description= i[5]
+                   
+                   groups.append(Group(group_id, admin_id, groupname, date_created, group_type, group_description))
+                # return render_template('search_friends.html', form=sf_form, users=users)
+            else:
+                cur = mysql.connection.cursor()
+                cur.execute("""  select * from friend_group WHERE groupname LIKE '%{}%';""".format(search_result))
+                selected_few = cur.fetchall()
+
+                for i in selected_few:
+                    group_id = i[0]
+                    admin_id= i[1]
+                    groupname= i[2]
+                    date_created = i[3]
+                    group_type = i[4]
+                    group_description= i[5]
+                    
+                    groups.append(Group(group_id, admin_id, groupname, date_created, group_type, group_description))
+
+        return render_template('search_group.html', form=groupform, groups = groups)
+    else:
+        return render_template('search_group.html', form=groupform)
 
 # Route to display the active group 
 
@@ -750,20 +783,27 @@ def signup():
             user_password = generate_password_hash(form.password.data)
             confirm_password = check_password_hash(user_password, form.password.data)
             
-           
-            
-            cur = mysql.connection.cursor()            
-            cur.execute('''INSERT INTO user (userid,username, f_name, l_name, gender, date_of_birth, user_password) VALUES 
-            (NULL, %s, %s, %s, %s, %s, %s)''',(username, first_name, last_name, gender, date_of_birth, user_password))
+            cur = mysql.connection.cursor()
+            cur.execute("""SELECT * FROM user WHERE username = '{}'""".format(username))
+            user = cur.fetchone()
+            # If account exists show error and validation checks
+            if user:
+                flash('Account already exists!', 'danger')
+            elif not username or not user_password:
+                flash('Please fill out the form!', 'danger')
+            else:
+                # Account doesnt exists and the form data is valid, now insert new account into accounts table
+                cur = mysql.connection.cursor()            
+                cur.execute('''INSERT INTO user (userid,username, f_name, l_name, gender, date_of_birth, user_password) VALUES 
+                (NULL, %s, %s, %s, %s, %s, %s)''',(username, first_name, last_name, gender, date_of_birth, user_password))
 
-            cur.execute(""" INSERT INTO userprofile (profile_id, userid, profile_photo, nationality, user_bio) VALUES 
-            (NULL, (SELECT userid FROM user WHERE username = '{}'), 'profile.png', " ", " ")""". format(username))
-           
-            mysql.connection.commit()
+                cur.execute(""" INSERT INTO userprofile (profile_id, userid, profile_photo, nationality, user_bio) VALUES 
+                (NULL, (SELECT userid FROM user WHERE username = '{}'), 'profile.png', " ", " ")""". format(username))
             
-
-            flash('Congratulations, you are now a registered user!', 'success')
-            return redirect(url_for('login'))
+                mysql.connection.commit()
+                
+                flash('Congratulations, you are now a registered user!', 'success')
+                return redirect(url_for('login'))
         return render_template('signup.html', form = form)
     else:
        

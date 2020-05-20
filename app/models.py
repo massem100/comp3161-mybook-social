@@ -136,5 +136,22 @@ class Profile(UserMixin):
         return '<Profile "{}" "User {}" >'.format(self.profile_id,  self.userid)
 
 
+class Group(UserMixin): 
 
+    def __init__(self, group_id, admin_id, groupname, date_created, group_type, group_description):
+        self.group_id = group_id
+        self.groupname = groupname
+        self.admin_id = admin_id 
+        self.date_created = date_created
+        self.group_type = group_type
+        self.group_description = group_description
+    
+    def get_id(self):
+        try:
+            return unicode(self.group_id)  # python 2 support
+        except NameError:
+            return str(self.group_id)  # python 3 support
+
+    def __repr__(self):
+        return '<Group "{}" >'.format(self.group_id)
    
