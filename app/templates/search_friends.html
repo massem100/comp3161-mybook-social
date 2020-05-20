@@ -8,8 +8,8 @@
     <!-- This is the search bar to search the database for any user matching the name typed. -->
     <!-- If the user is already a friend with one of the results, the buttton to add Friend should change to show a tick and 'Friend Already' -->
     <!-- <input class = "d-flex align-self-center friends-search border rounded mb-2"type= "text" placeholder="Search for friends">  -->
-    <div class = "d-flex flex-column ">
-        <div class = "float-left">
+    <div class = "d-flex flex-row ">
+        <div class = "d-flex mr-auto">
             <form action="" method="POST">
                 {{form.csrf_token}}
                 <div class="searchContainer">
@@ -21,14 +21,14 @@
             </form>
         </div>
         <div>
-            <div class="d-flex justify-content-end float-right">
+            <div class="d-flex justify-content-end">
             
                 <form name="mainForm" method="POST" action>
                     {{addfriend.csrf_token}}
             
-                    <div class="AddFriend">
-            
-                        {{addfriend.friend_id()}}
+                    <div class="Ad">
+                        <h4>Form to add a Friend</h4>
+                        {{addfriend.friend_id(placeholder = "Enter Friend ID Here")}}
                         {{addfriend.friend_type(id = "friend_type")}}
                     </div>
                     <button class ="btn btn-primary" type="submit"> Add Friend </button>

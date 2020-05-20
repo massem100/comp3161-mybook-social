@@ -19,10 +19,55 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from operator import attrgetter, itemgetter
 
 
-@app.route('/admin')
+@app.route('/admin',methods = ["GET"])
 def admin_interface(): 
+    # users_list = []
+    # comments_list = []
+    # friends_list = []
+    # groups_list= []
+    # if request.method == "GET":
 
-    return render_template('admin.html')
+    #     cur= mysql.connection.cursor() 
+    #     cur.execute("""SELECT * FROM user JOIN userprofile JOIN user_info ON user.userid = userprofile.userid; """)
+    #     users = cur.fetchall()
+    #     for i in users:
+    #         userid = i[0]
+    #         username = i[1]
+    #         f_name = i[2]
+    #         l_name = i[3]
+    #         user_password = i[4]
+    #         gender = i[5]
+    #         dob = i[6]
+    #         profile_photo = i[7]
+    #         users_list.append(User(userid, username, f_name, l_name, gender, dob, user_password, profile_photo))
+
+
+    #     cur= mysql.connection.cursor() 
+    #     cur.execute("SELECT * FROM comment;")
+    #     comment = cur.fetchall()
+
+    #     for i in comment:
+    #         comment_id = i[0]
+    #         post_id = i[1]
+    #         userid = i[2]
+    #         comment_Content = i[3]
+    #         time_posted = i[4]
+    #         date_posted = i[5]
+    #         comments_list.append(Comment(comment_id, post_id, userid, comment_Content, time_posted, date_posted))
+        
+    #     cur= mysql.connection.cursor() 
+    #     cur.execute("SELECT * FROM friend;")
+    #     friends = cur.fetchall()
+
+    #     cur= mysql.connection.cursor() 
+    #     cur.execute("SELECT * FROM friend_group;")
+    #     users = cur.fetchall()
+
+
+
+
+
+    return render_template('admin.html', friend_lists = friends_list,users_lists = users_list, comments_list = comments_list, groups_list = groups_list)
 
 
 
@@ -33,6 +78,7 @@ def dashboard():
     text_form = textForm()
     image_form = ImageForm()
     comment_form = CommentForm()
+    comment_list =[]
     
    
     if request.method == 'GET': 
@@ -87,10 +133,22 @@ def dashboard():
         
 
         # ---------------------------------------------------------------------------------
-        
+        cur = mysql.connection.cursor()
+        cur.execute(""" SELECT * from comment WHERE post_id = '{}' """.format(post_id))
+        comments = cur.fetchall()
+
+        for i in comments:
+            comment_id = i[0]
+            post_id = i[1]
+            userid = i[2]
+            comment_Content = i[3]
+            time_posted = i[4]
+            date_posted = i[5]
+            comment_list.append(
+                Comment(comment_id, post_id, userid, comment_Content, time_posted, date_posted))
               
 
-        return render_template('dashboard.html', text_form=text_form, image_form=image_form, posts=posts, comment_form = comment_form)
+        return render_template('dashboard.html', comment_list =comment_list, text_form=text_form, image_form=image_form, posts=posts, comment_form = comment_form)
 
     if request.method == 'POST':
         # # postNumber = request.args.get('post_id', post_id)
@@ -164,7 +222,8 @@ def dashboard():
         
         return render_template('dashboard.html', text_form=text_form, image_form=image_form, comment_form=comment_form, posts = posts)
    
- 
+
+
 @app.route('/dashboard/post/<post_id>/comments', methods = ['POST'])
 @login_required
 def single_post(post_id):

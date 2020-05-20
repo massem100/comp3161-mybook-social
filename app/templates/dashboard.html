@@ -140,8 +140,10 @@
                     <div class="card-footer ">
                         <p>Post Number:{{post.post_id}}</p>
                         <div class = "d-flex flex-row justify-content-end">
-                            <button class="btn  m-2 " type="button" aria-expanded="false"><i class="fa fa-comment m-1">
+                            <form action  method = "GET"> 
+                            <button class="btn  m-2 " type="submit" data-toggle="modal" data-target="#Comment" aria-expanded="false"><i class="fa fa-comment m-1">
                                 </i> Show Comments</button>
+                                </form>
                             <button class="btn  m-2"  id = "{{post.post_id}}" data-toggle="collapse" 
                             data-target=".multi-collapse" type="button" aria-expanded="false" ><i class="fa fa-comment m-1"> 
                             </i> Add Comment</button>
@@ -166,7 +168,27 @@
                             </form>
                             </div>
                         </div>
-                   
+                        <div class="modal" id ="Comment" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Modal title</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% for comment in comment_lis%}
+                                        <div>
+
+                                            {{comment.comment_Content}}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
                     </div> 
                        </div>
                     </div>
