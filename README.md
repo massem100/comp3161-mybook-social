@@ -10,3 +10,7 @@
 	- open the init.py file and verify that the Mysql user name and mysql password matches your database 
 	-open web browser and type http://localhost:8080/ 
 	- sign up and login 
+	
+	
+	
+	Project needs to be updated, Conversion to full API.
