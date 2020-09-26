@@ -931,7 +931,6 @@ def logout():
     flash('You have been logged out.', 'success')
     return redirect(url_for('login'))
 
-
 def get_uploaded_images():
     lst = []
     rootdir = os.getcwd()

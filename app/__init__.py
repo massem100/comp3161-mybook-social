@@ -6,9 +6,6 @@ from werkzeug.security import check_password_hash
 # from flask_admin import Admin, BaseView, expose
 
 
-
-
-
 # Folder to store images etc to be used in the app, only filename will be stored in the database.
 UPLOAD_FOLDER = './app/static/uploads'
 
@@ -17,7 +14,8 @@ app.config['SECRET_KEY'] = 'v\xf9\xf7\x11\x13\x18\xfaMYp\xed_\xe8\xc9w\x06\x8e\x
 
 # password = 'pbkdf2:sha256:150000$uYDMjgNm$bd9a9c2ab56e93b8ed5ffe1d9a7e6cea2e849efc7ed7fb8f1f02c200360c71f8'
 # SQL DECLARE Statements, password should be hashed before passing it.
-# Statements below allow us to initicalize the MYSQL database
+
+# Statements below allow us to initialize the MYSQL database
 app.config['MYSQL_HOST'] = '127.0.0.1'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'SQLpass'

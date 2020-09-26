@@ -4,6 +4,13 @@ body {
   /* background-color: #00A99D; */
 
 }
+
+.navbar-header a div:hover {
+  color: #0a595f;
+
+
+}
+
 #sidebar-image{
   width: 80px; 
   height: 80px;
