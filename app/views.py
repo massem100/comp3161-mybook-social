@@ -9,7 +9,7 @@ from datetime import date, time, datetime
 from app import app, login_manager, mysql
 from app.forms import UploadForm, LoginForm, SignupForm, PhotoForm, GroupForm, textForm, ImageForm, SearchFriends, SearchGroups, EditProfileForm, CommentForm, updatePhoto, addFriend
 from app.models import User, Post, Comment, Friend, Photo, Profile, Group
-from flask_mysqldb import MySQL
+# from flask_mysqldb import MySQL
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask import Flask,render_template, request, jsonify, redirect, url_for, flash, session
@@ -84,10 +84,13 @@ def dashboard():
     if request.method == 'GET': 
 
         cur = mysql.connection.cursor()
-        cur.execute(""" select post.post_id, post.userid,post_date, post_time,user.username, text_message, userprofile.profile_photo from post JOIN text_post JOIN user JOIN userprofile ON
-         post.post_id = text_post.post_id and post.userid = user.userid and post.userid =userprofile.userid; """)
-        text_posts = cur.fetchall()
-        cur.close()
+        postnum = cur.execute(""" select count(*) from post; """)
+        if postnum > 0:
+            cur.execute(""" select post.post_id, post.userid,post_date, post_time,user.username, text_message, userprofile.profile_photo from post JOIN text_post JOIN user JOIN userprofile ON
+            post.post_id = text_post.post_id and post.userid = user.userid and post.userid =userprofile.userid; """)
+            text_posts = cur.fetchall()
+            cur.close()
+        
 
         for i in text_posts: 
             post_id = i[0]
@@ -133,22 +136,23 @@ def dashboard():
         
 
         # ---------------------------------------------------------------------------------
-        cur = mysql.connection.cursor()
-        cur.execute(""" SELECT * from comment WHERE post_id = '{}' """.format(post_id))
-        comments = cur.fetchall()
+        # cur = mysql.connection.cursor()
+        # postnum = cur.execute(""" select count(*) from post; """)
+        # if postnum > 0:
+        #     cur.execute(""" SELECT * from comment WHERE post_id = '{}'; """.format(post_id))
+        #     comments = cur.fetchall()
 
-        for i in comments:
-            comment_id = i[0]
-            post_id = i[1]
-            userid = i[2]
-            comment_Content = i[3]
-            time_posted = i[4]
-            date_posted = i[5]
-            comment_list.append(
-                Comment(comment_id, post_id, userid, comment_Content, time_posted, date_posted))
+        #     for i in comments:
+        #         comment_id = i[0]
+        #         post_id = i[1]
+        #         userid = i[2]
+        #         comment_Content = i[3]
+        #         time_posted = i[4]
+        #         date_posted = i[5]
+        #         comment_list.append(Comment(comment_id, post_id, userid, comment_Content, time_posted, date_posted))
               
 
-        return render_template('dashboard.html', comment_list =comment_list, text_form=text_form, image_form=image_form, posts=posts, comment_form = comment_form)
+        return render_template('dashboard.html', text_form=text_form, image_form=image_form, posts=posts, comment_form = comment_form)
 
     if request.method == 'POST':
         # # postNumber = request.args.get('post_id', post_id)
@@ -841,7 +845,7 @@ def login():
                 flash('Password not a match', 'danger')
                 return render_template('login.html', form= form)
         else:
-            flash('No users in database', 'danger')
+            flash('No user exist with that username or password', 'danger')
             return render_template('login.html', form = form)
     else:
 

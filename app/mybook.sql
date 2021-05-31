@@ -112,6 +112,7 @@ CREATE TABLE comment(
     time_posted time not null,
     date_posted date not null,
     primary key(comment_id, post_id),
+    primary key(comment_id, post_id),
     foreign key(post_id) references post(post_id) on update cascade on delete cascade,
     foreign key(userid) references user(userid) on update cascade on delete cascade
 );

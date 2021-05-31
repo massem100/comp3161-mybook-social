@@ -97,6 +97,7 @@
                                 </div>
                                 <div class="ml-2">
                                     <div class="h5 m-0">{{post.username}}</div>
+                                    <!-- <div class="h6 m-0">{{post.username}}</div> -->
                                     <!-- <div class="h7 text-muted">Miracles Lee Cross</div> -->
                                 </div>
                             </div>
@@ -125,7 +126,7 @@
                                 </div>
                             {% else %}
                               <div>
-                                <img class="post-img" onerror="this.style.display='none'" src="{{url_for('static', filename = 'uploads/' + post.image_filename)}}">
+                                <img class="post-img w-100 h-100" onerror="this.style.display='none'" src="{{url_for('static', filename = 'uploads/' + post.image_filename)}}">
                                 <p> {{post.caption}}</p>
                                 <p> 
                                     {{post.text_message}}

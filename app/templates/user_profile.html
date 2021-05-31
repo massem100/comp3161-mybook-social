@@ -319,7 +319,7 @@
                                                 </div>
                                             {%else %}
                                               <div>
-                                                <img class="post-img" onerror="this.style.display='none'" src="{{url_for('static', filename = 'uploads/' + post.image_filename)}}">
+                                                <img class="post-img w-100 h-100" onerror="this.style.display='none'" src="{{url_for('static', filename = 'uploads/' + post.image_filename)}}">
                                                 <p> {{post.caption}}</p>
                                                 <p> 
                                                     {{post.text_message}}
